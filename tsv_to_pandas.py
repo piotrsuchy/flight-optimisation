@@ -1,6 +1,7 @@
 import pandas as pd
 
 file_path = './data/avia_pana.tsv'
+csv_file_path = './data/avia_pana_filtered.csv'
 
 df = pd.read_csv(file_path, sep='\t')
 
@@ -23,4 +24,11 @@ cols.remove('rep_airp_time')
 
 # rearrange the columns
 df_filtered = df_filtered[['unit', 'tra_meas', 'rep_airp_time'] + cols]
+
+for col in df_filtered.columns:
+    if df_filtered[col].str.contains(":").any():
+        df_filtered = df_filtered.drop(col, axis=1)
+
 print(df_filtered)
+
+df_filtered.to_csv(csv_file_path)
