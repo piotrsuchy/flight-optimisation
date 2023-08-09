@@ -9,6 +9,21 @@ With things like:
 - schedule optimisation
 etc. using an evolutionary algorithm.
 
+## Plans
+
+1. **Schedule Optimalisation** - based on time, plane and path choice:
+    - need data about the fleet for each airport (to be able to choose planes)
+    - have a basic view of demand for flights from airport to airport - based on that we could start the simulation and fit the solutions, based on how many passengers were transported (ideally with time)
+    - create a matrix with all the airport that I want to include in the simulation (airports for which I have data) and the distances between all of them
+    - calculate costs of the travel for each path
+2. **Crew Assignment**
+    - will need data about the crew
+    - will need data about the compensations and legal requirements connected to crew members
+    - will need data on capacities of each plane in terms of crew
+3. **Crew Pairing**
+    - a pairing is a sequence of connectable flight legs, within the same fleet, that starts from and ends at the same crew base, where the crew actually lives (from 1 to 5 days)
+    - ideas on how to implement this to a fitness function
+
 ## TODO steps
 
 - find a dataset that will provide an overview of demand
