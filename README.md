@@ -21,7 +21,7 @@ etc. using an evolutionary algorithm.
     - will need data about the compensations and legal requirements connected to crew members
     - will need data on capacities of each plane in terms of crew
 3. **Crew Pairing**
-    - a pairing is a sequence of connectable flight legs, within the same fleet, that starts from and ends at the same crew base, where the crew actually lives (from 1 to 5 days)
+    - !! a pairing is a sequence of connectable flight legs, within the same fleet, that starts from and ends at the same crew base, where the crew actually lives (from 1 to 5 days) !!
     - ideas on how to implement this to a fitness function
 
 ## TODO steps
@@ -31,6 +31,14 @@ etc. using an evolutionary algorithm.
 - download "DB1B Market (All Carriers)" database and use it for analysis of passangers
 
 FLIGHT and PAS: These are likely to be units of measurement. "FLIGHT" could refer to the number of flights, while "PAS" likely refers to the number of passengers.
+
+## Alternative approach
+
+Instead of working with a real dataset to simulate demand I can create a fictional dataset with data that contains:
+
+- airports
+- fleet
+- demand - passengers wanting to fly from one place to another
 
 ## DATABASE abbreviations
 
@@ -53,3 +61,8 @@ PAS_CRD: This refers to "Passengers Carried". It might indicate the total number
 PAS_CRD_ARR: This refers to "Passengers Carried Arriving". It might indicate the total number of passengers carried on all arriving flights.
 
 PAS_CRD_DEP: This refers to "Passengers Carried Departing". It might indicate the total number of passengers carried on all departing flights.
+
+## Notes
+
+- From Airlines' Crew Pairing Optimization: A Brief Review - Xugang Ye - John Hopkins University, 2007:
+"As an important issue of airlines’ operational planning, crew pairing immediately follows fleet assignment phase and right precedes crew rostering phase. A pairing is a sequence of connectable flight legs, within the same fleet, that starts from and ends at the same crew base, where the crew actually lives. A pairing is sometimes called an itinerary for the crew assigned to this journey. It typically spans from one to five days."
