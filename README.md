@@ -40,28 +40,6 @@ Instead of working with a real dataset to simulate demand I can create a fiction
 - fleet
 - demand - passengers wanting to fly from one place to another
 
-## DATABASE abbreviations
-
-The "tra_meas" abbreviations are related to different measurements of passenger traffic:
-
-CAF_PAS: This refers to the "Capacity" in terms of "Passengers". It might indicate the total number of seats available on all flights.
-
-CAF_PAS_ARR: This refers to the "Capacity" in terms of "Passengers Arriving". It might indicate the total number of seats available on all arriving flights.
-
-CAF_PAS_DEP: This refers to the "Capacity" in terms of "Passengers Departing". It might indicate the total number of seats available on all departing flights.
-
-PAS_BRD: This refers to "Passengers Boarded". It might indicate the total number of passengers who boarded flights.
-
-PAS_BRD_ARR: This refers to "Passengers Boarded Arriving". It might indicate the total number of passengers who boarded and arrived at the destination.
-
-PAS_BRD_DEP: This refers to "Passengers Boarded Departing". It might indicate the total number of passengers who boarded and departed from the origin.
-
-PAS_CRD: This refers to "Passengers Carried". It might indicate the total number of passengers carried on all flights.
-
-PAS_CRD_ARR: This refers to "Passengers Carried Arriving". It might indicate the total number of passengers carried on all arriving flights.
-
-PAS_CRD_DEP: This refers to "Passengers Carried Departing". It might indicate the total number of passengers carried on all departing flights.
-
 ## Notes
 
 - From Airlines' Crew Pairing Optimization: A Brief Review - Xugang Ye - John Hopkins University, 2007:
