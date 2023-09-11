@@ -12,6 +12,10 @@ class Simulation:
         max_pilots=40,
         min_steward=10,
         max_steward=80,
+        min_demand=20,
+        max_demand=1000,
+        min_capacity=20,
+        max_capacity=300,
         sim_length=120,
     ):
         self.num_of_airports = num_of_airports
@@ -21,6 +25,10 @@ class Simulation:
         self.max_pilots = max_pilots
         self.min_steward = min_steward
         self.max_steward = max_steward
+        self.min_demand = min_demand
+        self.max_demand = max_demand
+        self.min_capacity = min_capacity
+        self.max_capacity = max_capacity
         self.sim_length = sim_length
 
         self.airports_list = []
@@ -67,12 +75,14 @@ class Simulation:
             fleet_at_airport = np.random.choice(
                 airplane_names, fleet_size[i], replace=False
             )
-            capacity_at_airport = np.random.randint(100, 300, len(fleet_at_airport))
+            airplane_capacity = np.random.randint(
+                self.min_capacity, self.max_capacity, len(fleet_at_airport)
+            )
 
             self.fleet_information[airport] = [
                 {
                     "Airplane": fleet_at_airport[j],
-                    "Airplane_Capacity": capacity_at_airport[j],
+                    "Airplane_Capacity": airplane_capacity[j],
                 }
                 for j in range(len(fleet_at_airport))
             ]
@@ -95,7 +105,9 @@ class Simulation:
     def _generate_passengers_demand(self):
         # Generate a 30-day passenger demand between each pair of airports
         passenger_demand = np.random.randint(
-            50, 300, (self.num_of_airports, self.num_of_airports, self.sim_length)
+            self.min_demand,
+            self.max_demand,
+            (self.num_of_airports, self.num_of_airports, self.sim_length),
         )
 
         for day in range(self.sim_length):
