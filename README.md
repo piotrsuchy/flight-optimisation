@@ -53,3 +53,9 @@ Instead of working with a real dataset to simulate demand I can create a fiction
 4. [Task scheduling Algorithm using CMA ES in Cloud Computing](https://jacet.srbiau.ac.ir/article_10641_f33706f4f318ee00b09343d530580343.pdf)
 5. [Genetic Synthesis of Recurrent Neural Networks](http://arimaa.com/arimaa/about/Thesis/Thesis.pdf)
 6. [Evolutionary algorithms and their applications to engineering problems](https://link.springer.com/article/10.1007/s00521-020-04832-8)
+
+## Questions to think about
+
+- what about a return flight after a period of time for passengers?
+- what about planes being late, do I add that into the calculations?
+- what about time zone considerations?
