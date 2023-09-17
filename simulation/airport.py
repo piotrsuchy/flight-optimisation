@@ -11,4 +11,3 @@ class Airport:
         self.x = None
         self.y = None
         self.id = None
-        

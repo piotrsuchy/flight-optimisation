@@ -1,8 +1,8 @@
-from simulation.simulation import Simulation
+from simulation.datageneration import DataGeneration
 
 def main():
-    sim = Simulation()
-    sim.run_simulation()
+    sim = DataGeneration()
+    sim.generate_data()
     for airport in sim.airports_list:
         print(f"Information about the crew at the {airport}:")
         print((sim.crew_information[airport]))
