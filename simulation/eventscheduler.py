@@ -14,7 +14,7 @@ class EventScheduler:
         heapq.heappush(self.events, event)
 
     def process_next_event(self):
-        """Process the next event. This should be called in your simulation loop."""
+        """Process the next event"""
         if self.events:  # if there are events to process
             next_event = heapq.heappop(self.events)  # Get the event with the smallest time
             self.current_simulation_time = next_event.time
