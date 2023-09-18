@@ -4,7 +4,7 @@ For consideration:
 number of take offs and landings the airport
 can handle in any given time frame due to capacity
 '''
-from eventscheduler import EventScheduler
+from .eventscheduler import EventScheduler
 
 MAINTENANCE_TIME = 1
 
@@ -20,4 +20,4 @@ class Airport:
 
     def airport_maintenance(self):
         self.occupied = True
-        EventScheduler(MAINTENANCE_TIME, self.release)
+        EventScheduler.schedule_event(MAINTENANCE_TIME, self.release, None)

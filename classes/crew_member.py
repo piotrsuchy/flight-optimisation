@@ -4,8 +4,7 @@ days off,
 rest periods,
 flight duty period - pre-flight, post-flight etc.
 '''
-from event import Event
-from eventscheduler import EventScheduler
+from .eventscheduler import EventScheduler
 
 class Pilot:
     _next_id = 1

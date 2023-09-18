@@ -1,5 +1,5 @@
 import heapq
-from event import Event
+from .event import Event
 
 class EventScheduler:
     def __init__(self):
