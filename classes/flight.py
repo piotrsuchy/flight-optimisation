@@ -35,6 +35,8 @@ class Flight:
             attendant.flight_start(self.duration)
             attendant.occupy()
 
+        self.base_airport.airport_maintenance()
+
         print(f"Flight {self.id} has started! Duration: {self.duration}")
 
     def end_flight(self):
@@ -45,3 +47,5 @@ class Flight:
 
         for attendant in self.crew:
             attendant.start_rest(min(12, self.duration))
+
+        self.destination_airport.airport_maintenance()

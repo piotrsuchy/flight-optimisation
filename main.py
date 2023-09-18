@@ -1,4 +1,4 @@
-from simulation.datageneration import DataGeneration
+from classes.datageneration import DataGeneration
 
 def main():
     sim = DataGeneration()
