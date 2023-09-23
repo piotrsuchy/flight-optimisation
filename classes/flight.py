@@ -22,7 +22,7 @@ class Flight:
     def calculate_duration(self):
         return self.distance / self.plane.speed
 
-    def start_flight(self):
+    def start_flight(self, event_scheduler):
         if not all(pilot.is_available for pilot in self.pilots) or not all(attendant.is_available for attendant in self.crew):
             print("Not all crew members or pilots are available!")
             return
@@ -35,7 +35,7 @@ class Flight:
             attendant.flight_start(self.duration)
             attendant.occupy()
 
-        self.base_airport.airport_maintenance()
+        self.base_airport.airport_maintenance(event_scheduler)
 
         print(f"Flight {self.id} has started! Duration: {self.duration}")
 
