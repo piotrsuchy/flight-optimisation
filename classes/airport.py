@@ -14,6 +14,12 @@ class Airport:
         self.id = None
         self.occupied = False
 
+    def __repr__(self):
+        return f"Airport ID: {self.id}, X: {self.x}, Y: {self.y}"
+
+    def __str__(self):
+        return self.__repr__()
+
     def release(self):
         self.occupied = False
 

@@ -22,12 +22,14 @@ class Simulation:
         self._create_planes(plane_q)
         self._create_crew(pilots_q, attend_q)
         self._schedule_flights(flights_q)
+        logging.info(f"Airports: {self.airports}")
+        logging.info(f"Planes: {self.planes}")
 
     def _create_airports(self, quantity=5):
         for i in range(quantity):
             airport = Airport()
-            airport.x = random.randint(0, 100)
-            airport.y = random.randint(0, 100)
+            airport.x = random.randint(0, 10000)
+            airport.y = random.randint(0, 10000)
             airport.id = i + 1
             self.airports.append(airport)
 
@@ -59,6 +61,7 @@ class Simulation:
             # Start the flight after a random delay
             delay = random.uniform(0.1, 1)  # Delay between 0.1 to 1 hour
             self.scheduler.schedule_event(delay, flight.start_flight, self.scheduler)
+            logging.info(f"At hour {self.scheduler.current_simulation_time:.2f}: Scheduled flight from {base} to {destination} with delay {delay:.2f} hours.")
 
     def run_simulation(self):
         # Run the simulation until all events are processed

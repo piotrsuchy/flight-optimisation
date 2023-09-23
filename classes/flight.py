@@ -1,4 +1,5 @@
 import math
+import logging
 
 class Flight:
     _next_id = 1
@@ -23,6 +24,8 @@ class Flight:
         return self.distance / self.plane.speed
 
     def start_flight(self, event_scheduler):
+        logging.info(f"At hour {event_scheduler.current_simulation_time:.2f}: Flight from {self.base_airport} to {self.destination_airport} has started! Duration: {self.duration:.2f}")
+
         if not all(pilot.is_available for pilot in self.pilots) or not all(attendant.is_available for attendant in self.crew):
             print("Not all crew members or pilots are available!")
             return
@@ -36,8 +39,6 @@ class Flight:
             attendant.occupy()
 
         self.base_airport.airport_maintenance(event_scheduler)
-
-        print(f"Flight {self.id} has started! Duration: {self.duration}")
 
     def end_flight(self):
         self.status = "completed"

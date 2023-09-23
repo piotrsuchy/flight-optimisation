@@ -14,4 +14,10 @@ class Plane:
         Plane._next_id += 1
         self.capacity = capacity 
         self.pilots_needed = pilots_needed
-        self.speed = speed
+        self.speed = int(speed)
+
+    def __repr__(self):
+        return f"Plane ID: {self.id}, capacity: {self.capacity}, speed: {self.speed}"
+
+    def __str__(self):
+        return self.__repr__()
