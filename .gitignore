@@ -3,3 +3,4 @@ data/*
 .vscode
 classes/__pycache__
 __pycache__
+*.log

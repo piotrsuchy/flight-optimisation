@@ -31,12 +31,14 @@ class Flight:
             return
 
         for pilot in self.pilots:
-            pilot.flight_start(self.duration)
+            pilot.flight_start(self.duration, self.destination_airport)
             pilot.occupy()
         
         for attendant in self.crew:
-            attendant.flight_start(self.duration)
+            attendant.flight_start(self.duration, self.destination_airport)
             attendant.occupy()
+
+        self.plane.flight_start(self.destination_airport)
 
         self.base_airport.airport_maintenance(event_scheduler)
 
