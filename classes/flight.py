@@ -16,6 +16,9 @@ class Flight:
         self.duration = self.calculate_duration()
         self.status = "started"
 
+    def __repr__(self):
+        return f"ID: {self.id}, Duration: {self.duration}, from airport {self.base_airport.id} to airport {self.destination_airport.id}"
+
     def calculate_distance(self):
         return math.sqrt((self.base_airport.x - self.destination_airport.x)**2 +
                          (self.base_airport.y - self.destination_airport.y)**2)
@@ -24,7 +27,7 @@ class Flight:
         return self.distance / self.plane.speed
 
     def start_flight(self, event_scheduler):
-        logging.info(f"At hour {event_scheduler.current_simulation_time:.2f}: Flight from {self.base_airport} to {self.destination_airport} has started! Duration: {self.duration:.2f}")
+        logging.info(f"At hour {event_scheduler.current_simulation_time:.2f}: Scheduled flight: {self}")
 
         if not all(pilot.is_available for pilot in self.pilots) or not all(attendant.is_available for attendant in self.crew):
             print("Not all crew members or pilots are available!")

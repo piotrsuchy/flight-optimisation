@@ -37,6 +37,8 @@ class Pilot:
         EventScheduler.schedule_event(hours, self.release)
     
     def flight_start(self, duration, destination):
+        self.base.remove_pilot(self)
+        destination.add_pilot(self)
         self.current_base = destination
         self.day_worked_hs += duration
         self.week_worked_hs += duration
@@ -74,6 +76,8 @@ class FlightAttendant:
         EventScheduler.schedule_event(hours, self.release)
 
     def flight_start(self, duration, destination):
+        self.base.remove_attendant(self)
+        destination.add_attendant(self)
         self.current_base = destination
         self.day_worked_hs += duration
         self.week_worked_hs += duration
