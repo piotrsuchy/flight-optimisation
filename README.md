@@ -3,6 +3,7 @@
 ## This repository will contain code for an engineering thesis about flight optimisation
 
 With things like:
+AAA
 
 - pairing
 - crew assignment
