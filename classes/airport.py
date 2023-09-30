@@ -5,6 +5,7 @@ number of take offs and landings the airport
 can handle in any given time frame due to capacity
 '''
 import random
+from .scheduler_singleton import scheduler_instance
 
 MAINTENANCE_TIME = 1
 
@@ -42,24 +43,35 @@ class Airport:
     def release(self):
         self.occupied = False
 
-    def airport_maintenance(self, event_scheduler):
+    def airport_maintenance(self):
         self.occupied = True
-        event_scheduler.schedule_event(MAINTENANCE_TIME, self.release)
+        scheduler_instance.schedule_event(MAINTENANCE_TIME, self.release)
 
     def add_plane(self, plane):
         self.planes.append(plane)
 
     def add_pilot(self, pilot):
+        print(f"Added pilot {pilot.id}, to the base {self.id}")
         self.pilots.append(pilot)
 
     def add_attendant(self, attendant):
+        print(f"Added attendant {attendant.id}, to the base {self.id}")
         self.attendants.append(attendant)
 
     def remove_plane(self, plane):
         self.planes.remove(plane)
 
     def remove_pilot(self, pilot):
-        self.pilots.remove(pilot)
+        print(f"Removing pilot {pilot.id}, current base: {pilot.current_base.id}")
+        try:
+            self.pilots.remove(pilot)
+        except ValueError:
+            print(f"Pilots in this airport {self.id}: {self.pilots}")
+            print(f"Pilot {pilot.id}, current base {pilot.current_base.id} with flights_taken {pilot.flights_taken} was not found in the airport {self.id}")
 
     def remove_attendant(self, attendant):
-        self.attendants.remove(attendant)
+        print(f"Removing attendant {attendant.id}, current base: {attendant.current_base.id}")
+        try:
+            self.attendants.remove(attendant)
+        except ValueError:
+            print(f"Attendant {attendant.id}, current base {attendant.current_base.id} with flights_taken {attendant.flights_taken} was not found in the lsit")
