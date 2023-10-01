@@ -1,3 +1,3 @@
-from ..eventscheduler import EventScheduler
+from ..event_scheduler import EventScheduler
 
 scheduler_instance = EventScheduler()

@@ -5,6 +5,7 @@ from .classes.crew_member import Pilot, FlightAttendant
 from .classes.flight import Flight
 from .classes.plane import Plane
 from .classes.scheduler_singleton import scheduler_instance
+from .passenger_demand import generate_demand_array
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
