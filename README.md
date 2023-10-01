@@ -45,3 +45,66 @@ This process should be repeated many times - the number of repetitions will be n
 - what about a return flight after a period of time for passengers?
 - what about planes being late, do I add that into the calculations?
 - what about time zone considerations?
+
+### Time performance analysis for different parameters
+
+For basis parameters like this:
+
+```python
+BASELINE_PARAMS = {
+    'N_AIRPORTS': 10,
+    'N_FLIGHTS': 300,
+    'N_PILOTS_F_A': 6,
+    'N_ATTENDANTS_F_A': 12,
+    'N_PLANES_F_A': 4
+}
+```
+
+With logging on:
+
+{'param': 'N_AIRPORTS', 'factor': 100, 'duration': 0.03007817268371582}
+{'param': 'N_AIRPORTS', 'factor': 1000, 'duration': 0.24370408058166504}
+{'param': 'N_FLIGHTS', 'factor': 1, 'duration': 0.013833761215209961}
+{'param': 'N_FLIGHTS', 'factor': 10, 'duration': 0.1171109676361084}
+{'param': 'N_FLIGHTS', 'factor': 100, 'duration': 1.002060890197754}
+{'param': 'N_FLIGHTS', 'factor': 1000, 'duration': 10.688832998275757}
+{'param': 'N_PILOTS_F_A', 'factor': 1, 'duration': 0.013334035873413086}
+{'param': 'N_PILOTS_F_A', 'factor': 10, 'duration': 0.014071941375732422}
+{'param': 'N_PILOTS_F_A', 'factor': 100, 'duration': 0.02051520347595215}
+{'param': 'N_PILOTS_F_A', 'factor': 1000, 'duration': 0.10367083549499512}
+{'param': 'N_ATTENDANTS_F_A', 'factor': 1, 'duration': 0.012994766235351562}
+{'param': 'N_ATTENDANTS_F_A', 'factor': 10, 'duration': 0.015036821365356445}
+{'param': 'N_ATTENDANTS_F_A', 'factor': 100, 'duration': 0.027924776077270508}
+{'param': 'N_ATTENDANTS_F_A', 'factor': 1000, 'duration': 0.2050337791442871}
+{'param': 'N_PLANES_F_A', 'factor': 1, 'duration': 0.01307988166809082}
+{'param': 'N_PLANES_F_A', 'factor': 10, 'duration': 0.013455867767333984}
+{'param': 'N_PLANES_F_A', 'factor': 100, 'duration': 0.020437002182006836}
+{'param': 'N_PLANES_F_A', 'factor': 1000, 'duration': 0.1170799732208252}
+All 10x, flights 100x, duration: 43.92963194847107
+
+With logging off:
+
+{'param': 'N_AIRPORTS', 'factor': 1, 'duration': 0.005341768264770508}
+{'param': 'N_AIRPORTS', 'factor': 10, 'duration': 0.007319927215576172}
+{'param': 'N_AIRPORTS', 'factor': 100, 'duration': 0.021706104278564453}
+{'param': 'N_AIRPORTS', 'factor': 1000, 'duration': 0.24149513244628906}
+{'param': 'N_FLIGHTS', 'factor': 1, 'duration': 0.005631923675537109}
+{'param': 'N_FLIGHTS', 'factor': 10, 'duration': 0.032450199127197266}
+{'param': 'N_FLIGHTS', 'factor': 100, 'duration': 0.1964428424835205}
+{'param': 'N_FLIGHTS', 'factor': 1000, 'duration': 2.2318060398101807}
+{'param': 'N_PILOTS_F_A', 'factor': 1, 'duration': 0.00457310676574707}
+{'param': 'N_PILOTS_F_A', 'factor': 10, 'duration': 0.00556492805480957}
+{'param': 'N_PILOTS_F_A', 'factor': 100, 'duration': 0.011811971664428711}
+{'param': 'N_PILOTS_F_A', 'factor': 1000, 'duration': 0.0934140682220459}
+{'param': 'N_ATTENDANTS_F_A', 'factor': 1, 'duration': 0.004324197769165039}
+{'param': 'N_ATTENDANTS_F_A', 'factor': 10, 'duration': 0.006437063217163086}
+{'param': 'N_ATTENDANTS_F_A', 'factor': 100, 'duration': 0.019613981246948242}
+{'param': 'N_ATTENDANTS_F_A', 'factor': 1000, 'duration': 0.1790308952331543}
+{'param': 'N_PLANES_F_A', 'factor': 1, 'duration': 0.0044498443603515625}
+{'param': 'N_PLANES_F_A', 'factor': 10, 'duration': 0.005507707595825195}
+{'param': 'N_PLANES_F_A', 'factor': 100, 'duration': 0.01198887825012207}
+{'param': 'N_PLANES_F_A', 'factor': 1000, 'duration': 0.1057891845703125}
+All 10x, flights 100x, duration: 41.32940483093262
+
+
+
