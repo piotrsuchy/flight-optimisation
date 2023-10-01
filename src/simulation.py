@@ -8,12 +8,20 @@ from .classes.scheduler_singleton import scheduler_instance
 from .passenger_demand import generate_demand_array
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# disabling the logging below the level of critical
+# logging.disable(logging.CRITICAL)
 
 
 class Simulation:
-    def __init__(self):
+    def __init__(self, n_airports=10, n_flights=300, n_pilots_f_a=6, n_attendants_f_a=12, n_planes_f_a=4):
         self.scheduler = scheduler_instance 
         self.airports = []
+        self.simulation_hs = 720
+        self.n_airports = n_airports
+        self.n_flights = n_flights
+        self.n_pilots_f_a = n_pilots_f_a
+        self.n_attendants_f_a = n_attendants_f_a
+        self.n_planes_f_a = n_planes_f_a
 
     def print_airports(self):
         logging.info(f"---------------------------------------Airports:--------------------------------------")
@@ -25,28 +33,28 @@ class Simulation:
         for airport in self.airports:
             airport.show_fleet_and_crew()
 
-    def generate_structs(self, airport_q=10, flights_q=20):
+    def generate_structs(self):
         logging.info(f"--------------------STRUCTURE GENERATION BEGAN--------------------")
-        self._create_airports(airport_q)
-        self._schedule_flights(flights_q)
+        self._create_airports(self.n_airports)
+        self._schedule_flights(self.n_flights)
         logging.info(f"--------------------STRUCTURE GENERATION ENDED--------------------")
 
-    def _create_airports(self, quantity=5):
+    def _create_airports(self, quantity):
         for _ in range(quantity):
             airport = Airport()
             self.airports.append(airport)
-            self._create_planes(airport, quantity=5)
-            self._create_crew(airport, pilots_q=6, attendants_q=16)
+            self._create_planes(airport, quantity=self.n_planes_f_a)
+            self._create_crew(airport, pilots_q=self.n_pilots_f_a, attendants_q=self.n_attendants_f_a)
 
 
-    def _create_planes(self, airport, quantity=10):
+    def _create_planes(self, airport, quantity):
         for _ in range(quantity):
             capacity = random.randint(50, 200)
             speed = random.uniform(500, 800)
             plane = Plane(capacity, base=airport, speed=speed, pilots_needed=2, attendants_needed=4)
             airport.add_plane(plane)  # Added directly to airport instance
 
-    def _create_crew(self, airport, pilots_q=80, attendants_q=160):
+    def _create_crew(self, airport, pilots_q, attendants_q):
         # Directly allocating pilots and attendants to the airport instance
         for _ in range(pilots_q):
             pilot = Pilot(airport)
@@ -57,7 +65,7 @@ class Simulation:
             airport.add_attendant(attendant)
 
 
-    def _schedule_flights(self, flights_q=10):
+    def _schedule_flights(self, flights_q):
         # Starting by choosing the base and destination of the flight
         for _ in range(flights_q):
             base = random.choice(self.airports)
@@ -75,7 +83,7 @@ class Simulation:
             flight = Flight(base, destination, plane)
             
             # Start the flight after a random delay
-            delay = random.uniform(0, 60)  # Delay between 0.1 to 1 hour
+            delay = random.uniform(0, self.simulation_hs)  # Delay between 0.1 to 1 hour
             self.scheduler.schedule_event(delay, flight.start_flight)
             logging.info(f"Scheduled flight: {flight} starting at hour: {delay:.2f} of the simulation.")
 
