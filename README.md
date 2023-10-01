@@ -1,51 +1,37 @@
 # Flight Optimisation
 
-## This repository will contain code for an engineering thesis about flight optimisation
+## Classes and how they interact
 
-With things like:
+- **Airport** - id, coordinates, lists of crew and fleet available at the given airport
+- **Plane** - id, base, capacity, pilots_needed, attendants_needed, speed
+- **Pilot** - id, base, cur_base, hours worked in a day, week and month, flights taken
+- **Attendant** - id, base, cur_base, hours worked in a day, week and month, flights taken
 
-- pairing
-- crew assignment
-- schedule optimisation
-etc. using an evolutionary algorithm.
+All classes also have methods and fields connected with maintenance, rest times, checking availability etc.
 
-## Plans
+## Simulation
 
-1. **Schedule Optimalisation** - based on time, plane and path choice:
-    - need data about the fleet for each airport (to be able to choose planes)
-    - have a basic view of demand for flights from airport to airport - based on that we could start the simulation and fit the solutions, based on how many passengers were transported (ideally with time)
-    - create a matrix with all the airport that I want to include in the simulation (airports for which I have data) and the distances between all of them
-    - calculate costs of the travel for each path
-2. **Crew Assignment**
-    - will need data about the crew
-    - will need data about the compensations and legal requirements connected to crew members
-    - will need data on capacities of each plane in terms of crew
-3. **Crew Pairing**
-    - !! a pairing is a sequence of connectable flight legs, within the same fleet, that starts from and ends at the same crew base, where the crew actually lives (from 1 to 5 days) !!
-    - ideas on how to implement this to a fitness function
+1. Generate structures: Airports, Planes assigned to specific Airports, Pilots and Attendants assigned to specific Airports.
+2. Generate table of flights - schedule random flights by choosing random delay time, random base airport and random destination airport.
+3. Run the simulation, while checking for possibility of certain actions based on the regulations.
 
-## TODO steps
+## Optimisation by Evolutionary Algorithm
 
-- find a dataset that will provide an overview of demand
-- flight planning based on costs and profits
-- download "DB1B Market (All Carriers)" database and use it for analysis of passangers
+Before optimising and evaluating I would like to create a data structure that would describe the passengers' demand.
 
-FLIGHT and PAS: These are likely to be units of measurement. "FLIGHT" could refer to the number of flights, while "PAS" likely refers to the number of passengers.
+1. Generate random initial population with 100 members.
+2. Mutate and Cross the members of the population.
+3. Evaluate with a fitness function and select the members of the next population based on some ranking (Selection types: Roulette, Tournament, Ranking)
+4. Go back to step 2.
 
-## Alternative approach
-
-Instead of working with a real dataset to simulate demand I can create a fictional dataset with data that contains:
-
-- airports
-- fleet
-- demand - passengers wanting to fly from one place to another
+This process should be repeated many times - the number of repetitions will be n - number of iterations.
 
 ## Notes
 
 - From Airlines' Crew Pairing Optimization: A Brief Review - Xugang Ye - John Hopkins University, 2007:
 "As an important issue of airlines’ operational planning, crew pairing immediately follows fleet assignment phase and right precedes crew rostering phase. A pairing is a sequence of connectable flight legs, within the same fleet, that starts from and ends at the same crew base, where the crew actually lives. A pairing is sometimes called an itinerary for the crew assigned to this journey. It typically spans from one to five days."
 
-## Optimisation by a Genetic Algorithm research
+### Optimisation by a Genetic Algorithm research
 
 1. [Pseudocoevolutionary Genetic Algorithms for Power Electronic Circuits Optimization](https://web.archive.org/web/20110707025618/http://www.cs.sysu.edu.cn/~jzhang/papers/SMCC.pdf#)
 2. [Genetic algorithm based airlines booking terminal open/close decision system](https://dl.acm.org/doi/abs/10.1145/2345396.2345426)
@@ -54,7 +40,7 @@ Instead of working with a real dataset to simulate demand I can create a fiction
 5. [Genetic Synthesis of Recurrent Neural Networks](http://arimaa.com/arimaa/about/Thesis/Thesis.pdf)
 6. [Evolutionary algorithms and their applications to engineering problems](https://link.springer.com/article/10.1007/s00521-020-04832-8)
 
-## Questions to think about
+### Extra questions to think about
 
 - what about a return flight after a period of time for passengers?
 - what about planes being late, do I add that into the calculations?

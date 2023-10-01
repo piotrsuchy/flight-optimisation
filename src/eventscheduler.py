@@ -1,6 +1,6 @@
 import heapq
 from .event import Event
-from .singleton import Singleton
+from .classes.singleton import Singleton
 
 class EventScheduler(metaclass=Singleton):
     def __init__(self):

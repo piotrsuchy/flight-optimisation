@@ -7,7 +7,7 @@ can handle in any given time frame due to capacity
 import random
 from .scheduler_singleton import scheduler_instance
 
-MAINTENANCE_TIME = 1
+MAINTENANCE_TIME = 0.5
 
 class Airport:
     _next_id = 1
@@ -17,7 +17,7 @@ class Airport:
         self.y = y if y is not None else random.randint(0, 10000)
         self.id = Airport._next_id
         Airport._next_id += 1
-        self.occupied = False
+        self.free = True
         self.planes = []
         self.pilots = []
         self.attendants = []
@@ -27,6 +27,9 @@ class Airport:
 
     def __str__(self):
         return self.__repr__()
+
+    def is_available(self):
+        return self.occupied
 
     def show_fleet_and_crew(self):
         print(f"FOR AIRPORT ID: {self.id}:")
@@ -51,27 +54,27 @@ class Airport:
         self.planes.append(plane)
 
     def add_pilot(self, pilot):
-        print(f"Added pilot {pilot.id}, to the base {self.id}")
+        # print(f"Added pilot {pilot.id}, to the base {self.id}")
         self.pilots.append(pilot)
 
     def add_attendant(self, attendant):
-        print(f"Added attendant {attendant.id}, to the base {self.id}")
+        # print(f"Added attendant {attendant.id}, to the base {self.id}")
         self.attendants.append(attendant)
 
     def remove_plane(self, plane):
-        self.planes.remove(plane)
+        try:
+            self.planes.remove(plane)
+        except KeyError:
+            print(f"Error in function remove_plane() for airport {self.id}")
 
     def remove_pilot(self, pilot):
-        print(f"Removing pilot {pilot.id}, current base: {pilot.current_base.id}")
         try:
             self.pilots.remove(pilot)
-        except ValueError:
-            print(f"Pilots in this airport {self.id}: {self.pilots}")
-            print(f"Pilot {pilot.id}, current base {pilot.current_base.id} with flights_taken {pilot.flights_taken} was not found in the airport {self.id}")
+        except KeyError:
+            print(f"Error in function remove_pilot() for airport {self.id}")
 
     def remove_attendant(self, attendant):
-        print(f"Removing attendant {attendant.id}, current base: {attendant.current_base.id}")
         try:
             self.attendants.remove(attendant)
         except ValueError:
-            print(f"Attendant {attendant.id}, current base {attendant.current_base.id} with flights_taken {attendant.flights_taken} was not found in the lsit")
+            print(f"Error in function remove_attendant() for airport {self.id}")

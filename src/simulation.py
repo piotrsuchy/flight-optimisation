@@ -1,10 +1,10 @@
 import random
 import logging
-from classes.airport import Airport
-from classes.crew_member import Pilot, FlightAttendant
-from classes.flight import Flight
-from classes.plane import Plane
-from classes.scheduler_singleton import scheduler_instance
+from .classes.airport import Airport
+from .classes.crew_member import Pilot, FlightAttendant
+from .classes.flight import Flight
+from .classes.plane import Plane
+from .classes.scheduler_singleton import scheduler_instance
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -61,11 +61,11 @@ class Simulation:
         for _ in range(flights_q):
             base = random.choice(self.airports)
             destination = random.choice(self.airports)
-            while base == destination:  # Make sure we don't pick the same airport
+            while base == destination:  
                 destination = random.choice(self.airports)
             
             # Filter flight attributes, so that the bases of crew and planes match the flight
-            available_planes = [plane for plane in base.planes if plane.ready]
+            available_planes = [plane for plane in base.planes if plane.is_available]
             if not available_planes:
                 logging.warning(f"Not enough planes at the airport {base.id}")
                 continue
@@ -74,9 +74,9 @@ class Simulation:
             flight = Flight(base, destination, plane)
             
             # Start the flight after a random delay
-            delay = random.uniform(0, 30)  # Delay between 0.1 to 1 hour
+            delay = random.uniform(0, 60)  # Delay between 0.1 to 1 hour
             self.scheduler.schedule_event(delay, flight.start_flight)
-            logging.info(f"Scheduled flight: {flight}")
+            logging.info(f"Scheduled flight: {flight} starting at hour: {delay:.2f} of the simulation.")
 
     def run_simulation(self):
         # Run the simulation until all events are processed

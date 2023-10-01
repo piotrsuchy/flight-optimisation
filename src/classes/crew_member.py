@@ -12,13 +12,13 @@ class Pilot:
     def __init__(self, base):
         self.id = Pilot._next_id
         Pilot._next_id += 1
-        self.is_available = True
         self.base = base 
         self.current_base = base
         self.day_worked_hs = 0
         self.week_worked_hs = 0
         self.month_worked_hs = 0
         self.flights_taken = 0
+        self.is_available = True
 
     def __repr__(self):
         return f"Pilot ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}"
@@ -30,7 +30,7 @@ class Pilot:
         self.is_available = False
 
     def release(self):
-        print(f"Released at hour {scheduler_instance.current_simulation_time}")
+        # print(f"Released at hour {scheduler_instance.current_simulation_time}")
         self.is_available = True
 
     def start_rest(self, hours):
@@ -53,7 +53,6 @@ class FlightAttendant:
     def __init__(self, base):
         self.id = FlightAttendant._next_id
         FlightAttendant._next_id += 1
-        self.is_available = True
         self.base = base
         self.current_base = base
         self.day_worked_hs = 0
@@ -61,6 +60,7 @@ class FlightAttendant:
         self.month_worked_hs = 0
         self.rest_period = 0
         self.flights_taken = 0
+        self.is_available = True
 
     def __repr__(self):
         return f"Attendant ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}, status: {self.is_available}"
@@ -72,7 +72,7 @@ class FlightAttendant:
         self.is_available = False
 
     def release(self):
-        print(f"Released at hour {scheduler_instance.current_simulation_time}")
+        # print(f"Released at hour {scheduler_instance.current_simulation_time}")
         self.is_available = True
 
     def start_rest(self, hours):
