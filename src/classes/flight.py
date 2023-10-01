@@ -30,14 +30,11 @@ class Flight:
 
     def start_flight(self):
         logging.info(f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}, in the plane {self.plane.id}")
-            # choose 2 pilots from the base_airport.pilots that have status is_available == True
-            # if that is not possible - fewer than 2 available pilots - cancel flight and log that it is not possible
         available_pilots = [pilot for pilot in self.base_airport.pilots if pilot.is_available]
         if len(available_pilots) < 2:
             logging.warning(f"Flight {self.id}: Not enough available pilots at airport {self.base_airport.id}, flight cancelled")
             return
 
-        # Now similarly for attendants, you can allocate them here.
         available_attendants = [attendant for attendant in self.base_airport.attendants if attendant.is_available]
         required_attendants = self.plane.attendants_needed
         if len(available_attendants) < required_attendants:
@@ -65,6 +62,7 @@ class Flight:
 
     def end_flight(self):
         self.status = "completed"
+        self.plane.maintenance()
         for pilot in self.pilots:
             pilot.start_rest(min(12, self.duration))
         for attendant in self.crew:

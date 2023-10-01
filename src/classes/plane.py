@@ -28,17 +28,20 @@ class Plane:
         return self.__repr__()
 
     def flight_start(self, destination):
+        self.occupy()
         self.base.remove_plane(self)
         destination.add_plane(self)
         self.base = destination
-        self.occupy()
     
     def is_available(self):
         return self.is_available
 
     def occupy(self):
         self.is_available = False
-        scheduler_instance.schedule_event(MAINTENANCE_TIME, self.release)
 
     def release(self):
         self.is_available = True
+
+    def maintenance(self):
+        self.occupy()
+        scheduler_instance.schedule_event(MAINTENANCE_TIME, self.release)

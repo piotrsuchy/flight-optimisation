@@ -67,7 +67,7 @@ class Simulation:
             # Filter flight attributes, so that the bases of crew and planes match the flight
             available_planes = [plane for plane in base.planes if plane.is_available]
             if not available_planes:
-                logging.warning(f"Not enough planes at the airport {base.id}")
+                logging.warning(f"Not enough available planes at the airport {base.id}")
                 continue
 
             plane = random.choice(available_planes)
