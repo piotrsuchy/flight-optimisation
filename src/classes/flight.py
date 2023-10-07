@@ -6,7 +6,7 @@ from .scheduler_singleton import scheduler_instance
 class Flight:
     _next_id = 1
 
-    def __init__(self, base_airport, destination_airport, plane):
+    def __init__(self, base_airport, destination_airport, plane, sol):
         self.id = Flight._next_id
         Flight._next_id += 1
         self.base_airport = base_airport
@@ -17,6 +17,8 @@ class Flight:
         self.distance = self.calculate_distance()
         self.duration = self.calculate_duration()
         self.status = "started"
+        if sol:
+            sol.flights.append(self)
 
     def __repr__(self):
         return f"ID: {self.id}, Duration: {self.duration:.2f}, from airport {self.base_airport.id} to airport {self.destination_airport.id}"
