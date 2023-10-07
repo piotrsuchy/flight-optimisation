@@ -9,7 +9,7 @@
 
 All classes also have methods and fields connected with maintenance, rest times, checking availability etc.
 
-## Simulation
+## Solution
 
 1. Generate structures: Airports, Planes assigned to specific Airports, Pilots and Attendants assigned to specific Airports.
 2. Generate table of flights - schedule random flights by choosing random delay time, random base airport and random destination airport.
@@ -105,6 +105,3 @@ With logging off:
 {'param': 'N_PLANES_F_A', 'factor': 100, 'duration': 0.01198887825012207}
 {'param': 'N_PLANES_F_A', 'factor': 1000, 'duration': 0.1057891845703125}
 All 10x, flights 100x, duration: 41.32940483093262
-
-
-

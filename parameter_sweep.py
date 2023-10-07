@@ -1,4 +1,4 @@
-from src.simulation import Simulation
+from src.solution import Solution
 from src.passenger_demand import generate_demand_array, visualize_demand, visualize_demand_for_day
 import time
 
@@ -14,7 +14,7 @@ MODIFICATION_FACTORS = [1, 10, 100, 1000]
 
 def simulation_main(**params):
     start_time = time.time()
-    sim = Simulation(n_airports=params['N_AIRPORTS'], 
+    sim = Solution(n_airports=params['N_AIRPORTS'], 
                      n_flights=params['N_FLIGHTS'], 
                      n_pilots_f_a=params['N_PILOTS_F_A'], 
                      n_attendants_f_a=params['N_ATTENDANTS_F_A'], 
