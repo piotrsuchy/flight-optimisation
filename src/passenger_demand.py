@@ -3,14 +3,6 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-class PassengerDemand:
-    def __init__(self, from_airport, to_airport, demand_quantity, time_period):
-        self.from_airport = from_airport
-        self.to_airport = to_airport
-        self.demand_quantity = demand_quantity  # Number of passengers wanting to travel
-        self.time_period = time_period  # Time period during which this demand exists
-
-
 def generate_demand_array(airports, days=30):
     num_airports = len(airports)
     # Creating a 3D array with dimensions [num_airports][num_airports][days]

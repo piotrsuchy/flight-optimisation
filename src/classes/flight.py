@@ -17,6 +17,7 @@ class Flight:
         self.distance = self.calculate_distance()
         self.duration = self.calculate_duration()
         self.status = "started"
+        self.day_of_flight = None
         if sol:
             sol.flights.append(self)
 

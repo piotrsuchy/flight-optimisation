@@ -1,9 +1,9 @@
 import logging
 import random
 
-from classes.airport import Airport
-from classes.plane import Plane
-from classes.crew_member import Pilot, FlightAttendant
+from .classes.airport import Airport
+from .classes.plane import Plane
+from .classes.crew_member import Pilot, FlightAttendant
 
 
 class Structures:
@@ -13,13 +13,15 @@ class Structures:
         self.n_pilots_f_a = n_pilots_f_a
         self.n_attendants_f_a = n_attendants_f_a
         self.n_planes_f_a = n_planes_f_a
-        self._create_structs()
+        self.generate_structs()
 
 
     def generate_structs(self):
         logging.info(f"--------------------STRUCTURE GENERATION BEGAN--------------------")
         self._create_airports(self.n_airports)
-        self._schedule_flights(self.n_flights)
+        for airport in self.airports:
+            self._create_crew(airport, self.n_pilots_f_a, self.n_attendants_f_a)
+            self._create_planes(airport, self.n_planes_f_a)
         logging.info(f"--------------------STRUCTURE GENERATION ENDED--------------------")
 
 

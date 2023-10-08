@@ -1,5 +1,6 @@
-from structures import Structures
-from solution import Solution
+from .structures import Structures
+from .solution import Solution
+from .passenger_demand import generate_demand_array, visualize_demand
 
 # Constants
 TICKET_PRICE = 100
@@ -15,14 +16,18 @@ class EvolutionaryAlgorithm:
         self.population_size = population_size
         self.population = []
         self.structures = Structures()
+        self.passenger_demand = generate_demand_array(self.structures.airports, 30)
 
     def initialize_population(self):
-        for _ in range(self.population_size):
-            sol = Solution(self.structures.airports, 720)
+        for sol_id in range(self.population_size):
+            sol = Solution(sol_id+1, self.structures.airports, 720)
             sol._schedule_flights(300)
-            self.population.append((sol, -1))
+            self.population.append([sol, -1])
 
     def fitness_function(self, sol):
+        '''
+        This function calculates the fitness score of a single solution
+        '''
         # Initializing metrics
         revenue = 0
         operational_costs = 0
@@ -33,7 +38,7 @@ class EvolutionaryAlgorithm:
             from_airport_idx = flight.base_airport.id - 1
             to_airport_idx = flight.destination_airport.id - 1
             day_of_flight = flight.day  # Assuming the Flight class has a day attribute
-            demand = self.structures.passenger_demand[from_airport_idx][to_airport_idx][day_of_flight]
+            demand = self.passenger_demand[from_airport_idx][to_airport_idx][day_of_flight]
             
             # Calculate seats filled (minimum of demand and plane capacity)
             filled_seats = min(demand, flight.plane.capacity)
@@ -51,13 +56,31 @@ class EvolutionaryAlgorithm:
         for flight in sol.flights:
             if flight.status == "cancelled":
                 penalties += FLIGHT_CANCELLATION_COST_PER_PERSON * filled_seats
+                break
 
-            for pilot in flight.pilots:
-                if pilot.week_worked_hs > MAX_WEEKLY_HOURS:
-                    penalties += OVERWORK_PENALTY_PER_HOUR * (pilot.week_worked_hs - MAX_WEEKLY_HOURS)
+            try:
+                for pilot in flight.pilots:
+                    if pilot.week_worked_hs > MAX_WEEKLY_HOURS:
+                        penalties += OVERWORK_PENALTY_PER_HOUR * (pilot.week_worked_hs - MAX_WEEKLY_HOURS)
             
-            for attendant in flight.crew:
-                if attendant.week_worked_hs > MAX_WEEKLY_HOURS:
-                    penalties += OVERWORK_PENALTY_PER_HOUR * (attendant.week_worked_hs - MAX_WEEKLY_HOURS)
+                for attendant in flight.crew:
+                    if attendant.week_worked_hs > MAX_WEEKLY_HOURS:
+                        penalties += OVERWORK_PENALTY_PER_HOUR * (attendant.week_worked_hs - MAX_WEEKLY_HOURS)
+            except TypeError:
+                print(f"In sol: {sol.id} in flight: {flight.id} pilots or attendants are None")
 
         return revenue - operational_costs - penalties
+
+    def update_all_fitness_scores(self):
+        '''
+        This function uses the fitness_function() method to calculate the fitness score
+        of all solutions in the population
+        '''
+        for sol_id, sol in enumerate(self.population):
+            fitness_score = self.fitness_function(sol[0])
+            self.population[sol_id][1] = fitness_score
+
+            
+    def print_fitness_scores(self):
+        for sol in self.population:
+            print(f"Sol: {sol[0]}, Fitness function: {sol[1]}")
