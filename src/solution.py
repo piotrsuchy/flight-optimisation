@@ -16,9 +16,10 @@ class Solution:
         self.airports = airports
         self.simulation_hs = simulation_hs 
         self.flights = []
+        self.fitness_score = None
 
     def __str__(self):
-        return f"Sol ID: {self.id}, Total Flights: {len(self.flights)}"
+        return f"Sol ID: {self.id}, Total Flights: {len(self.flights)}, fitness score: {self.fitness_score}"
 
     def _schedule_flights(self, flights_q):
         # Starting by choosing the base and destination of the flight
@@ -43,6 +44,6 @@ class Solution:
             self.scheduler.schedule_event(delay, flight.start_flight)
             logging.info(f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {delay:.2f} of the simulation.")
 
-    def run_simulation(self):
+    def run_events(self):
         # Run the simulation until all events are processed
         self.scheduler.run_until_no_events()

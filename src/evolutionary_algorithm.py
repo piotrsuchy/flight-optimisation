@@ -3,13 +3,13 @@ from .solution import Solution
 from .passenger_demand import generate_demand_array, visualize_demand
 
 # Constants
-TICKET_PRICE = 100
-PLANE_OPERATIONAL_COST_PER_HOUR = 4000
+TICKET_PRICE = 1000
+PLANE_OPERATIONAL_COST_PER_HOUR = 2000
 PILOT_COST_PER_HOUR = 120
 ATTENDANT_COST_PER_HOUR = 80
-FLIGHT_CANCELLATION_COST_PER_PERSON = TICKET_PRICE*2
+FLIGHT_CANCELLATION_COST_PER_PERSON = TICKET_PRICE
 MAX_WEEKLY_HOURS = 60
-OVERWORK_PENALTY_PER_HOUR = PILOT_COST_PER_HOUR*3
+OVERWORK_PENALTY_PER_HOUR = PILOT_COST_PER_HOUR*2
 
 class EvolutionaryAlgorithm:
     def __init__(self, population_size=100):
@@ -18,11 +18,14 @@ class EvolutionaryAlgorithm:
         self.structures = Structures()
         self.passenger_demand = generate_demand_array(self.structures.airports, 30)
 
-    def initialize_population(self):
+    def initialize_population_and_run_events(self):
         for sol_id in range(self.population_size):
             sol = Solution(sol_id+1, self.structures.airports, 720)
-            sol._schedule_flights(300)
+            sol._schedule_flights(150)
+            sol.run_events()
+            # population is a list of [sol, [revenue, op_costs, penalties]]
             self.population.append([sol, -1])
+
 
     def fitness_function(self, sol):
         '''
@@ -69,7 +72,7 @@ class EvolutionaryAlgorithm:
             except TypeError:
                 print(f"In sol: {sol.id} in flight: {flight.id} pilots or attendants are None")
 
-        return revenue - operational_costs - penalties
+        return [revenue, operational_costs, penalties]
 
     def update_all_fitness_scores(self):
         '''
@@ -77,10 +80,12 @@ class EvolutionaryAlgorithm:
         of all solutions in the population
         '''
         for sol_id, sol in enumerate(self.population):
-            fitness_score = self.fitness_function(sol[0])
-            self.population[sol_id][1] = fitness_score
+            revenue, operation_costs, penalties = self.fitness_function(sol[0])
+            self.population[sol_id][1] = [revenue, operation_costs, penalties]
+            self.population[sol_id][0].fitness_score = revenue - operation_costs - penalties
+
 
             
-    def print_fitness_scores(self):
+    def print_revenue_and_costs(self):
         for sol in self.population:
-            print(f"Sol: {sol[0]}, Fitness function: {sol[1]}")
+            print(f"Sol: {sol[0]}, revenue: {sol[1][0]}, operational_costs: {sol[1][1]}, penalties: {sol[1][2]}, fitness_function: {sol[1]}")

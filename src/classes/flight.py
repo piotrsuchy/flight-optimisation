@@ -32,6 +32,7 @@ class Flight:
         return self.distance / self.plane.speed
 
     def start_flight(self):
+        print("Start flight is called")
         logging.info(f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}, in the plane {self.plane.id}")
         available_pilots = [pilot for pilot in self.base_airport.pilots if pilot.is_available]
         if len(available_pilots) < 2:
