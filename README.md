@@ -40,12 +40,6 @@ This process should be repeated many times - the number of repetitions will be n
 5. [Genetic Synthesis of Recurrent Neural Networks](http://arimaa.com/arimaa/about/Thesis/Thesis.pdf)
 6. [Evolutionary algorithms and their applications to engineering problems](https://link.springer.com/article/10.1007/s00521-020-04832-8)
 
-### Extra questions to think about
-
-- what about a return flight after a period of time for passengers?
-- what about planes being late, do I add that into the calculations?
-- what about time zone considerations?
-
 ### Time performance analysis for different parameters
 
 For basis parameters like this:
