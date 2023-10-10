@@ -50,12 +50,14 @@ class Flight:
         # print("Start flight is called")
         logging.info(f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")
 
-        available_pilots = [pilot for pilot in self.base_airport.pilots if pilot.is_available]
+        #TODO: add checking for airports 
+
+        available_pilots = [pilot for pilot in self.base_airport.pilots if pilot.is_eligible()]
         if len(available_pilots) < 2:
             self.cancel_flight(self.sol, "pilots")
             return
 
-        available_attendants = [attendant for attendant in self.base_airport.attendants if attendant.is_available]
+        available_attendants = [attendant for attendant in self.base_airport.attendants if attendant.is_eligible()]
         if len(available_attendants) < 4:
             self.cancel_flight(self.sol, "attendants")
             return

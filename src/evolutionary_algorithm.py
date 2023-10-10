@@ -65,7 +65,8 @@ class EvolutionaryAlgorithm:
         # 3. Calculate Penalties
         for flight in sol.flights:
             if flight.status == "cancelled":
-                penalties += FLIGHT_CANCELLATION_COST_PER_PERSON * filled_seats
+                #TODO: fix hardcoding of 200 - it used to be filled_seats!
+                penalties += FLIGHT_CANCELLATION_COST_PER_PERSON * 200
                 break
 
             try:

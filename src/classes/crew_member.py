@@ -7,7 +7,11 @@ on-duty, on-call - how to calculate this work hours
 '''
 from .scheduler_singleton import scheduler_instance
 
+
+MAX_DAILY_HOURS = 14
 MAX_WEEKLY_HOURS = 60
+MAX_MONTHLY_HOURS = 190
+
 
 class Pilot:
     _next_id = 1
@@ -23,23 +27,41 @@ class Pilot:
         self.flights_taken = 0
         self.is_available = True
 
+
     def __repr__(self):
         return f"Pilot ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}"
 
-    def is_free(self):
-        return self.is_available
+
+    def is_eligible(self):
+        return (self.is_available and 
+                self.day_worked_hs <= MAX_DAILY_HOURS and 
+                self.week_worked_hs <= MAX_WEEKLY_HOURS and 
+                self.month_worked_hs <= MAX_MONTHLY_HOURS)
+
 
     def occupy(self):
         self.is_available = False
+
 
     def release(self):
         # print(f"Released at hour {scheduler_instance.current_simulation_time}")
         self.is_available = True
 
+
     def start_rest(self, hours):
         self.occupy()
         # Scheduling an event for the end of rest
         scheduler_instance.schedule_event(hours, self.release)
+
+
+    def decrement_hours(self, time, duration):
+        if time == "day":
+            self.day_worked_hs -= duration
+        elif time == "week":
+            self.week_worked_hs -= duration
+        else:
+            self.month_worked_hs -= duration
+
     
     def flight_start(self, duration, destination):
         self.current_base.remove_pilot(self)
@@ -50,6 +72,13 @@ class Pilot:
         self.month_worked_hs += duration
         self.flights_taken += 1
         self.occupy()
+        # after a day decrement working hours 
+        scheduler_instance.schedule_event(24, self.decrement_hours, "day", duration)
+        # after a week decrement working hours
+        scheduler_instance.schedule_event(7*24, self.decrement_hours, "week", duration)
+        # after a month decrement working hours
+        # scheduler_instance.schedule_event(30*24, self.decrement_hours, "month", duration)
+
 
 class FlightAttendant:
     _next_id = 1
@@ -66,23 +95,41 @@ class FlightAttendant:
         self.flights_taken = 0
         self.is_available = True
 
+
     def __repr__(self):
         return f"Attendant ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}, status: {self.is_available}"
 
-    def is_free(self):
-        return self.is_available
+
+    def is_eligible(self):
+        return (self.is_available and 
+                self.day_worked_hs <= MAX_DAILY_HOURS and 
+                self.week_worked_hs <= MAX_WEEKLY_HOURS and 
+                self.month_worked_hs <= MAX_MONTHLY_HOURS)
+
 
     def occupy(self):
         self.is_available = False
+
 
     def release(self):
         # print(f"Released at hour {scheduler_instance.current_simulation_time}")
         self.is_available = True
 
+
     def start_rest(self, hours):
         self.occupy()
         # Scheduling an event for the end of rest
         scheduler_instance.schedule_event(hours, self.release)
+
+
+    def decrement_hours(self, time, duration):
+        if time == "day":
+            self.day_worked_hs -= duration
+        elif time == "week":
+            self.week_worked_hs -= duration
+        else:
+            self.month_worked_hs -= duration
+
 
     def flight_start(self, duration, destination):
         self.current_base.remove_attendant(self)
@@ -93,3 +140,9 @@ class FlightAttendant:
         self.month_worked_hs += duration
         self.flights_taken += 1
         self.occupy()
+        # after a day decrement working hours 
+        scheduler_instance.schedule_event(24, self.decrement_hours, "day", duration)
+        # after a week decrement working hours
+        scheduler_instance.schedule_event(7*24, self.decrement_hours, "week", duration)
+        # after a month decrement working hours
+        # scheduler_instance.schedule_event(30*24, self.decrement_hours, "month", duration)
