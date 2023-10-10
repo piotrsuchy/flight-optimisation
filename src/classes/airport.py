@@ -21,6 +21,7 @@ class Airport:
         self.planes = []
         self.pilots = []
         self.attendants = []
+        self.lanes = []
 
     def __repr__(self):
         return f"Airport ID: {self.id}, X: {self.x}, Y: {self.y}"
