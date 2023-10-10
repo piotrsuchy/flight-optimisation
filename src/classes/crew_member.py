@@ -3,8 +3,11 @@ For consideration:
 days off,
 rest periods,
 flight duty period - pre-flight, post-flight etc.
+on-duty, on-call - how to calculate this work hours
 '''
 from .scheduler_singleton import scheduler_instance
+
+MAX_WEEKLY_HOURS = 60
 
 class Pilot:
     _next_id = 1
@@ -46,6 +49,7 @@ class Pilot:
         self.week_worked_hs += duration
         self.month_worked_hs += duration
         self.flights_taken += 1
+        self.occupy()
 
 class FlightAttendant:
     _next_id = 1
@@ -88,3 +92,4 @@ class FlightAttendant:
         self.week_worked_hs += duration
         self.month_worked_hs += duration
         self.flights_taken += 1
+        self.occupy()

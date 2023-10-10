@@ -2,12 +2,12 @@ from .structures import Structures
 from .solution import Solution
 from .passenger_demand import generate_demand_array, visualize_demand
 
-# Constants
+# parameters
 TICKET_PRICE = 1000
 PLANE_OPERATIONAL_COST_PER_HOUR = 2000
 PILOT_COST_PER_HOUR = 120
 ATTENDANT_COST_PER_HOUR = 80
-FLIGHT_CANCELLATION_COST_PER_PERSON = TICKET_PRICE
+FLIGHT_CANCELLATION_COST_PER_PERSON = TICKET_PRICE*1.5
 MAX_WEEKLY_HOURS = 60
 OVERWORK_PENALTY_PER_HOUR = PILOT_COST_PER_HOUR*2
 
@@ -17,6 +17,7 @@ class EvolutionaryAlgorithm:
         self.population = []
         self.structures = Structures()
         self.passenger_demand = generate_demand_array(self.structures.airports, 30)
+
 
     def initialize_population_and_run_events(self):
         for sol_id in range(self.population_size):
@@ -29,7 +30,9 @@ class EvolutionaryAlgorithm:
 
     def fitness_function(self, sol):
         '''
-        This function calculates the fitness score of a single solution
+        This function calculates revenue, operational costs and penalties of a single solution
+        If the flight is cancelled it 
+        It returns a list of [revenue, op_costs, penalties]
         '''
         # Initializing metrics
         revenue = 0
@@ -38,6 +41,8 @@ class EvolutionaryAlgorithm:
         
         # 1. Calculate Revenue
         for flight in sol.flights:
+            if flight.status == "cancelled":
+                continue
             from_airport_idx = flight.base_airport.id - 1
             to_airport_idx = flight.destination_airport.id - 1
             day_of_flight = flight.day  # Assuming the Flight class has a day attribute
@@ -49,6 +54,8 @@ class EvolutionaryAlgorithm:
             
         # 2. Calculate Operational Costs
         for flight in sol.flights:
+            if flight.status == "cancelled":
+                continue
             flight_duration = flight.duration
             plane_cost = PLANE_OPERATIONAL_COST_PER_HOUR * flight_duration
             pilot_cost = PILOT_COST_PER_HOUR * flight_duration
@@ -74,6 +81,7 @@ class EvolutionaryAlgorithm:
 
         return [revenue, operational_costs, penalties]
 
+
     def update_all_fitness_scores(self):
         '''
         This function uses the fitness_function() method to calculate the fitness score
@@ -84,8 +92,7 @@ class EvolutionaryAlgorithm:
             self.population[sol_id][1] = [revenue, operation_costs, penalties]
             self.population[sol_id][0].fitness_score = revenue - operation_costs - penalties
 
-
             
     def print_revenue_and_costs(self):
         for sol in self.population:
-            print(f"Sol: {sol[0]}, revenue: {sol[1][0]}, operational_costs: {sol[1][1]}, penalties: {sol[1][2]}, fitness_function: {sol[1]}")
+            print(f"Sol: {sol[0]}, rev: {sol[1][0]:.2e}, op_costs: {sol[1][1]:.2e}, penalties: {sol[1][2]:.2e}")
