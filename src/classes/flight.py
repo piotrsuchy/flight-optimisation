@@ -1,7 +1,8 @@
 import math
 import random
 import logging
-from .scheduler_singleton import scheduler_instance
+
+from src.solution import Solution
 
 class Flight:
     _next_id = 1
@@ -33,9 +34,11 @@ class Flight:
     def calculate_duration(self):
         return self.distance / self.plane.speed
 
+
     def set_dist_and_dur(self):
         self.distance = self.calculate_distance()
         self.duration = self.calculate_duration()
+
 
     def start_flight(self):
         '''
@@ -81,6 +84,7 @@ class Flight:
         self.plane.flight_start(self.destination_airport)
         self.base_airport.airport_maintenance()
 
+        scheduler_instance = Solution.get_scheduler_by_id(self.sol.id)
         logging.info(f"At hour {scheduler_instance.current_simulation_time:.2f}: Scheduled flight: {self}")
         scheduler_instance.schedule_event(self.duration, self.end_flight)
 
@@ -99,7 +103,7 @@ class Flight:
         self.status = "cancelled"
         sol.cancelled_flights.append(self)
         if reason == "pilots":
-            logging.warning(f"Flight {self.id}: Not enough available at airport {self.base_airport.id}, flight cancelled.")
+            logging.warning(f"Flight {self.id}: Not enough available pilots at airport {self.base_airport.id}, flight cancelled.")
         elif reason == "attendants":
             logging.warning(f"Flight {self.id}: Not enough available attendants at airport {self.base_airport.id}, flight cancelled.")
         elif reason == "planes":

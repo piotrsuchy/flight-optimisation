@@ -1,4 +1,4 @@
-from .structures import Structures
+import copy
 from .solution import Solution
 from .passenger_demand import generate_demand_array, visualize_demand
 
@@ -12,16 +12,18 @@ MAX_WEEKLY_HOURS = 60
 OVERWORK_PENALTY_PER_HOUR = PILOT_COST_PER_HOUR*2
 
 class EvolutionaryAlgorithm:
-    def __init__(self, population_size=100):
+    def __init__(self, initial_structures, population_size=100):
         self.population_size = population_size
         self.population = []
-        self.structures = Structures()
-        self.passenger_demand = generate_demand_array(self.structures.airports, 30)
+        self.initial_structures = initial_structures
+        self.passenger_demand = generate_demand_array(self.initial_structures.airports, 30)
 
 
     def initialize_population_and_run_events(self):
         for sol_id in range(self.population_size):
-            sol = Solution(sol_id+1, self.structures.airports, 720)
+            initial_structures = copy.deepcopy(self.initial_structures)
+            sol = Solution(sol_id+1, initial_structures, 720)
+            sol.set_sol_ids(sol_id+1)
             sol._schedule_flights(150)
             sol.run_events()
             # population is a list of [sol, [revenue, op_costs, penalties]]

@@ -1,20 +1,20 @@
 import random
 import logging
-from .classes.flight import Flight
-from .classes.scheduler_singleton import scheduler_instance
+
+from .event_scheduler import EventScheduler
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 # logging.disable(logging.CRITICAL)
 
 
 class Solution:
-    '''
-    This class is a single solution - 
-    '''
-    def __init__(self, solution_id, airports, simulation_hs):
+    schedulers = {}
+
+    def __init__(self, solution_id, initial_structures, simulation_hs):
         self.id = solution_id
-        self.scheduler = scheduler_instance 
-        self.airports = airports
+        self.scheduler = EventScheduler()
+        Solution.schedulers[self.id] = self.scheduler
+        self.structures = initial_structures
         self.simulation_hs = simulation_hs 
         self.flights = []
         self.cancelled_flights = []
@@ -23,16 +23,33 @@ class Solution:
     def __str__(self):
         return f"Sol ID: {self.id}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}, Fitness score: {self.fitness_score:.2e}"
 
+    @staticmethod
+    def get_scheduler_by_id(sol_id):
+        return Solution.schedulers.get(sol_id)
+
+    def set_sol_ids(self, sol_id):
+        for airport in self.structures.airports:
+            airport.set_sol_id(sol_id)
+            for plane in airport.planes:
+                plane.set_sol_id(sol_id)
+
+            for pilot in airport.pilots:
+                pilot.set_sol_id(sol_id)
+
+            for attendant in airport.attendants:
+                attendant.set_sol_id(sol_id)
+
     def _schedule_flights(self, flights_q):
         '''
         This function schedules flights_q flights for a solution by taking two different airports 
         and scheduling the start_flight() method of class Flight for them
         '''
+        from .classes.flight import Flight
         for _ in range(flights_q):
-            base = random.choice(self.airports)
-            destination = random.choice(self.airports)
+            base = random.choice(self.structures.airports)
+            destination = random.choice(self.structures.airports)
             while base == destination:  
-                destination = random.choice(self.airports)
+                destination = random.choice(self.structures.airports)
             
             flight = Flight(base, destination, self)
             self.flights.append(flight)

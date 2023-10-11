@@ -1,10 +1,12 @@
-from src.solution import Solution
+from src.structures import Structures
 from src.evolutionary_algorithm import EvolutionaryAlgorithm
 import time
 
 def main():
     start_time = time.time()
-    evol_algo = EvolutionaryAlgorithm(50)
+    initial_structures = Structures()
+ 
+    evol_algo = EvolutionaryAlgorithm(initial_structures, 50)
     evol_algo.initialize_population_and_run_events()
     evol_algo.update_all_fitness_scores()
     evol_algo.print_revenue_and_costs()

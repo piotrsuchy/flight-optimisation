@@ -5,8 +5,7 @@ rest periods,
 flight duty period - pre-flight, post-flight etc.
 on-duty, on-call - how to calculate this work hours
 '''
-from .scheduler_singleton import scheduler_instance
-
+from src.solution import Solution
 
 MAX_DAILY_HOURS = 14
 MAX_WEEKLY_HOURS = 60
@@ -26,11 +25,16 @@ class Pilot:
         self.month_worked_hs = 0
         self.flights_taken = 0
         self.is_available = True
+        self.sol_id = None
 
 
     def __repr__(self):
         return f"Pilot ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}"
 
+
+    def set_sol_id(self, sol_id):
+        self.sol_id = sol_id
+    
 
     def is_eligible(self):
         return (self.is_available and 
@@ -51,6 +55,7 @@ class Pilot:
     def start_rest(self, hours):
         self.occupy()
         # Scheduling an event for the end of rest
+        scheduler_instance = Solution.get_scheduler_by_id(self.sol_id)
         scheduler_instance.schedule_event(hours, self.release)
 
 
@@ -73,6 +78,7 @@ class Pilot:
         self.flights_taken += 1
         self.occupy()
         # after a day decrement working hours 
+        scheduler_instance = Solution.get_scheduler_by_id(self.sol_id)
         scheduler_instance.schedule_event(24, self.decrement_hours, "day", duration)
         # after a week decrement working hours
         scheduler_instance.schedule_event(7*24, self.decrement_hours, "week", duration)
@@ -94,10 +100,15 @@ class FlightAttendant:
         self.rest_period = 0
         self.flights_taken = 0
         self.is_available = True
+        self.sol_id = None
 
 
     def __repr__(self):
         return f"Attendant ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}, status: {self.is_available}"
+
+
+    def set_sol_id(self, sol_id):
+        self.sol_id = sol_id
 
 
     def is_eligible(self):
@@ -119,6 +130,7 @@ class FlightAttendant:
     def start_rest(self, hours):
         self.occupy()
         # Scheduling an event for the end of rest
+        scheduler_instance = Solution.get_scheduler_by_id(self.sol_id)
         scheduler_instance.schedule_event(hours, self.release)
 
 
@@ -141,6 +153,7 @@ class FlightAttendant:
         self.flights_taken += 1
         self.occupy()
         # after a day decrement working hours 
+        scheduler_instance = Solution.get_scheduler_by_id(self.sol_id)
         scheduler_instance.schedule_event(24, self.decrement_hours, "day", duration)
         # after a week decrement working hours
         scheduler_instance.schedule_event(7*24, self.decrement_hours, "week", duration)

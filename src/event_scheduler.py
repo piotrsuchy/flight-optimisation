@@ -1,8 +1,7 @@
 import heapq
 from .event import Event
-from .classes.singleton import Singleton
 
-class EventScheduler(metaclass=Singleton):
+class EventScheduler():
     def __init__(self):
         # Initialize an empty priority queue
         self.events = []
