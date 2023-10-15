@@ -10,6 +10,7 @@ ATTENDANT_COST_PER_HOUR = 80
 FLIGHT_CANCELLATION_COST_PER_PERSON = TICKET_PRICE*1.5
 MAX_WEEKLY_HOURS = 60
 OVERWORK_PENALTY_PER_HOUR = PILOT_COST_PER_HOUR*2
+DEFAULT_PLANE_CAPACITY = 500
 
 class EvolutionaryAlgorithm:
     def __init__(self, initial_structures, population_size=100):
@@ -67,9 +68,16 @@ class EvolutionaryAlgorithm:
         # 3. Calculate Penalties
         for flight in sol.flights:
             if flight.status == "cancelled":
-                #TODO: fix hardcoding of 200 - it used to be filled_seats!
-                penalties += FLIGHT_CANCELLATION_COST_PER_PERSON * 200
-                break
+                from_airport_idx = flight.base_airport.id - 1
+                to_airport_idx = flight.destination_airport.id - 1
+                day_of_flight = flight.day  # Assuming the Flight class has a day attribute
+                demand = self.passenger_demand[from_airport_idx][to_airport_idx][day_of_flight]
+
+                # You can also add an upper limit based on a default plane capacity if required
+                filled_seats = min(demand, DEFAULT_PLANE_CAPACITY)
+
+                penalties += FLIGHT_CANCELLATION_COST_PER_PERSON * filled_seats
+
 
             try:
                 for pilot in flight.pilots:
@@ -83,6 +91,21 @@ class EvolutionaryAlgorithm:
                 print(f"In sol: {sol.id} in flight: {flight.id} pilots or attendants are None")
 
         return [revenue, operational_costs, penalties]
+
+
+    def roulette_selection(self):
+        '''This function orders the population by roulette selection'''
+        pass
+
+        
+    def tournament_selection(self):
+        '''This function orders the population by tournament selection'''
+        pass
+
+
+    def rank_selection(self):
+        '''This function orders the population by rank selection'''
+        pass
 
 
     def update_all_fitness_scores(self):

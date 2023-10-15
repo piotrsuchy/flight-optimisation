@@ -4,6 +4,8 @@ import logging
 
 from src.solution import Solution
 
+DAY_LENGTH = 24
+
 class Flight:
     _next_id = 1
 
@@ -53,7 +55,12 @@ class Flight:
         # print("Start flight is called")
         logging.info(f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")
 
-        #TODO: add checking for airports 
+        #TODO: add checking for airports
+
+
+        scheduler_instance = Solution.get_scheduler_by_id(self.sol.id)
+        current_time = scheduler_instance.current_simulation_time
+        self.day_of_flight = int(current_time // DAY_LENGTH)
 
         available_pilots = [pilot for pilot in self.base_airport.pilots if pilot.is_eligible()]
         if len(available_pilots) < 2:
@@ -84,7 +91,6 @@ class Flight:
         self.plane.flight_start(self.destination_airport)
         self.base_airport.airport_maintenance()
 
-        scheduler_instance = Solution.get_scheduler_by_id(self.sol.id)
         logging.info(f"At hour {scheduler_instance.current_simulation_time:.2f}: Scheduled flight: {self}")
         scheduler_instance.schedule_event(self.duration, self.end_flight)
 
