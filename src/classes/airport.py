@@ -7,7 +7,7 @@ can handle in any given time frame due to capacity
 import random
 from src.solution import Solution
 
-MAINTENANCE_TIME = 0.5
+MAINTENANCE_TIME = 0.5 
 
 class Airport:
     _next_id = 1
@@ -23,6 +23,7 @@ class Airport:
         self.attendants = []
         self.lanes = []
         self.sol_id = None
+        self.occupied = False
 
     def __repr__(self):
         return f"Airport ID: {self.id}, X: {self.x}, Y: {self.y}"
@@ -32,9 +33,6 @@ class Airport:
 
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
-
-    def is_available(self):
-        return self.occupied
 
     def show_fleet_and_crew(self):
         print(f"FOR AIRPORT ID: {self.id}:")

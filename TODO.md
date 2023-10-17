@@ -1,6 +1,5 @@
 # TODO
 
-- investigate why more flights are cancelled as the solutions are bigger
 - check airport availability before flight start - and after duration on the destination airport
 - add lanes to airport class - check availability of different starting lanes
 - fix hardcodings - marked by TODOs in code

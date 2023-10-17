@@ -22,10 +22,11 @@ class Flight:
         self.status = "started"
         self.day_of_flight = None
         self.sol = sol
+        self.delay = 0
 
 
     def __repr__(self):
-        return f"ID: {self.id}, from airport {self.base_airport.id} to airport {self.destination_airport.id}"
+        return f"ID: {self.id}, from airport {self.base_airport.id} to airport {self.destination_airport.id}, delay of the flight: {self.delay}"
 
 
     def calculate_distance(self):
@@ -55,11 +56,12 @@ class Flight:
         # print("Start flight is called")
         logging.info(f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")
 
-        #TODO: add checking for airports
-
+        # if the airport is not available - add a delay to the flight
+        if self.base_airport.occupied:
+            self.delay += 0.5
 
         scheduler_instance = Solution.get_scheduler_by_id(self.sol.id)
-        current_time = scheduler_instance.current_simulation_time
+        current_time = scheduler_instance.current_simulation_time + self.delay
         self.day_of_flight = int(current_time // DAY_LENGTH)
 
         available_pilots = [pilot for pilot in self.base_airport.pilots if pilot.is_eligible()]

@@ -41,6 +41,7 @@ class EvolutionaryAlgorithm:
         revenue = 0
         operational_costs = 0
         penalties = 0
+        delay_penalty = 0
         
         # 1. Calculate Revenue
         for flight in sol.flights:
@@ -67,6 +68,11 @@ class EvolutionaryAlgorithm:
             
         # 3. Calculate Penalties
         for flight in sol.flights:
+            if flight.delay != 0:
+                print(f"Sol: {flight.sol.id} Calculating extra penalties for the delay of flight {flight.id}, {flight.delay}h")
+                delay_penalty = flight.delay * 2 * PLANE_OPERATIONAL_COST_PER_HOUR
+                penalties += delay_penalty
+                
             if flight.status == "cancelled":
                 from_airport_idx = flight.base_airport.id - 1
                 to_airport_idx = flight.destination_airport.id - 1
@@ -77,7 +83,6 @@ class EvolutionaryAlgorithm:
                 filled_seats = min(demand, DEFAULT_PLANE_CAPACITY)
 
                 penalties += FLIGHT_CANCELLATION_COST_PER_PERSON * filled_seats
-
 
             try:
                 for pilot in flight.pilots:
@@ -90,7 +95,7 @@ class EvolutionaryAlgorithm:
             except TypeError:
                 print(f"In sol: {sol.id} in flight: {flight.id} pilots or attendants are None")
 
-        return [revenue, operational_costs, penalties]
+        return [revenue, operational_costs, penalties, delay_penalty]
 
 
     def roulette_selection(self):
@@ -114,11 +119,11 @@ class EvolutionaryAlgorithm:
         of all solutions in the population
         '''
         for sol_id, sol in enumerate(self.population):
-            revenue, operation_costs, penalties = self.fitness_function(sol[0])
-            self.population[sol_id][1] = [revenue, operation_costs, penalties]
+            revenue, operation_costs, penalties, delay_penalty = self.fitness_function(sol[0])
+            self.population[sol_id][1] = [revenue, operation_costs, penalties, delay_penalty]
             self.population[sol_id][0].fitness_score = revenue - operation_costs - penalties
 
             
     def print_revenue_and_costs(self):
         for sol in self.population:
-            print(f"Sol: {sol[0]}, rev: {sol[1][0]:.2e}, op_costs: {sol[1][1]:.2e}, penalties: {sol[1][2]:.2e}")
+            print(f"Sol: {sol[0]}, rev: {sol[1][0]:.2e}, op_costs: {sol[1][1]:.2e}, penalties: {sol[1][2]:.2e}, delay_penalties: {sol[1][2]:.2e}")
