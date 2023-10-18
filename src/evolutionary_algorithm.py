@@ -1,4 +1,6 @@
 import copy
+import random
+import numpy as np
 from .solution import Solution
 from .passenger_demand import generate_demand_array, visualize_demand
 
@@ -99,18 +101,52 @@ class EvolutionaryAlgorithm:
 
 
     def roulette_selection(self):
-        '''This function orders the population by roulette selection'''
-        pass
+        '''This function selects a solution using roulette wheel selection'''
+        total_fitness = sum(sol[0].fitness_score for sol in self.population)
+        selection_probabilities = [sol[0].fitness_score / total_fitness for sol in self.population]
+        selected_index = np.random.choice(len(self.population), p=selection_probabilities)
+        return self.population[selected_index]
 
-        
-    def tournament_selection(self):
-        '''This function orders the population by tournament selection'''
-        pass
+
+    def tournament_selection(self, tournament_size=5):
+        '''This function selects a solution using tournament selection'''
+        selected_tournament = random.sample(self.population, tournament_size)
+        best_in_tournament = max(selected_tournament, key=lambda sol: sol[0].fitness_score)
+        return best_in_tournament
 
 
     def rank_selection(self):
-        '''This function orders the population by rank selection'''
-        pass
+        '''This function selects a solution using rank selection'''
+        sorted_population = sorted(self.population, key=lambda sol: sol[0].fitness_score)
+        rank_sum = len(sorted_population) * (len(sorted_population) + 1) / 2
+        rank_probabilities = [(i + 1) / rank_sum for i in range(len(sorted_population))]
+        selected_index = np.random.choice(len(sorted_population), p=rank_probabilities)
+        return sorted_population[selected_index]
+
+
+    def roulette_sort(self):
+        '''This function sorts the population using repeated roulette wheel selection'''
+        sorted_population = []
+        while len(sorted_population) < len(self.population):
+            selected = self.roulette_selection()
+            sorted_population.append(selected)
+            self.population.remove(selected)
+        self.population = sorted_population
+
+
+    def tournament_sort(self, tournament_size=5):
+        '''This function sorts the population using repeated tournament selection'''
+        sorted_population = []
+        while len(sorted_population) < len(self.population):
+            best_in_tournament = self.tournament_selection(tournament_size)
+            sorted_population.append(best_in_tournament)
+            self.population.remove(best_in_tournament)
+        self.population = sorted_population
+
+
+    def rank_sort(self):
+        '''This function sorts the population using rank selection (simply by fitness value)'''
+        self.population = sorted(self.population, key=lambda sol: sol[0].fitness_score, reverse=True)
 
 
     def update_all_fitness_scores(self):
