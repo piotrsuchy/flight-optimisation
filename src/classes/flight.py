@@ -84,6 +84,10 @@ class Flight:
         self.plane = random.choice(available_planes)
         self.set_dist_and_dur()
 
+        demand = self.sol.passenger_demand[self.base_airport.id - 1][self.destination_airport.id - 1][self.day_of_flight]
+        self.passengers = min(demand, self.plane.capacity)
+        self.sol.passengers_taken += self.passengers
+
         for pilot in self.pilots:
             pilot.flight_start(self.duration, self.destination_airport)
         

@@ -7,7 +7,7 @@ def main():
     start_time = time.time()
     initial_structures = Structures()
  
-    evol_algo = EvolutionaryAlgorithm(initial_structures, 50)
+    evol_algo = EvolutionaryAlgorithm(initial_structures, 100)
     evol_algo.initialize_population_and_run_events()
     evol_algo.update_all_fitness_scores()
     evol_algo.print_revenue_and_costs()

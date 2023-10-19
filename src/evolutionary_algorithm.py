@@ -25,7 +25,7 @@ class EvolutionaryAlgorithm:
     def initialize_population_and_run_events(self):
         for sol_id in range(self.population_size):
             initial_structures = copy.deepcopy(self.initial_structures)
-            sol = Solution(sol_id+1, initial_structures, 720)
+            sol = Solution(sol_id+1, self.passenger_demand, initial_structures, 720)
             sol.set_sol_ids(sol_id+1)
             sol._schedule_flights(150)
             sol.run_events()
@@ -49,14 +49,8 @@ class EvolutionaryAlgorithm:
         for flight in sol.flights:
             if flight.status == "cancelled":
                 continue
-            from_airport_idx = flight.base_airport.id - 1
-            to_airport_idx = flight.destination_airport.id - 1
-            day_of_flight = flight.day  # Assuming the Flight class has a day attribute
-            demand = self.passenger_demand[from_airport_idx][to_airport_idx][day_of_flight]
             
-            # Calculate seats filled (minimum of demand and plane capacity)
-            filled_seats = min(demand, flight.plane.capacity)
-            revenue += filled_seats * TICKET_PRICE
+            revenue += flight.passengers * TICKET_PRICE
             
         # 2. Calculate Operational Costs
         for flight in sol.flights:

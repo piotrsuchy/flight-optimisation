@@ -10,18 +10,20 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 class Solution:
     schedulers = {}
 
-    def __init__(self, solution_id, initial_structures, simulation_hs):
+    def __init__(self, solution_id, passenger_demand, initial_structures, simulation_hs):
         self.id = solution_id
         self.scheduler = EventScheduler()
+        self.passenger_demand = passenger_demand
         Solution.schedulers[self.id] = self.scheduler
         self.structures = initial_structures
         self.simulation_hs = simulation_hs 
         self.flights = []
         self.cancelled_flights = []
         self.fitness_score = None
+        self.passengers_taken = 0
 
     def __str__(self):
-        return f"Sol ID: {self.id}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}, Fitness score: {self.fitness_score:.2e}"
+        return f"Sol ID: {self.id}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}, Fitness score: {self.fitness_score:.2e}, passengers taken: {self.passengers_taken}"
 
     @staticmethod
     def get_scheduler_by_id(sol_id):
