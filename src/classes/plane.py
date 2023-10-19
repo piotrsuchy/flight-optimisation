@@ -22,10 +22,8 @@ class Plane:
         self.is_available = True
         self.sol_id = sol_id
 
-
     def __repr__(self):
         return f"Plane ID: {self.id}, capacity: {self.capacity}, speed: {self.speed}, base: {self.base}"
-
 
     def __str__(self):
         return self.__repr__()
@@ -39,14 +37,11 @@ class Plane:
         destination.add_plane(self)
         self.base = destination
 
-
     def occupy(self):
         self.is_available = False
 
-
     def release(self):
         self.is_available = True
-
 
     def maintenance(self):
         self.occupy()
