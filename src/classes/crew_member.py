@@ -27,37 +27,29 @@ class Pilot:
         self.is_available = True
         self.sol_id = None
 
-
     def __repr__(self):
         return f"Pilot ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}"
-
 
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
     
-
     def is_eligible(self):
         return (self.is_available and 
                 self.day_worked_hs <= MAX_DAILY_HOURS and 
                 self.week_worked_hs <= MAX_WEEKLY_HOURS and 
                 self.month_worked_hs <= MAX_MONTHLY_HOURS)
 
-
     def occupy(self):
         self.is_available = False
 
-
     def release(self):
-        # print(f"Released at hour {scheduler_instance.current_simulation_time}")
         self.is_available = True
-
 
     def start_rest(self, hours):
         self.occupy()
         # Scheduling an event for the end of rest
         scheduler_instance = Solution.get_scheduler_by_id(self.sol_id)
         scheduler_instance.schedule_event(hours, self.release)
-
 
     def decrement_hours(self, time, duration):
         if time == "day":
@@ -66,7 +58,6 @@ class Pilot:
             self.week_worked_hs -= duration
         else:
             self.month_worked_hs -= duration
-
     
     def flight_start(self, duration, destination):
         self.current_base.remove_pilot(self)
@@ -123,7 +114,6 @@ class FlightAttendant:
 
 
     def release(self):
-        # print(f"Released at hour {scheduler_instance.current_simulation_time}")
         self.is_available = True
 
 

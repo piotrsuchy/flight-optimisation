@@ -64,12 +64,12 @@ class Flight:
         current_time = scheduler_instance.current_simulation_time + self.delay
         self.day_of_flight = int(current_time // DAY_LENGTH)
 
-        available_pilots = self.base_airport.get_available_pilots()
+        available_pilots = self.base_airport.get_eligible_pilots()
         if len(available_pilots) < 2:
             self.cancel_flight(self.sol, "pilots")
             return
 
-        available_attendants = self.base_airport.get_available_attendants()
+        available_attendants = self.base_airport.get_eligible_attendants()
         if len(available_attendants) < 4:
             self.cancel_flight(self.sol, "attendants")
             return

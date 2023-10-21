@@ -22,6 +22,7 @@ class Structures:
         for airport in self.airports:
             self._create_crew(airport, self.n_pilots_f_a, self.n_attendants_f_a)
             self._create_planes(airport, self.n_planes_f_a)
+            airport.availability_log.add_snapshot(0)
         logging.info(f"--------------------STRUCTURE GENERATION ENDED--------------------")
 
 

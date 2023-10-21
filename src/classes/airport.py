@@ -6,6 +6,7 @@ can handle in any given time frame due to capacity
 '''
 import random
 from src.solution import Solution
+from availability import AvailabilityLog
 
 MAINTENANCE_TIME = 0.5 
 
@@ -17,6 +18,7 @@ class Airport:
         self.y = y if y is not None else random.randint(0, 10000)
         self.id = Airport._next_id
         Airport._next_id += 1
+        self.availability_log = AvailabilityLog(self)
         self.free = True
         self.planes = []
         self.pilots = []
@@ -46,10 +48,10 @@ class Airport:
         for attendant in self.attendants:
             print(attendant)
 
-    def get_available_pilots(self):
+    def get_eligible_pilots(self):
         return [pilot for pilot in self.pilots if pilot.is_eligible()]
 
-    def get_available_attendants(self):
+    def get_eligible_attendants(self):
         return [attendant for attendant in self.attendants if attendant.is_eligible()]
 
     def get_available_planes(self):
