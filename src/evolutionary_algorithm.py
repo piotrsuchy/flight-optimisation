@@ -85,7 +85,7 @@ class EvolutionaryAlgorithm:
                     if pilot.week_worked_hs > MAX_WEEKLY_HOURS:
                         penalties += OVERWORK_PENALTY_PER_HOUR * (pilot.week_worked_hs - MAX_WEEKLY_HOURS)
             
-                for attendant in flight.crew:
+                for attendant in flight.attendants:
                     if attendant.week_worked_hs > MAX_WEEKLY_HOURS:
                         penalties += OVERWORK_PENALTY_PER_HOUR * (attendant.week_worked_hs - MAX_WEEKLY_HOURS)
             except TypeError:

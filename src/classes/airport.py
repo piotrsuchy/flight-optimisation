@@ -6,7 +6,7 @@ can handle in any given time frame due to capacity
 '''
 import random
 from src.solution import Solution
-from availability import AvailabilityLog
+from .availability import AvailabilityLog
 
 MAINTENANCE_TIME = 0.5 
 
@@ -55,7 +55,7 @@ class Airport:
         return [attendant for attendant in self.attendants if attendant.is_eligible()]
 
     def get_available_planes(self):
-        return [plane for plane in self.planes if plane.is_available()]
+        return [plane for plane in self.planes if plane.is_available]
 
     def release(self):
         self.occupied = False

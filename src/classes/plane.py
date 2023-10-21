@@ -47,3 +47,5 @@ class Plane:
         self.occupy()
         scheduler_instance = Solution.get_scheduler_by_id(self.sol_id)
         scheduler_instance.schedule_event(MAINTENANCE_TIME, self.release)
+        simulation_time = scheduler_instance.current_simulation_time + MAINTENANCE_TIME
+        scheduler_instance.schedule_event(MAINTENANCE_TIME, self.base.availability_log.plane_maintenance_snapshot(self, simulation_time))

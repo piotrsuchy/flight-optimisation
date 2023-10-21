@@ -1,5 +1,5 @@
-from crew_member import Pilot, FlightAttendant
-from plane import Plane
+from .crew_member import Pilot
+
 
 class Availability:
     '''
@@ -9,16 +9,23 @@ class Availability:
     Each instance of this class is tied to the airport and to the specific time in simulation
     '''
     def __init__(self, airport, simulation_time, available_pilots, available_attendants, available_planes):
+        self.airport = airport
         self.airport_id = airport.id
         self.simulation_time = simulation_time
-        self.pilots = available_pilots
-        self.attendants = available_attendants
-        self.planes = available_planes
+        self.pilots = set(available_pilots)
+        self.attendants = set(available_attendants)
+        self.planes = set(available_planes)
 
     def remove_flight(self, flight):
-        self.pilots |= flight.pilots
-        self.attendants |= flight.attendants
-        self.planes |= flight.plane
+        for pilot in flight.pilots:
+            self.pilots.remove(pilot)
+        for attendant in flight.attendants:
+            self.attendants.remove(attendant)
+        self.planes.remove(flight.plane)
+
+    def copy(self):
+        copy_of_instance = Availability(self.airport, self.simulation_time, self.pilots, self.attendants, self.planes)
+        return copy_of_instance
 
 class AvailabilityLog:
     '''
@@ -40,7 +47,7 @@ class AvailabilityLog:
         availability = Availability(self.airport, simulation_time, available_pilots, available_attendants, available_planes)
         self.log.append(availability)
 
-    def flight_start_snapshot(self, flight):
+    def flight_start_snapshot(self, flight, stimulation_time):
         '''
         Creates a new snapshot based on the last one and modifies it according to the flight parameters.
         '''
@@ -49,29 +56,36 @@ class AvailabilityLog:
 
         last_availability = self.log[-1]
         new_availability = last_availability.copy()
-        new_availability.simulation_time = flight.start_time # change the simulation time
+        new_availability.simulation_time = stimulation_time
 
         new_availability.remove_flight(flight)
 
         self.log.append(new_availability)
 
-    def handle_maintenance_or_rest_end(self, plane_or_person, event_time):
+    def rest_end_snapshot(self, person, simulation_time):
         '''
-        Adds a new snapshot after a plane's maintenance or a person's rest period ends.
+        Adds a new snapshot after a person's rest period ends.
         '''
         last_availability = self.log[-1]
         new_availability = last_availability.copy()
-        new_availability.simulation_time = event_time
+        new_availability.simulation_time = simulation_time
 
-        # Update availability of the plane or person
-        if isinstance(plane_or_person, Plane):
-            new_availability.planes.add(plane_or_person)
-        elif isinstance(plane_or_person, Pilot) or isinstance(plane_or_person, FlightAttendant):
-            if plane_or_person in new_availability.pilots:
-                new_availability.pilots.add(plane_or_person)
-            else:
-                new_availability.attendants.add(plane_or_person)
+        if isinstance(person, Pilot):
+            new_availability.pilots.add(person)
+        else:
+            new_availability.attendants.add(person)
 
+        self.log.append(new_availability)
+
+    def plane_maintenance_snapshot(self, plane, simulation_time):
+        '''
+        Adds a new snapshot after plane maintenance period ends.
+        '''
+        last_availability = self.log[-1]
+        new_availability = last_availability.copy()
+        new_availability.simulation_time = simulation_time
+
+        new_availability.planes.add(plane)
         self.log.append(new_availability)
         
     def get_availability(self, simulation_time):

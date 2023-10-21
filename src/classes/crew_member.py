@@ -50,6 +50,8 @@ class Pilot:
         # Scheduling an event for the end of rest
         scheduler_instance = Solution.get_scheduler_by_id(self.sol_id)
         scheduler_instance.schedule_event(hours, self.release)
+        simulation_time_after_rest = scheduler_instance.current_simulation_time + hours
+        scheduler_instance.schedule_event(hours, self.current_base.availability_log.rest_end_snapshot, self, simulation_time_after_rest)
 
     def decrement_hours(self, time, duration):
         if time == "day":
@@ -122,6 +124,8 @@ class FlightAttendant:
         # Scheduling an event for the end of rest
         scheduler_instance = Solution.get_scheduler_by_id(self.sol_id)
         scheduler_instance.schedule_event(hours, self.release)
+        simulation_time_after_rest = scheduler_instance.current_simulation_time + hours
+        scheduler_instance.schedule_event(hours, self.current_base.availability_log.rest_end_snapshot, self, simulation_time_after_rest)
 
 
     def decrement_hours(self, time, duration):

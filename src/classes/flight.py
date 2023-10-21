@@ -16,7 +16,7 @@ class Flight:
         self.destination_airport = destination_airport
         self.plane = None
         self.pilots = None
-        self.crew = None
+        self.attendants = None
         self.distance = None
         self.duration = None
         self.status = "started"
@@ -82,7 +82,7 @@ class Flight:
             return
         
         self.pilots = random.sample(available_pilots, 2)
-        self.crew = random.sample(available_attendants, 4)
+        self.attendants = random.sample(available_attendants, 4)
         self.plane = random.choice(available_planes)
         self.set_dist_and_dur()
 
@@ -93,12 +93,13 @@ class Flight:
         for pilot in self.pilots:
             pilot.flight_start(self.duration, self.destination_airport)
         
-        for attendant in self.crew:
+        for attendant in self.attendants:
             attendant.flight_start(self.duration, self.destination_airport)
 
         self.plane.flight_start(self.destination_airport)
         self.base_airport.airport_maintenance()
 
+        self.base_airport.availability_log.flight_start_snapshot(self, current_time)
         logging.info(f"At hour {scheduler_instance.current_simulation_time:.2f}: Scheduled flight: {self}")
         scheduler_instance.schedule_event(self.duration, self.end_flight)
 
@@ -108,7 +109,7 @@ class Flight:
         self.plane.maintenance()
         for pilot in self.pilots:
             pilot.start_rest(min(12, self.duration))
-        for attendant in self.crew:
+        for attendant in self.attendants:
             attendant.start_rest(min(12, self.duration))
         self.destination_airport.airport_maintenance()
 
