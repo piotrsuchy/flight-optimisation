@@ -1,13 +1,24 @@
+import argparse
+import logging
 from src.structures import Structures
 from src.evolutionary_algorithm import EvolutionaryAlgorithm
 import time
 from copy import deepcopy
 
 def main():
+    parser = argparse.ArgumentParser(description='Run the evolutionary algorithm.')
+    parser.add_argument('--log', action='store_true', help='enable logging')
+    args = parser.parse_args()
+    
+    if args.log:
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    else:
+        logging.basicConfig(level=logging.CRITICAL)  
+        
     start_time = time.time()
     initial_structures = Structures()
  
-    evol_algo = EvolutionaryAlgorithm(initial_structures, 100)
+    evol_algo = EvolutionaryAlgorithm(initial_structures, 50)
     evol_algo.initialize_population_and_run_events()
     evol_algo.update_all_fitness_scores()
     evol_algo.print_revenue_and_costs()
@@ -42,27 +53,22 @@ def main():
     test_availability(evol_algo)
     end_time = time.time()
     print(f"Duration of testing availability is {end_time - start_time}")
-    # demand_matrix = generate_demand_array(sim.airports)
-    # visualize_demand_for_day(demand_matrix, sim.airports, day=3)
+
 
 def test_availability(evol_algo):
-    # Get the first airport from the simulation
-    first_airport = evol_algo.initial_structures.airports[0]
-    
-    # Get the availability log for the first airport
+    print(f"Checking the availability_log object for airport 1:")
+    sol_1 = evol_algo.population[0][0]
+    first_airport = sol_1.structures.airports[0]
     availability_log = first_airport.availability_log
-    
-    # Define the simulation times you want to test
-    simulation_times = [0, 100, 200, 300, 400]
-    
-    # Print availability at each simulation time
+
+    simulation_times = [0, 100, 700]
     for sim_time in simulation_times:
         try:
             availability = availability_log.get_availability(sim_time)
             print(f"Availability at simulation time {sim_time}:")
-            print(f"  Pilots: {availability.pilots}")
-            print(f"  Attendants: {availability.attendants}")
-            print(f"  Planes: {availability.planes}")
+            print(f"  Pilots: {len(availability.pilots)}")
+            print(f"  Attendants: {len(availability.attendants)}")
+            print(f"  Planes: {len(availability.planes)}")
         except ValueError as e:
             print(f"Error at simulation time {sim_time}: {e}")
     

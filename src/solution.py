@@ -3,10 +3,6 @@ import logging
 
 from .event_scheduler import EventScheduler
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-# logging.disable(logging.CRITICAL)
-
-
 class Solution:
     schedulers = {}
 

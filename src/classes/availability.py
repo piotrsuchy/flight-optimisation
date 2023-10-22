@@ -16,6 +16,9 @@ class Availability:
         self.attendants = set(available_attendants)
         self.planes = set(available_planes)
 
+    def __str__(self):
+        return f"airport_id: {self.airport_id}, pilots: {self.pilots}, attendants: {self.attendants}"
+
     def remove_flight(self, flight):
         for pilot in flight.pilots:
             self.pilots.remove(pilot)
@@ -51,6 +54,7 @@ class AvailabilityLog:
         '''
         Creates a new snapshot based on the last one and modifies it according to the flight parameters.
         '''
+        # print("FLIGHT START SNAPSHOT CREATED")
         if not self.log:
             self.add_snapshot(flight.start_time) 
 
@@ -66,14 +70,17 @@ class AvailabilityLog:
         '''
         Adds a new snapshot after a person's rest period ends.
         '''
+        # print("REST END SNAPSHOT CREATED")
         last_availability = self.log[-1]
         new_availability = last_availability.copy()
         new_availability.simulation_time = simulation_time
+        # print(f"New availability: {new_availability}")
 
         if isinstance(person, Pilot):
             new_availability.pilots.add(person)
         else:
             new_availability.attendants.add(person)
+        # print(f"To compare with new availability after modifications: {new_availability}")
 
         self.log.append(new_availability)
 
