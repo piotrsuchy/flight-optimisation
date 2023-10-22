@@ -5,19 +5,22 @@ from src.evolutionary_algorithm import EvolutionaryAlgorithm
 import time
 from copy import deepcopy
 
+
 def main():
-    parser = argparse.ArgumentParser(description='Run the evolutionary algorithm.')
+    parser = argparse.ArgumentParser(
+        description='Run the evolutionary algorithm.')
     parser.add_argument('--log', action='store_true', help='enable logging')
     args = parser.parse_args()
-    
+
     if args.log:
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        logging.basicConfig(level=logging.INFO,
+                            format='%(asctime)s - %(levelname)s - %(message)s')
     else:
-        logging.basicConfig(level=logging.CRITICAL)  
-        
+        logging.basicConfig(level=logging.CRITICAL)
+
     start_time = time.time()
     initial_structures = Structures()
- 
+
     evol_algo = EvolutionaryAlgorithm(initial_structures, 50)
     evol_algo.initialize_population_and_run_events()
     evol_algo.update_all_fitness_scores()
@@ -28,7 +31,8 @@ def main():
     print("\nSorted Population using Roulette Selection:")
     evol_algo.roulette_sort()
     for individual in evol_algo.population:
-        print(f"Individual: {individual[1]}, Fitness Score: {individual[0].fitness_score}")
+        print(
+            f"Individual: {individual[1]}, Fitness Score: {individual[0].fitness_score}")
 
     evol_algo.population = initial_population
 
@@ -36,7 +40,8 @@ def main():
     print("\nSorted Population using Tournament Selection:")
     evol_algo.tournament_sort()
     for individual in evol_algo.population:
-        print(f"Individual: {individual[1]}, Fitness Score: {individual[0].fitness_score}")
+        print(
+            f"Individual: {individual[1]}, Fitness Score: {individual[0].fitness_score}")
 
     evol_algo.population = initial_population
 
@@ -44,7 +49,8 @@ def main():
     print("\nSorted Population using Rank Selection:")
     evol_algo.rank_sort()
     for individual in evol_algo.population:
-        print(f"Individual: {individual[1]}, Fitness Score: {individual[0].fitness_score}")
+        print(
+            f"Individual: {individual[1]}, Fitness Score: {individual[0].fitness_score}")
 
     end_time = time.time()
     print(f"Duration: {end_time - start_time}")
@@ -71,6 +77,7 @@ def test_availability(evol_algo):
             print(f"  Planes: {len(availability.planes)}")
         except ValueError as e:
             print(f"Error at simulation time {sim_time}: {e}")
-    
+
+
 if __name__ == "__main__":
     main()

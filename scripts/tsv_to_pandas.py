@@ -6,7 +6,8 @@ csv_file_path = './data/avia_pana_filtered.csv'
 df = pd.read_csv(file_path, sep='\t')
 
 # split the first column into multiple columns
-df[['unit', 'tra_meas', 'rep_airp_time']] = df[df.columns[0]].str.split(',', expand=True)
+df[['unit', 'tra_meas', 'rep_airp_time']
+   ] = df[df.columns[0]].str.split(',', expand=True)
 
 # delete the original column
 df = df.drop(df.columns[0], axis=1)
