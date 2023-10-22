@@ -6,6 +6,7 @@ from src.solution import Solution
 
 DAY_LENGTH = 24
 
+
 class Flight:
     _next_id = 1
 
@@ -24,24 +25,19 @@ class Flight:
         self.sol = sol
         self.delay = 0
 
-
     def __repr__(self):
         return f"ID: {self.id}, from airport {self.base_airport.id} to airport {self.destination_airport.id}, delay of the flight: {self.delay}"
-
 
     def calculate_distance(self):
         return math.sqrt((self.base_airport.x - self.destination_airport.x)**2 +
                          (self.base_airport.y - self.destination_airport.y)**2)
 
-
     def calculate_duration(self):
         return self.distance / self.plane.speed
-
 
     def set_dist_and_dur(self):
         self.distance = self.calculate_distance()
         self.duration = self.calculate_duration()
-
 
     def start_flight(self):
         '''
@@ -54,7 +50,8 @@ class Flight:
         To change: 2 and 4 harcoded as the number of needed pilots and attendants respectively
         '''
         # print("Start flight is called")
-        logging.info(f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")
+        logging.info(
+            f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")
 
         # if the airport is not available - add a delay to the flight
         if self.base_airport.occupied:
@@ -75,34 +72,37 @@ class Flight:
             return
 
         available_planes = self.base_airport.get_available_planes()
-        
-        available_planes = [plane for plane in self.base_airport.planes if plane.is_available]
+
+        available_planes = [
+            plane for plane in self.base_airport.planes if plane.is_available]
         if not available_planes:
             self.cancel_flight(self.sol, "plane")
             return
-        
+
         self.pilots = random.sample(available_pilots, 2)
         self.attendants = random.sample(available_attendants, 4)
         self.plane = random.choice(available_planes)
         self.set_dist_and_dur()
 
-        demand = self.sol.passenger_demand[self.base_airport.id - 1][self.destination_airport.id - 1][self.day_of_flight - 1]
+        demand = self.sol.passenger_demand[self.base_airport.id -
+                                           1][self.destination_airport.id - 1][self.day_of_flight - 1]
         self.passengers = min(demand, self.plane.capacity)
         self.sol.passengers_taken += self.passengers
 
         for pilot in self.pilots:
             pilot.flight_start(self.duration, self.destination_airport)
-        
+
         for attendant in self.attendants:
             attendant.flight_start(self.duration, self.destination_airport)
 
         self.plane.flight_start(self.destination_airport)
         self.base_airport.airport_maintenance()
 
-        self.base_airport.availability_log.flight_start_snapshot(self, current_time)
-        logging.info(f"At hour {scheduler_instance.current_simulation_time:.2f}: Scheduled flight: {self}")
+        self.base_airport.availability_log.flight_start_snapshot(
+            self, current_time)
+        logging.info(
+            f"At hour {scheduler_instance.current_simulation_time:.2f}: Scheduled flight: {self}")
         scheduler_instance.schedule_event(self.duration, self.end_flight)
-
 
     def end_flight(self):
         self.status = "completed"
@@ -113,15 +113,18 @@ class Flight:
             attendant.start_rest(min(12, self.duration))
         self.destination_airport.airport_maintenance()
 
-
     def cancel_flight(self, sol, reason):
         self.status = "cancelled"
         sol.cancelled_flights.append(self)
         if reason == "pilots":
-            logging.warning(f"Flight {self.id}: Not enough available pilots at airport {self.base_airport.id}, flight cancelled.")
+            logging.warning(
+                f"Flight {self.id}: Not enough available pilots at airport {self.base_airport.id}, flight cancelled.")
         elif reason == "attendants":
-            logging.warning(f"Flight {self.id}: Not enough available attendants at airport {self.base_airport.id}, flight cancelled.")
+            logging.warning(
+                f"Flight {self.id}: Not enough available attendants at airport {self.base_airport.id}, flight cancelled.")
         elif reason == "planes":
-            logging.warning(f"Flight {self.id}: Not enough available planes at airport {self.base_airport.id}, flight cancelled.")
+            logging.warning(
+                f"Flight {self.id}: Not enough available planes at airport {self.base_airport.id}, flight cancelled.")
         else:
-            logging.warning(f"Flights {self.id}: Flight cancelled, reason unspecified.")
+            logging.warning(
+                f"Flights {self.id}: Flight cancelled, reason unspecified.")

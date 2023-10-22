@@ -46,7 +46,8 @@ class DataGeneration:
         self._generate_passengers_demand()
 
     def _create_airports_list(self):
-        self.airports_list = [f"Airport_{i}" for i in range(self.num_of_airports)]
+        self.airports_list = [
+            f"Airport_{i}" for i in range(self.num_of_airports)]
 
     def _generate_distance_matrix(self):
         # Generate random coordinates for each airport on a 100x100 grid

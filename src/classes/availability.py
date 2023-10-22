@@ -8,6 +8,7 @@ class Availability:
     to check the availability of the resources when mutating / crossing
     Each instance of this class is tied to the airport and to the specific time in simulation
     '''
+
     def __init__(self, airport, simulation_time, available_pilots, available_attendants, available_planes):
         self.airport = airport
         self.airport_id = airport.id
@@ -27,14 +28,17 @@ class Availability:
         self.planes.remove(flight.plane)
 
     def copy(self):
-        copy_of_instance = Availability(self.airport, self.simulation_time, self.pilots, self.attendants, self.planes)
+        copy_of_instance = Availability(
+            self.airport, self.simulation_time, self.pilots, self.attendants, self.planes)
         return copy_of_instance
+
 
 class AvailabilityLog:
     '''
     Class that stores instances of Availability class for a given Airport.
     This acts as a log to keep track of the availability of resources at the airport over time.
     '''
+
     def __init__(self, airport):
         self.airport = airport
         self.log = []
@@ -47,7 +51,8 @@ class AvailabilityLog:
         available_pilots = self.airport.get_eligible_pilots()
         available_attendants = self.airport.get_eligible_attendants()
         available_planes = self.airport.get_available_planes()
-        availability = Availability(self.airport, simulation_time, available_pilots, available_attendants, available_planes)
+        availability = Availability(
+            self.airport, simulation_time, available_pilots, available_attendants, available_planes)
         self.log.append(availability)
 
     def flight_start_snapshot(self, flight, stimulation_time):
@@ -56,7 +61,7 @@ class AvailabilityLog:
         '''
         # print("FLIGHT START SNAPSHOT CREATED")
         if not self.log:
-            self.add_snapshot(flight.start_time) 
+            self.add_snapshot(flight.start_time)
 
         last_availability = self.log[-1]
         new_availability = last_availability.copy()
@@ -94,7 +99,7 @@ class AvailabilityLog:
 
         new_availability.planes.add(plane)
         self.log.append(new_availability)
-        
+
     def get_availability(self, simulation_time):
         '''
         Returns the availability at the given simulation time. 
@@ -102,7 +107,7 @@ class AvailabilityLog:
         '''
         if not self.log:
             raise ValueError("No availability snapshot available!")
-        
+
         # Sort the log based on simulation time:
         self.log.sort(key=lambda availability: availability.simulation_time)
 

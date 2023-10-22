@@ -3,6 +3,7 @@ import logging
 
 from .event_scheduler import EventScheduler
 
+
 class Solution:
     schedulers = {}
 
@@ -12,7 +13,7 @@ class Solution:
         self.passenger_demand = passenger_demand
         Solution.schedulers[self.id] = self.scheduler
         self.structures = initial_structures
-        self.simulation_hs = simulation_hs 
+        self.simulation_hs = simulation_hs
         self.flights = []
         self.cancelled_flights = []
         self.fitness_score = None
@@ -46,17 +47,19 @@ class Solution:
         for _ in range(flights_q):
             base = random.choice(self.structures.airports)
             destination = random.choice(self.structures.airports)
-            while base == destination:  
+            while base == destination:
                 destination = random.choice(self.structures.airports)
-            
+
             flight = Flight(base, destination, self)
             self.flights.append(flight)
-            
+
             # Start the flight after a random delay
-            delay = random.uniform(0, self.simulation_hs)  # Delay between 0.1 to 1 hour
+            # Delay between 0.1 to 1 hour
+            delay = random.uniform(0, self.simulation_hs)
             flight.day = int(delay / 24)
             self.scheduler.schedule_event(delay, flight.start_flight)
-            logging.info(f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {delay:.2f} of the simulation.")
+            logging.info(
+                f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {delay:.2f} of the simulation.")
 
     def get_cancelled_flights_num(self):
         return len(self.cancelled_flights)
@@ -66,4 +69,3 @@ class Solution:
         This function runs all the events for a specific solution using a scheduler instance
         '''
         self.scheduler.run_until_no_events()
-

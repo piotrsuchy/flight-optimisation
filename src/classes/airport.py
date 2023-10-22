@@ -8,7 +8,8 @@ import random
 from src.solution import Solution
 from .availability import AvailabilityLog
 
-MAINTENANCE_TIME = 0.5 
+MAINTENANCE_TIME = 0.5
+
 
 class Airport:
     _next_id = 1
@@ -92,4 +93,5 @@ class Airport:
         try:
             self.attendants.remove(attendant)
         except ValueError:
-            print(f"Error in function remove_attendant() for airport {self.id}")
+            print(
+                f"Error in function remove_attendant() for airport {self.id}")

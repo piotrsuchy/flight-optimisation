@@ -1,11 +1,12 @@
 import heapq
 from .event import Event
 
+
 class EventScheduler():
     def __init__(self):
         # Initialize an empty priority queue
         self.events = []
-        self.current_simulation_time = 0 
+        self.current_simulation_time = 0
 
     def schedule_event(self, delay, function, *args):
         """Add an event to the queue."""
@@ -19,9 +20,11 @@ class EventScheduler():
         """Process the next event"""
         try:
             if self.events:  # if there are events to process
-                next_event = heapq.heappop(self.events)  # Get the event with the smallest time
+                # Get the event with the smallest time
+                next_event = heapq.heappop(self.events)
                 self.current_simulation_time = next_event.time
-                next_event.function(*next_event.args)  # Call the event's function with its arguments
+                # Call the event's function with its arguments
+                next_event.function(*next_event.args)
         except TypeError:
             print(f"The function: {next_event.function} had a type error")
 
