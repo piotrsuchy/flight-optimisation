@@ -79,6 +79,7 @@ class EvolutionaryAlgorithm:
                 filled_seats = min(demand, DEFAULT_PLANE_CAPACITY)
 
                 penalties += FLIGHT_CANCELLATION_COST_PER_PERSON * filled_seats
+                continue
 
             try:
                 for pilot in flight.pilots:

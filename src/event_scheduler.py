@@ -9,16 +9,21 @@ class EventScheduler():
 
     def schedule_event(self, delay, function, *args):
         """Add an event to the queue."""
+        if function is None:
+            print("Function is None!")
         event_time = self.current_simulation_time + delay
         event = Event(event_time, function, *args)
         heapq.heappush(self.events, event)
 
     def process_next_event(self):
         """Process the next event"""
-        if self.events:  # if there are events to process
-            next_event = heapq.heappop(self.events)  # Get the event with the smallest time
-            self.current_simulation_time = next_event.time
-            next_event.function(*next_event.args)  # Call the event's function with its arguments
+        try:
+            if self.events:  # if there are events to process
+                next_event = heapq.heappop(self.events)  # Get the event with the smallest time
+                self.current_simulation_time = next_event.time
+                next_event.function(*next_event.args)  # Call the event's function with its arguments
+        except TypeError:
+            print(f"The function: {next_event.function} had a type error")
 
     def has_events(self):
         """Check if there are more events to process."""

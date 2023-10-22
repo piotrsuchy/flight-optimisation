@@ -37,9 +37,34 @@ def main():
 
     end_time = time.time()
     print(f"Duration: {end_time - start_time}")
+
+    start_time = time.time()
+    test_availability(evol_algo)
+    end_time = time.time()
+    print(f"Duration of testing availability is {end_time - start_time}")
     # demand_matrix = generate_demand_array(sim.airports)
     # visualize_demand_for_day(demand_matrix, sim.airports, day=3)
 
+def test_availability(evol_algo):
+    # Get the first airport from the simulation
+    first_airport = evol_algo.initial_structures.airports[0]
+    
+    # Get the availability log for the first airport
+    availability_log = first_airport.availability_log
+    
+    # Define the simulation times you want to test
+    simulation_times = [0, 100, 200, 300, 400]
+    
+    # Print availability at each simulation time
+    for sim_time in simulation_times:
+        try:
+            availability = availability_log.get_availability(sim_time)
+            print(f"Availability at simulation time {sim_time}:")
+            print(f"  Pilots: {availability.pilots}")
+            print(f"  Attendants: {availability.attendants}")
+            print(f"  Planes: {availability.planes}")
+        except ValueError as e:
+            print(f"Error at simulation time {sim_time}: {e}")
     
 if __name__ == "__main__":
     main()
