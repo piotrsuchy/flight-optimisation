@@ -15,6 +15,7 @@ class Flight:
         Flight._next_id += 1
         self.base_airport = base_airport
         self.destination_airport = destination_airport
+        self.simulation_time = None
         self.plane = None
         self.pilots = None
         self.attendants = None
@@ -59,6 +60,7 @@ class Flight:
 
         scheduler_instance = Solution.get_scheduler_by_id(self.sol.id)
         current_time = scheduler_instance.current_simulation_time + self.delay
+        self.simulation_time = current_time
         self.day_of_flight = int(current_time // DAY_LENGTH)
 
         available_pilots = self.base_airport.get_eligible_pilots()

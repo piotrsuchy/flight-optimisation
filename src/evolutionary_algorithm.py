@@ -3,6 +3,8 @@ import random
 import numpy as np
 from .solution import Solution
 from .passenger_demand import generate_demand_array, visualize_demand
+from .utils.mutation import fix_pilot_after_mutation
+from .decorators import timing_decorator
 
 # parameters
 TICKET_PRICE = 1000
@@ -16,6 +18,7 @@ DEFAULT_PLANE_CAPACITY = 500
 
 
 class EvolutionaryAlgorithm:
+    @timing_decorator
     def __init__(self, initial_structures, population_size=100):
         self.population_size = population_size
         self.population = []
@@ -23,6 +26,7 @@ class EvolutionaryAlgorithm:
         self.passenger_demand = generate_demand_array(
             self.initial_structures.airports, 30)
 
+    @timing_decorator
     def initialize_population_and_run_events(self):
         for sol_id in range(self.population_size):
             initial_structures = copy.deepcopy(self.initial_structures)
@@ -34,6 +38,7 @@ class EvolutionaryAlgorithm:
             # population is a list of [sol, [revenue, op_costs, penalties]]
             self.population.append([sol, -1])
 
+    @timing_decorator
     def fitness_function(self, sol):
         '''
         This function calculates revenue, operational costs and penalties of a single solution
@@ -111,7 +116,10 @@ class EvolutionaryAlgorithm:
 
     def tournament_selection(self, tournament_size=5):
         '''This function selects a solution using tournament selection'''
-        selected_tournament = random.sample(self.population, tournament_size)
+        if len(self.population) <= tournament_size:
+            selected_tournament = self.population
+        else:
+            selected_tournament = random.sample(self.population, tournament_size)
         best_in_tournament = max(
             selected_tournament, key=lambda sol: sol[0].fitness_score)
         return best_in_tournament
@@ -123,33 +131,40 @@ class EvolutionaryAlgorithm:
         rank_sum = len(sorted_population) * (len(sorted_population) + 1) / 2
         rank_probabilities = [
             (i + 1) / rank_sum for i in range(len(sorted_population))]
-        selected_index = np.random.choice(
-            len(sorted_population), p=rank_probabilities)
+        selected_index = np.random.choice(len(sorted_population), p=rank_probabilities)
         return sorted_population[selected_index]
 
+    @timing_decorator
     def roulette_sort(self):
         '''This function sorts the population using repeated roulette wheel selection'''
         sorted_population = []
-        while len(sorted_population) < len(self.population):
+        while len(sorted_population) < self.population_size - 1:
             selected = self.roulette_selection()
             sorted_population.append(selected)
             self.population.remove(selected)
         self.population = sorted_population
 
+    @timing_decorator
     def tournament_sort(self, tournament_size=5):
         '''This function sorts the population using repeated tournament selection'''
         sorted_population = []
-        while len(sorted_population) < len(self.population):
+        while len(sorted_population) < self.population_size - 1:
             best_in_tournament = self.tournament_selection(tournament_size)
             sorted_population.append(best_in_tournament)
             self.population.remove(best_in_tournament)
         self.population = sorted_population
 
+    @timing_decorator
     def rank_sort(self):
         '''This function sorts the population using rank selection (simply by fitness value)'''
-        self.population = sorted(
-            self.population, key=lambda sol: sol[0].fitness_score, reverse=True)
+        sorted_population = []
+        while len(sorted_population) < self.population_size - 1:
+            selected = self.rank_selection()
+            sorted_population.append(selected)
+            self.population.remove(selected)
+        self.population = sorted_population
 
+    @timing_decorator
     def update_all_fitness_scores(self):
         '''
         This function uses the fitness_function() method to calculate the fitness score
@@ -163,7 +178,46 @@ class EvolutionaryAlgorithm:
             self.population[sol_id][0].fitness_score = revenue - \
                 operation_costs - penalties
 
+    @timing_decorator
     def print_revenue_and_costs(self):
         for sol in self.population:
             print(
                 f"Sol: {sol[0]}, rev: {sol[1][0]:.2e}, op_costs: {sol[1][1]:.2e}, penalties: {sol[1][2]:.2e}, delay_penalties: {sol[1][2]:.2e}")
+
+    def mutation_pilots(self):
+        '''Make a random flight change the pilot / or pilots'''
+        random_sol = random.choice(self.population)
+        random_flight = random.choice(random_sol.flights)
+        old_pilots = random_flight.pilots
+        base_airport = random_flight.base_airport
+        log = base_airport.availability_log
+        availability = log.get_availability[random_flight.simulation_time]
+        new_pilots = random.choice(availability.pilots)
+        random_flight.pilots = new_pilots
+        # this function makes the old pilots be unchosen, and new pilots chosen
+        fix_pilot_after_mutation(old_pilots, new_pilots)
+        pass
+
+    def mutation_attendants(self):
+        '''Make a random flight change the x people from crew'''
+        pass
+
+    def mutation_planes(self):
+        '''Make a random flight use a different plane'''
+        pass
+
+    def mutation_airports(self):
+        '''Make a random flight change destination to a random airport'''
+        pass
+
+    def mutation_flight_time(self):
+        '''Make a random flight fly x days earlier or later'''
+        pass
+
+    def crossover_flights(self):
+        '''Take two solutions and swap half of their scheduled flights'''
+        pass
+
+    # def crossover_airports(self):
+        # '''Take two solutions and '''
+        # pass
