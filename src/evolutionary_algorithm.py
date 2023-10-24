@@ -27,16 +27,25 @@ class EvolutionaryAlgorithm:
             self.initial_structures.airports, 30)
 
     @timing_decorator
-    def initialize_population_and_run_events(self):
+    def initialize_population(self):
         for sol_id in range(self.population_size):
             initial_structures = copy.deepcopy(self.initial_structures)
             sol = Solution(sol_id+1, self.passenger_demand,
                            initial_structures, 720)
             sol.set_sol_ids(sol_id+1)
             sol._schedule_flights(150)
-            sol.run_events()
             # population is a list of [sol, [revenue, op_costs, penalties]]
             self.population.append([sol, -1])
+
+    @timing_decorator
+    def save_events_for_all_sols(self):
+        for sol_list in self.population:
+            sol_list[0].get_scheduler_events()
+
+    @timing_decorator
+    def run_events(self):
+        for sol_list in self.population:
+            sol_list[0].run_events()
 
     @timing_decorator
     def fitness_function(self, sol):

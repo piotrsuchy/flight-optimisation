@@ -8,6 +8,9 @@ class EventScheduler():
         self.events = []
         self.current_simulation_time = 0
 
+    def get_events(self):
+        return self.events 
+
     def schedule_event(self, delay, function, *args):
         """Add an event to the queue."""
         if function is None:
@@ -19,7 +22,7 @@ class EventScheduler():
     def process_next_event(self):
         """Process the next event"""
         try:
-            if self.events:  # if there are events to process
+            if self.has_events:  # if there are events to process
                 # Get the event with the smallest time
                 next_event = heapq.heappop(self.events)
                 self.current_simulation_time = next_event.time

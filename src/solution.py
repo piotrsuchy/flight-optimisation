@@ -18,6 +18,7 @@ class Solution:
         self.cancelled_flights = []
         self.fitness_score = None
         self.passengers_taken = 0
+        self.events = None
 
     def __str__(self):
         return f"Sol ID: {self.id}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}, Fitness score: {self.fitness_score:.2e}, passengers taken: {self.passengers_taken}"
@@ -25,6 +26,10 @@ class Solution:
     @staticmethod
     def get_scheduler_by_id(sol_id):
         return Solution.schedulers.get(sol_id)
+
+    def get_scheduler_events(self):
+        self.all_events = self.scheduler.get_events()
+        return self.all_events
 
     def set_sol_ids(self, sol_id):
         for airport in self.structures.airports:
