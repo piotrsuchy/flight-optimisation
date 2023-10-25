@@ -6,3 +6,4 @@ __pycache__
 *.log
 log.txt
 count_lines.py
+mprofile*

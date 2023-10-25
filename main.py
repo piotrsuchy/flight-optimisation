@@ -5,10 +5,13 @@ from src.evolutionary_algorithm import EvolutionaryAlgorithm
 from src.decorators import timing_decorator
 from copy import deepcopy
 from debug.test_availability import test_availability
+from src.event_scheduler import EventScheduler
 from config import get_args
+# from memory_profiler import profile
 
 
 @timing_decorator
+# @profile
 def main():
     args = get_args()
 
@@ -19,9 +22,10 @@ def main():
         logging.basicConfig(level=logging.CRITICAL)
 
     initial_structures = Structures()
-    evol_algo = EvolutionaryAlgorithm(initial_structures, 500)
+    evol_algo = EvolutionaryAlgorithm(initial_structures, 100)
     evol_algo.initialize_population()
-    evol_algo.save_events_for_all_sols()
+    print(f"Printing events for sol")
+    print(evol_algo.save_events_for_sol_by_id(5))
     evol_algo.run_events()
     evol_algo.update_all_fitness_scores()
     evol_algo.print_revenue_and_costs()
@@ -38,6 +42,10 @@ def main():
         print(
             f"Individual: {individual[1]}, Fitness Score: {individual[0].fitness_score}")
 
+    print(f"Test running the 5th solution events again")
+    # print(events)
+    # test_instance = EventScheduler(events)
+    # test_instance.run_until_no_events()
     # evol_algo.population = initial_population1
 
     # Sort and print results for Tournament Selection

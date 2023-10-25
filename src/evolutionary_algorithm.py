@@ -43,6 +43,12 @@ class EvolutionaryAlgorithm:
             sol_list[0].get_scheduler_events()
 
     @timing_decorator
+    def save_events_for_sol_by_id(self, sol_id):
+        sol_list = self.population[sol_id]
+        print(f"sol_list {sol_list}")
+        sol_list[0].get_scheduler_events()
+
+    @timing_decorator
     def run_events(self):
         for sol_list in self.population:
             sol_list[0].run_events()
@@ -197,6 +203,7 @@ class EvolutionaryAlgorithm:
         '''Make a random flight change the pilot / or pilots'''
         random_sol = random.choice(self.population)
         random_flight = random.choice(random_sol.flights)
+        simulation_time = random_flight.simulation_time
         old_pilots = random_flight.pilots
         base_airport = random_flight.base_airport
         log = base_airport.availability_log
@@ -205,7 +212,7 @@ class EvolutionaryAlgorithm:
         random_flight.pilots = new_pilots
         # this function makes the old pilots be unchosen, and new pilots chosen
         fix_pilot_after_mutation(old_pilots, new_pilots)
-        pass
+        return simulation_time
 
     def mutation_attendants(self):
         '''Make a random flight change the x people from crew'''
@@ -227,6 +234,27 @@ class EvolutionaryAlgorithm:
         '''Take two solutions and swap half of their scheduled flights'''
         pass
 
-    # def crossover_airports(self):
-        # '''Take two solutions and '''
-        # pass
+    def mutate_solution(self, sol):
+        simulation_time = self.mutation_pilots(sol)
+        return sol, simulation_time
+
+    def generate_second_generation(self):
+        second_gen = []
+
+        for i in range(self.population_size):
+            mutated_sol, simulation_time = self.mutate_solution(copy.deepcopy(self.population[i][0]))
+            second_gen.append([mutated_sol, -1, simulation_time])
+        return second_gen
+
+    def run_second_generation_from_mutation_times(self, population):
+        for i in range(self.population_size):
+            sol = population[i][0]
+            mutation_time = population[i][2]
+            # ...
+
+    def calculate_and_print_fitness_function_for_second_generation(self, population):
+        for solution in population:
+            revenue, operational_costs, penalties, delay_penalty = self.fitness_function(solution[0])
+            print(f"Revenue {revenue}, operational_costs: {operational_costs}, penalties: {penalties}, delay_penalty: {delay_penalty}")
+            fitness_score = revenue - operational_costs - penalties - delay_penalty
+            print(f"Final fitness score: {fitness_score}")
