@@ -218,22 +218,6 @@ class EvolutionaryAlgorithm:
         '''Make a random flight change the x people from crew'''
         pass
 
-    def mutation_planes(self):
-        '''Make a random flight use a different plane'''
-        pass
-
-    def mutation_airports(self):
-        '''Make a random flight change destination to a random airport'''
-        pass
-
-    def mutation_flight_time(self):
-        '''Make a random flight fly x days earlier or later'''
-        pass
-
-    def crossover_flights(self):
-        '''Take two solutions and swap half of their scheduled flights'''
-        pass
-
     def mutate_solution(self, sol):
         simulation_time = self.mutation_pilots(sol)
         return sol, simulation_time

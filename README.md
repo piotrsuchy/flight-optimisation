@@ -1,5 +1,9 @@
 # Flight Optimisation
 
+## After a review by my thesis supervisor I have decided to focus on mostly one topic
+
+Crew management, crew assignment, taking into account a strict schedule that should not be changed.
+
 ## Classes and how they interact
 
 - **Airport** - id, coordinates, lists of crew and fleet available at the given airport
