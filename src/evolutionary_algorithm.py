@@ -3,7 +3,6 @@ import random
 import numpy as np
 from .solution import Solution
 from .passenger_demand import generate_demand_array, visualize_demand
-from .utils.mutation import fix_pilot_after_mutation
 from .decorators import timing_decorator
 
 # parameters
@@ -210,8 +209,6 @@ class EvolutionaryAlgorithm:
         availability = log.get_availability[random_flight.simulation_time]
         new_pilots = random.choice(availability.pilots)
         random_flight.pilots = new_pilots
-        # this function makes the old pilots be unchosen, and new pilots chosen
-        fix_pilot_after_mutation(old_pilots, new_pilots)
         return simulation_time
 
     def mutation_attendants(self):
