@@ -4,31 +4,26 @@
 
 Crew management, crew assignment, taking into account a strict schedule that should not be changed.
 
-## Classes and how they interact
+## Some abstract objects (classes) that I am using and what is their purpose
 
-- **Airport** - id, coordinates, lists of crew and fleet available at the given airport
-- **Plane** - id, base, capacity, pilots_needed, attendants_needed, speed
-- **Pilot** - id, base, cur_base, hours worked in a day, week and month, flights taken
-- **Attendant** - id, base, cur_base, hours worked in a day, week and month, flights taken
+1. **EvolutionaryAlgorithm** - the highest level class in the hierarchy. Serves as an interface through which the evolutionary algorithm's processes are called.
+2. **Solution** - has its own scheduler assigned.
+3. **Airport** - main building block of the structures. Strict and unchangeable for a simulation. Each solution at the beginning has the same airports, with the same pilots, planes and attendants. Has a structure called AvailabilityLog to log availability of different objects during the simulation.
+4. **Flight** - the main event that happens during the simulation. A number of flights are scheduled for each of the solutions in the algorithms' population. Each flight has following properties: base, destination, plane, pilots (2), attendants (4), status, day of flight etc. Flight is assigned to a solution.
+5. **AvailabilityLog** - connected to a given airport (and unique for each solution). Contains Availability objects which are snapshots of availibility of planes, pilots and attendants at a given airport at the time of some event of the simulation - e.g. a start of the flight or end of a rest period of a crew member.
 
-All classes also have methods and fields connected with maintenance, rest times, checking availability etc.
+## Mutations
 
-## Solution
+First mutation that is being implemented is a choice of a different available pilot or attendant of a random flight in a solution. This happens with a given probability of course.
+The trick with mutations in my implementation of the algorithm and simulation is the need for resimulation of the events after the mutation. Each event with a property simulation_time of the mutated flight should be resimulated - because the assignment of pilots and crew members (and planes as well) impacts the possibility of assignment in the future.
 
-1. Generate structures: Airports, Planes assigned to specific Airports, Pilots and Attendants assigned to specific Airports.
-2. Generate table of flights - schedule random flights by choosing random delay time, random base airport and random destination airport.
-3. Run the simulation, while checking for possibility of certain actions based on the regulations.
+## Crossovers
 
-## Optimisation by Evolutionary Algorithm
+TBA
 
-Before optimising and evaluating I would like to create a data structure that would describe the passengers' demand.
+## Creation of a new population
 
-1. Generate random initial population with 100 members.
-2. Mutate and Cross the members of the population.
-3. Evaluate with a fitness function and select the members of the next population based on some ranking (Selection types: Roulette, Tournament, Ranking)
-4. Go back to step 2.
-
-This process should be repeated many times - the number of repetitions will be n - number of iterations.
+TBA
 
 ## Notes
 
