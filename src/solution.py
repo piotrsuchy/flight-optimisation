@@ -31,6 +31,9 @@ class Solution:
         self.all_events = self.scheduler.get_events()
         return self.all_events
 
+    def print_flights(self):
+        print(self.flights)
+
     def set_sol_ids(self, sol_id):
         for airport in self.structures.airports:
             airport.set_sol_id(sol_id)
@@ -56,12 +59,12 @@ class Solution:
                 destination = random.choice(self.structures.airports)
 
             flight = Flight(base, destination, self)
-            self.flights.append(flight)
 
             # Start the flight after a random delay
             # Delay between 0.1 to 1 hour
             delay = random.uniform(0, self.simulation_hs)
             flight.day = int(delay / 24)
+            self.flights.append(flight)
             self.scheduler.schedule_event(delay, flight.start_flight)
             logging.info(
                 f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {delay:.2f} of the simulation.")
