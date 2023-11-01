@@ -42,7 +42,9 @@ def main():
         print(
             f"Individual: {individual[1]}, Fitness Score: {individual[0].fitness_score}")
 
-    evol_algo.population[5][0].print_flights()
+    print(f"-----------Printing flights for solutions--------")
+    evol_algo.population[0][0].print_flights()
+    # evol_algo.population[5][0].print_flights()
     test_availability(evol_algo)
 
 

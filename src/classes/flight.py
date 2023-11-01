@@ -5,16 +5,18 @@ import logging
 from src.solution import Solution
 
 DAY_LENGTH = 24
+DELAY_IF_AIRPORT_BUSY = 0.5
 
 
 class Flight:
     _next_id = 1
 
-    def __init__(self, base_airport, destination_airport, sol):
+    def __init__(self, base_airport, destination_airport, sol, planned_flight_time):
         self.id = Flight._next_id
         Flight._next_id += 1
         self.base_airport = base_airport
         self.destination_airport = destination_airport
+        self.planned_flight_time = planned_flight_time
         self.simulation_time = None
         self.plane = None
         self.pilots = None
@@ -23,11 +25,11 @@ class Flight:
         self.duration = None
         self.status = "started"
         self.day_of_flight = None
-        self.sol = sol
         self.delay = 0
+        self.sol = sol
 
     def __repr__(self):
-        return f"ID: {self.id}, from airport {self.base_airport.id} to airport {self.destination_airport.id}, delay of the flight: {self.delay}"
+        return f"ID: {self.id}, from airport {self.base_airport.id} to airport {self.destination_airport.id}, time of the flight: {self.planned_flight_time:.2f}"
 
     def calculate_distance(self):
         return math.sqrt((self.base_airport.x - self.destination_airport.x)**2 +
@@ -56,7 +58,7 @@ class Flight:
 
         # if the airport is not available - add a delay to the flight
         if self.base_airport.occupied:
-            self.delay += 0.5
+            self.delay += DELAY_IF_AIRPORT_BUSY
 
         scheduler_instance = Solution.get_scheduler_by_id(self.sol.id)
         current_time = scheduler_instance.current_simulation_time + self.delay

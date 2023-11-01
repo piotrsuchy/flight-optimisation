@@ -7,3 +7,5 @@ __pycache__
 log.txt
 count_lines.py
 mprofile*
+.DS_Store
+src/.DS_Store

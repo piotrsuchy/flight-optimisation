@@ -27,6 +27,10 @@ class Solution:
     def get_scheduler_by_id(sol_id):
         return Solution.schedulers.get(sol_id)
 
+    def print_flights(self):
+        for flight in self.flights:
+            print(flight)
+
     def get_scheduler_events(self):
         self.all_events = self.scheduler.get_events()
         return self.all_events
@@ -58,16 +62,18 @@ class Solution:
             while base == destination:
                 destination = random.choice(self.structures.airports)
 
-            flight = Flight(base, destination, self)
+            planned_flight_time = random.uniform(0, self.simulation_hs)
+            flight = Flight(base, destination, self, planned_flight_time)
 
             # Start the flight after a random delay
             # Delay between 0.1 to 1 hour
-            delay = random.uniform(0, self.simulation_hs)
-            flight.day = int(delay / 24)
+            flight.day = int(planned_flight_time / 24)
             self.flights.append(flight)
-            self.scheduler.schedule_event(delay, flight.start_flight)
+            print(f"Scheduling flight {flight}")
+            self.scheduler.schedule_event(planned_flight_time, flight.start_flight)
+            print(f"Current simulation time: {self.scheduler.current_simulation_time}")
             logging.info(
-                f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {delay:.2f} of the simulation.")
+                f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {planned_flight_time:.2f} of the simulation.")
 
     def get_cancelled_flights_num(self):
         return len(self.cancelled_flights)

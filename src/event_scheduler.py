@@ -28,7 +28,7 @@ class EventScheduler():
             if self.has_events:  # if there are events to process
                 # Get the event with the smallest time
                 next_event = heapq.heappop(self.events)
-                print(f"Processing event: {next_event}")
+                # print(f"Processing event: {next_event}")
                 self.current_simulation_time = next_event.time
                 # Call the event's function with its arguments
                 next_event.function(*next_event.args)
