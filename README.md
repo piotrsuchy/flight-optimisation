@@ -4,6 +4,17 @@
 
 Crew management, crew assignment, taking into account a strict schedule that should not be changed.
 
+## Crew Assignment Problem
+
+Often divided into two subproblems (description taken from [Modeling and solving a Crew Assignment Problem in air transportation](https://www.sciencedirect.com/science/article/abs/pii/S0377221705003760#:~:text=Introduction%20For%20airline%20companies%2C%20the,costs%20and%20fuel%20consumption%20costs)):
+
+- **Crew Pairing Problem** - it consists in generating a set of minimal cost crew pairings covering all the planned flight segments. A crew pairing is a sequence of flight segments separated by connections or rest periods, operated by crew leaving and returning to the same crew home base.
+- **Working Schedules Construction Problem** - it aims at constructing working schedules for crew members by assigning them pairings, resulting from the above subproblem, training periods, annual leaves etc.
+
+Those two subproblems are usually formulated as Set Partitioning or Set Covering problems, where variables are possible pairings and feasible working schedules respectively.
+
+The drawback of such a formulation is that in a standard model and formulation of the problem it is assumed that the crew for given flight services in a given pairing is the same - that is, none of the members of the crew change during the pairing, which can lead to some inflexibility.
+
 ## Some abstract objects (classes) that I am using and what is their purpose
 
 1. **EvolutionaryAlgorithm** - the highest level class in the hierarchy. Serves as an interface through which the evolutionary algorithm's processes are called.
