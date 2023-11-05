@@ -39,16 +39,16 @@ class Flight:
         self.distance = self.calculate_distance()
         self.duration = self.calculate_duration()
 
-    def assign_random_crew(self):
+    def assign_random_crew(self) -> bool:
         available_pilots = self.base_airport.get_eligible_pilots()
         if len(available_pilots) < 2:
             self.cancel_flight(self.sol, "pilots")
-            return
+            return False
 
         available_attendants = self.base_airport.get_eligible_attendants()
         if len(available_attendants) < 4:
             self.cancel_flight(self.sol, "attendants")
-            return
+            return False
 
         available_planes = self.base_airport.get_available_planes()
 
@@ -56,12 +56,13 @@ class Flight:
             plane for plane in self.base_airport.planes if plane.is_available]
         if not available_planes:
             self.cancel_flight(self.sol, "plane")
-            return
+            return False
 
         # random heuristic - could be a different one
         self.pilots = random.sample(available_pilots, 2)
         self.attendants = random.sample(available_attendants, 4)
         self.plane = random.choice(available_planes)
+        return True
 
     def assign_crew(self):
         # take the base airport
@@ -86,7 +87,10 @@ class Flight:
         '''
         if self.pilot is None or self.attendants is None:
             logging.info(f"For flight: {self.id}, crew assignment was performed.")
-            self.assign_random_crew()
+            possible_assignment = self.assign_random_crew()
+            if not possible_assignment:
+                logging.info(f"The flight was cancelled at crew assignment phase")
+                return 
         # print("Start flight is called")
         logging.info(
             f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")
