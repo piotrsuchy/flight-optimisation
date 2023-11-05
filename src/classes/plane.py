@@ -4,17 +4,17 @@ for consideration:
 - enough fuel to reach the airport, alternate airport
 plus an additional buffer.
 '''
-from src.solution import solution
+from src.solution import Solution
 
 maintenance_time = 1
 
 
-class plane:
+class Plane:
     _next_id = 1
 
     def __init__(self, capacity, pilots_needed, attendants_needed, speed, base, sol_id=None):
-        self.id = plane._next_id
-        plane._next_id += 1
+        self.id = Plane._next_id
+        Plane._next_id += 1
         self.base = base
         self.capacity = capacity
         self.pilots_needed = pilots_needed
@@ -24,7 +24,7 @@ class plane:
         self.sol_id = sol_id
 
     def __repr__(self):
-        return f"plane id: {self.id}, capacity: {self.capacity}, speed: {self.speed}, base: {self.base}"
+        return f"Plane id: {self.id}, capacity: {self.capacity}, speed: {self.speed}, base: {self.base}"
 
     def __str__(self):
         return self.__repr__()
@@ -46,7 +46,7 @@ class plane:
 
     def maintenance(self):
         self.occupy()
-        scheduler_instance = solution.get_scheduler_by_id(self.sol_id)
+        scheduler_instance = Solution.get_scheduler_by_id(self.sol_id)
         scheduler_instance.schedule_event(maintenance_time, self.release)
         simulation_time = scheduler_instance.current_simulation_time + maintenance_time
         scheduler_instance.schedule_event(

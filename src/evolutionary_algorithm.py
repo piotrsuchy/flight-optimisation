@@ -1,6 +1,8 @@
 import copy
 import random
 import numpy as np
+
+from .schedule import Schedule
 from .solution import Solution
 from .passenger_demand import generate_demand_array, visualize_demand
 from .decorators import timing_decorator
@@ -14,6 +16,7 @@ FLIGHT_CANCELLATION_COST_PER_PERSON = TICKET_PRICE*1.5
 MAX_WEEKLY_HOURS = 60
 OVERWORK_PENALTY_PER_HOUR = PILOT_COST_PER_HOUR*2
 DEFAULT_PLANE_CAPACITY = 500
+SIM_LEN = 720
 
 
 class EvolutionaryAlgorithm:
@@ -22,6 +25,7 @@ class EvolutionaryAlgorithm:
         self.population_size = population_size
         self.population = []
         self.initial_structures = initial_structures
+        self.initial_schedule = None
         self.passenger_demand = generate_demand_array(
             self.initial_structures.airports, 30)
 
@@ -29,12 +33,21 @@ class EvolutionaryAlgorithm:
     def initialize_population(self):
         for sol_id in range(self.population_size):
             initial_structures = copy.deepcopy(self.initial_structures)
-            sol = Solution(sol_id+1, self.passenger_demand,
-                           initial_structures, 720)
+            sol = Solution(sol_id+1, self.passenger_demand, initial_structures, SIM_LEN)
             sol.set_sol_ids(sol_id+1)
-            sol._schedule_flights(150)
+            # sol._schedule_flights(150)
             # population is a list of [sol, [revenue, op_costs, penalties]]
             self.population.append([sol, -1])
+
+    @timing_decorator
+    def create_initial_schedule(self):
+        self.initial_schedule = Schedule()
+        self.initial_schedule.create_random_schedule(self.initial_structures.airports, 100, SIM_LEN)
+
+    @timing_decorator
+    def assign_schedules_for_all_sols(self):
+        for sol_list in self.population:
+            sol_list[0].schedule = copy.deepcopy(self.initial_schedule)
 
     @timing_decorator
     def save_events_for_all_sols(self):

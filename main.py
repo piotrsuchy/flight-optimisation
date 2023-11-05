@@ -24,6 +24,8 @@ def main():
     initial_structures = Structures()
     evol_algo = EvolutionaryAlgorithm(initial_structures, 100)
     evol_algo.initialize_population()
+    evol_algo.create_initial_schedule()
+    evol_algo.assign_schedules_for_all_sols()
     print(f"Printing events for sol")
     print(evol_algo.save_events_for_sol_by_id(5))
     evol_algo.run_events()

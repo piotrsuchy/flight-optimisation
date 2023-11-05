@@ -1,6 +1,7 @@
 import random
 import logging
 
+from .schedule import Schedule
 from .event_scheduler import EventScheduler
 
 
@@ -16,9 +17,10 @@ class Solution:
         self.simulation_hs = simulation_hs
         self.flights = []
         self.cancelled_flights = []
-        self.fitness_score = None
         self.passengers_taken = 0
+        self.fitness_score = None
         self.events = None
+        self.schedule = None
 
     def __str__(self):
         return f"Sol ID: {self.id}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}, Fitness score: {self.fitness_score:.2e}, passengers taken: {self.passengers_taken}"
@@ -35,9 +37,6 @@ class Solution:
         self.all_events = self.scheduler.get_events()
         return self.all_events
 
-    def print_flights(self):
-        print(self.flights)
-
     def set_sol_ids(self, sol_id):
         for airport in self.structures.airports:
             airport.set_sol_id(sol_id)
@@ -50,30 +49,21 @@ class Solution:
             for attendant in airport.attendants:
                 attendant.set_sol_id(sol_id)
 
-    def _schedule_flights(self, flights_q):
+    def _schedule_flights(self):
         '''
-        This function schedules flights_q flights for a solution by taking two different airports 
-        and scheduling the start_flight() method of class Flight for them
+        This function schedules flights_q flights for a solution by taking two different airports
+        and scheduling the start_flight() method of class Flight for them using the existing
+        Schedule structure.
         '''
-        from .classes.flight import Flight
-        for _ in range(flights_q):
-            base = random.choice(self.structures.airports)
-            destination = random.choice(self.structures.airports)
-            while base == destination:
-                destination = random.choice(self.structures.airports)
-
-            simulation_time = random.uniform(0, self.simulation_hs)
-            flight = Flight(base, destination, self, simulation_time)
-
-            # Start the flight after a random delay
-            # Delay between 0.1 to 1 hour
-            flight.day = int(simulation_time / 24)
-            self.flights.append(flight)
+        
+        for flight in self.schedule.flight_schedule:
+            # Assign crew to the flight based on AvailabilityLog
+            scheduled_time = flight.simulation_time
             print(f"Scheduling flight {flight}")
-            self.scheduler.schedule_event(simulation_time, flight.start_flight)
+            self.scheduler.schedule_event(scheduled_time, flight.start_flight)
             print(f"Current simulation time: {self.scheduler.current_simulation_time}")
             logging.info(
-                f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {simulation_time:.2f} of the simulation.")
+                f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {scheduled_time:.2f} of the simulation.")
 
     def get_cancelled_flights_num(self):
         return len(self.cancelled_flights)

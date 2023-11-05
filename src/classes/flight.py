@@ -2,8 +2,6 @@ import math
 import random
 import logging
 
-from src.solution import Solution
-
 DAY_LENGTH = 24
 DELAY_IF_AIRPORT_BUSY = 0.5
 
@@ -41,29 +39,7 @@ class Flight:
         self.distance = self.calculate_distance()
         self.duration = self.calculate_duration()
 
-    def start_flight(self):
-        '''
-        This function starts the flight and handles:
-        - choosing the available crew and plane
-        - flight cancelling
-        - incrementing total flights count and cancelled flights in Solution class
-        - calling flight_start from POV of plane and crew 
-
-        To change: 2 and 4 harcoded as the number of needed pilots and attendants respectively
-        '''
-        # print("Start flight is called")
-        logging.info(
-            f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")
-
-        # if the airport is not available - add a delay to the flight
-        if self.base_airport.occupied:
-            self.delay += DELAY_IF_AIRPORT_BUSY
-
-        scheduler_instance = Solution.get_scheduler_by_id(self.sol.id)
-        current_time = scheduler_instance.current_simulation_time + self.delay
-        self.simulation_time = current_time
-        self.day_of_flight = int(current_time // DAY_LENGTH)
-
+    def assign_random_crew(self):
         available_pilots = self.base_airport.get_eligible_pilots()
         if len(available_pilots) < 2:
             self.cancel_flight(self.sol, "pilots")
@@ -82,10 +58,50 @@ class Flight:
             self.cancel_flight(self.sol, "plane")
             return
 
+        # random heuristic - could be a different one
         self.pilots = random.sample(available_pilots, 2)
         self.attendants = random.sample(available_attendants, 4)
         self.plane = random.choice(available_planes)
-        self.set_dist_and_dur()
+
+    def assign_crew(self):
+        # take the base airport
+        # take it's availability log
+        # based on the simulation_time 
+        # we can know the available crew members
+        # we will take for example based on some 
+        # heuristic like smallest ID
+        # or the first in the list 
+        # or the least amount of worked hours
+        # and assign the crew to the flight
+        pass
+
+    def start_flight(self):
+        '''
+        This function starts the flight and handles:
+        - assigning random crew if it has no pilot or attendant already assigned
+        - incrementing total flights count and cancelled flights in Solution class
+        - calling flight_start from POV of plane and crew 
+
+        To change: 2 and 4 harcoded as the number of needed pilots and attendants respectively
+        '''
+        if self.pilot is None or self.attendants is None:
+            logging.info(f"For flight: {self.id}, crew assignment was performed.")
+            self.assign_random_crew()
+        # print("Start flight is called")
+        logging.info(
+            f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")
+
+        # if the airport is not available - add a delay to the flight
+        if self.base_airport.occupied:
+            self.delay += DELAY_IF_AIRPORT_BUSY
+
+        scheduler_instance = self.sol.get_scheduler_by_id(self.sol.id)
+        current_time = scheduler_instance.current_simulation_time + self.delay
+        self.simulation_time = current_time
+        self.day_of_flight = int(current_time // DAY_LENGTH)
+
+        if self.distance is None or self.duration is None:
+            self.set_dist_and_dur()
 
         demand = self.sol.passenger_demand[self.base_airport.id -
                                            1][self.destination_airport.id - 1][self.day_of_flight - 1]
