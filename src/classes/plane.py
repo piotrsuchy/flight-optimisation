@@ -12,7 +12,7 @@ maintenance_time = 1
 class plane:
     _next_id = 1
 
-    def __init__(self, capacity, pilots_needed, attendants_needed, speed, base, sol_id=none):
+    def __init__(self, capacity, pilots_needed, attendants_needed, speed, base, sol_id=None):
         self.id = plane._next_id
         plane._next_id += 1
         self.base = base
@@ -20,7 +20,7 @@ class plane:
         self.pilots_needed = pilots_needed
         self.attendants_needed = attendants_needed
         self.speed = int(speed)
-        self.is_available = true
+        self.is_available = True
         self.sol_id = sol_id
 
     def __repr__(self):
@@ -39,10 +39,10 @@ class plane:
         self.base = destination
 
     def occupy(self):
-        self.is_available = false
+        self.is_available = False
 
     def release(self):
-        self.is_available = true
+        self.is_available = True
 
     def maintenance(self):
         self.occupy()
