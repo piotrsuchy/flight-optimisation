@@ -62,18 +62,18 @@ class Solution:
             while base == destination:
                 destination = random.choice(self.structures.airports)
 
-            planned_flight_time = random.uniform(0, self.simulation_hs)
-            flight = Flight(base, destination, self, planned_flight_time)
+            simulation_time = random.uniform(0, self.simulation_hs)
+            flight = Flight(base, destination, self, simulation_time)
 
             # Start the flight after a random delay
             # Delay between 0.1 to 1 hour
-            flight.day = int(planned_flight_time / 24)
+            flight.day = int(simulation_time / 24)
             self.flights.append(flight)
             print(f"Scheduling flight {flight}")
-            self.scheduler.schedule_event(planned_flight_time, flight.start_flight)
+            self.scheduler.schedule_event(simulation_time, flight.start_flight)
             print(f"Current simulation time: {self.scheduler.current_simulation_time}")
             logging.info(
-                f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {planned_flight_time:.2f} of the simulation.")
+                f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {simulation_time:.2f} of the simulation.")
 
     def get_cancelled_flights_num(self):
         return len(self.cancelled_flights)

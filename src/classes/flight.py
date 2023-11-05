@@ -11,13 +11,12 @@ DELAY_IF_AIRPORT_BUSY = 0.5
 class Flight:
     _next_id = 1
 
-    def __init__(self, base_airport, destination_airport, sol, planned_flight_time):
+    def __init__(self, base_airport, destination_airport, sol, simulation_time):
         self.id = Flight._next_id
         Flight._next_id += 1
         self.base_airport = base_airport
         self.destination_airport = destination_airport
-        self.planned_flight_time = planned_flight_time
-        self.simulation_time = None
+        self.simulation_time = simulation_time
         self.plane = None
         self.pilots = None
         self.attendants = None
@@ -29,7 +28,7 @@ class Flight:
         self.sol = sol
 
     def __repr__(self):
-        return f"ID: {self.id}, from airport {self.base_airport.id} to airport {self.destination_airport.id}, time of the flight: {self.planned_flight_time:.2f}"
+        return f"ID: {self.id}, from airport {self.base_airport.id} to airport {self.destination_airport.id}, time of the flight: {self.simulation_time:.2f}"
 
     def calculate_distance(self):
         return math.sqrt((self.base_airport.x - self.destination_airport.x)**2 +
