@@ -85,7 +85,7 @@ class Flight:
 
         To change: 2 and 4 harcoded as the number of needed pilots and attendants respectively
         '''
-        if self.pilot is None or self.attendants is None:
+        if self.pilots is None or self.attendants is None:
             logging.info(f"For flight: {self.id}, crew assignment was performed.")
             possible_assignment = self.assign_random_crew()
             if not possible_assignment:
@@ -99,7 +99,10 @@ class Flight:
         if self.base_airport.occupied:
             self.delay += DELAY_IF_AIRPORT_BUSY
 
+        print(f"My crew for the flight is: {self.pilots[0]} and {self.pilots[1]}")
+
         scheduler_instance = self.sol.get_scheduler_by_id(self.sol.id)
+        print(f"Scheduler instance from flight.py: {scheduler_instance}")
         current_time = scheduler_instance.current_simulation_time + self.delay
         self.simulation_time = current_time
         self.day_of_flight = int(current_time // DAY_LENGTH)

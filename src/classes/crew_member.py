@@ -28,7 +28,7 @@ class Pilot:
         self.sol_id = None
 
     def __repr__(self):
-        return f"Pilot ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}"
+        return f"Pilot ID: {self.id}, sol_id: {self.sol_id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}"
 
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
@@ -72,7 +72,9 @@ class Pilot:
         self.flights_taken += 1
         self.occupy()
         # after a day decrement working hours
-        scheduler_instance = Solution.get_scheduler_by_id(self.sol_id)
+        scheduler_instance = Solution.schedulers[self.sol_id]
+        print(f"Solution.get_schedulers: {Solution.schedulers}")
+        print(f"Scheduler instance of pilot {self.id} is {scheduler_instance}")
         scheduler_instance.schedule_event(
             24, self.decrement_hours, "day", duration)
         # after a week decrement working hours

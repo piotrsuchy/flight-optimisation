@@ -35,10 +35,16 @@ class EvolutionaryAlgorithm:
             initial_structures = copy.deepcopy(self.initial_structures)
             sol = Solution(sol_id+1, self.passenger_demand, initial_structures, SIM_LEN)
             sol.set_sol_ids(sol_id+1)
-            # sol._schedule_flights(150)
             # population is a list of [sol, [revenue, op_costs, penalties]]
             self.population.append([sol, -1])
 
+    @timing_decorator
+    def print_population(self):
+        for sol_list in self.population:
+            sol = sol_list[0]
+            for airport in sol.structures.airports:
+                airport.show_fleet_and_crew()
+        
     @timing_decorator
     def create_initial_schedule(self):
         self.initial_schedule = Schedule()
@@ -48,6 +54,13 @@ class EvolutionaryAlgorithm:
     def assign_schedules_for_all_sols(self):
         for sol_list in self.population:
             sol_list[0].schedule = copy.deepcopy(self.initial_schedule)
+            for flight in sol_list[0].schedule.flight_schedule:
+                flight.sol = sol_list[0]
+
+    @timing_decorator
+    def run_schedules(self):
+        for sol_list in self.population:
+            sol_list[0]._schedule_flights()
 
     @timing_decorator
     def save_events_for_all_sols(self):
