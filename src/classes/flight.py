@@ -62,6 +62,10 @@ class Flight:
         self.pilots = random.sample(available_pilots, 2)
         self.attendants = random.sample(available_attendants, 4)
         self.plane = random.choice(available_planes)
+        print(f"Printing self.pilots in assign_random_crew function")
+        print(self.pilots)
+        print(f"Printing self.attendants in assign_random_crew function")
+        print(self.attendants)
         return True
 
     def assign_crew(self):
@@ -99,10 +103,10 @@ class Flight:
         if self.base_airport.occupied:
             self.delay += DELAY_IF_AIRPORT_BUSY
 
-        print(f"My crew for the flight is: {self.pilots[0]} and {self.pilots[1]}")
+        # print(f"My crew for the flight is: {self.pilots[0]} and {self.pilots[1]}")
 
         scheduler_instance = self.sol.get_scheduler_by_id(self.sol.id)
-        print(f"Scheduler instance from flight.py: {scheduler_instance}")
+        # print(f"Scheduler instance from flight.py: {scheduler_instance}")
         current_time = scheduler_instance.current_simulation_time + self.delay
         self.simulation_time = current_time
         self.day_of_flight = int(current_time // DAY_LENGTH)

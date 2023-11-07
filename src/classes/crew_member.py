@@ -73,8 +73,8 @@ class Pilot:
         self.occupy()
         # after a day decrement working hours
         scheduler_instance = Solution.schedulers[self.sol_id]
-        print(f"Solution.get_schedulers: {Solution.schedulers}")
-        print(f"Scheduler instance of pilot {self.id} is {scheduler_instance}")
+        # print(f"Solution.get_schedulers: {Solution.schedulers}")
+        # print(f"Scheduler instance of pilot {self.id} is {scheduler_instance}")
         scheduler_instance.schedule_event(
             24, self.decrement_hours, "day", duration)
         # after a week decrement working hours

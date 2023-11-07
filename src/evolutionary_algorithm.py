@@ -37,6 +37,7 @@ class EvolutionaryAlgorithm:
             sol.set_sol_ids(sol_id+1)
             # population is a list of [sol, [revenue, op_costs, penalties]]
             self.population.append([sol, -1])
+        self.initial_schedule = None
 
     @timing_decorator
     def print_population(self):
@@ -53,9 +54,18 @@ class EvolutionaryAlgorithm:
     @timing_decorator
     def assign_schedules_for_all_sols(self):
         for sol_list in self.population:
-            sol_list[0].schedule = copy.deepcopy(self.initial_schedule)
-            for flight in sol_list[0].schedule.flight_schedule:
-                flight.sol = sol_list[0]
+            sol_list[0].schedule = Schedule()
+            sol_list[0].schedule.create_random_schedule(sol_list[0], 100, 720, 42)
+            # for flight in sol_list[0].schedule.flight_schedule:
+                # print(f"Setting ")
+                # flight.sol = sol_list[0]
+
+    @timing_decorator
+    def print_schedules(self):
+        print(f"Printing the SCHEDULES")
+        for sol_list in self.population:
+            print(f"Solution for solution {sol_list[0].id}")
+            print(sol_list[0].schedule)
 
     @timing_decorator
     def run_schedules(self):

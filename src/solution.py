@@ -62,6 +62,7 @@ class Solution:
             scheduled_time = flight.simulation_time
             print(f"Scheduling flight {flight}")
             self.scheduler.schedule_event(scheduled_time, flight.start_flight)
+            self.flights.append(flight)
             print(f"Current simulation time: {self.scheduler.current_simulation_time}")
             logging.info(
                 f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {scheduled_time:.2f} of the simulation.")

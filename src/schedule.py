@@ -11,15 +11,19 @@ class Schedule:
             res += f"{flight} \n"
         return res
 
-    def create_random_schedule(self, airports, flights_q, simulation_length):
+    def create_random_schedule(self, sol, flights_q, simulation_length, seed=None):
+        if seed is None:
+            seed = 42
+        random.seed(seed)
+
         for _ in range(flights_q):
-            base = random.choice(airports)
-            destination = random.choice(airports)
+            base = random.choice(sol.structures.airports)
+            destination = random.choice(sol.structures.airports)
             while base == destination:
-                destination = random.choice(airports)
+                destination = random.choice(sol.structures.airports)
 
             simulation_time = random.uniform(0, simulation_length)
-            flight = Flight(base, destination, None, simulation_time)
+            flight = Flight(base, destination, sol, simulation_time)
 
             flight.day = int(simulation_time / 24)
             self.flight_schedule.append(flight)
