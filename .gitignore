@@ -4,6 +4,7 @@ data/*
 classes/__pycache__
 __pycache__
 *.log
+logs/*
 log.txt
 count_lines.py
 mprofile*
