@@ -20,16 +20,15 @@ SIM_LEN = 720
 
 
 class EvolutionaryAlgorithm:
-    @timing_decorator
+    # s@timing_decorator
     def __init__(self, initial_structures, population_size=100):
         self.population_size = population_size
         self.population = []
         self.initial_structures = initial_structures
-        self.initial_schedule = None
         self.passenger_demand = generate_demand_array(
             self.initial_structures.airports, 30)
 
-    @timing_decorator
+    # @timing_decorator
     def initialize_population(self):
         for sol_id in range(self.population_size):
             initial_structures = copy.deepcopy(self.initial_structures)
@@ -37,58 +36,51 @@ class EvolutionaryAlgorithm:
             sol.set_sol_ids(sol_id+1)
             # population is a list of [sol, [revenue, op_costs, penalties]]
             self.population.append([sol, -1])
-        self.initial_schedule = None
 
-    @timing_decorator
+    # @timing_decorator
     def print_population(self):
         for sol_list in self.population:
             sol = sol_list[0]
             for airport in sol.structures.airports:
                 airport.show_fleet_and_crew()
         
-    @timing_decorator
-    def create_initial_schedule(self):
-        self.initial_schedule = Schedule()
-        self.initial_schedule.create_random_schedule(self.initial_structures.airports, 100, SIM_LEN)
-
-    @timing_decorator
-    def assign_schedules_for_all_sols(self):
-        for sol_list in self.population:
-            sol_list[0].schedule = Schedule()
-            sol_list[0].schedule.create_random_schedule(sol_list[0], 100, 720, 42)
-            # for flight in sol_list[0].schedule.flight_schedule:
-                # print(f"Setting ")
-                # flight.sol = sol_list[0]
-
-    @timing_decorator
+    # @timing_decorator
     def print_schedules(self):
         print(f"Printing the SCHEDULES")
         for sol_list in self.population:
-            print(f"Solution for solution {sol_list[0].id}")
+            print(f"Schedule for solution {sol_list[0].id}")
             print(sol_list[0].schedule)
 
-    @timing_decorator
+
+    # @timing_decorator
+    def assign_schedules_for_all_sols(self):
+        for sol_list in self.population:
+            sol_list[0].schedule = Schedule()
+            sol_list[0].schedule.create_random_schedule(sol_list[0], 10, 720, 42)
+
+
+    # @timing_decorator
     def run_schedules(self):
         for sol_list in self.population:
             sol_list[0]._schedule_flights()
 
-    @timing_decorator
+    # @timing_decorator
     def save_events_for_all_sols(self):
         for sol_list in self.population:
             sol_list[0].get_scheduler_events()
 
-    @timing_decorator
+    # @timing_decorator
     def save_events_for_sol_by_id(self, sol_id):
         sol_list = self.population[sol_id]
         print(f"sol_list {sol_list}")
         sol_list[0].get_scheduler_events()
 
-    @timing_decorator
+    # @timing_decorator
     def run_events(self):
         for sol_list in self.population:
             sol_list[0].run_events()
 
-    @timing_decorator
+    # @timing_decorator
     def fitness_function(self, sol):
         '''
         This function calculates revenue, operational costs and penalties of a single solution
@@ -184,7 +176,7 @@ class EvolutionaryAlgorithm:
         selected_index = np.random.choice(len(sorted_population), p=rank_probabilities)
         return sorted_population[selected_index]
 
-    @timing_decorator
+    # @timing_decorator
     def roulette_sort(self):
         '''This function sorts the population using repeated roulette wheel selection'''
         sorted_population = []
@@ -194,7 +186,7 @@ class EvolutionaryAlgorithm:
             self.population.remove(selected)
         self.population = sorted_population
 
-    @timing_decorator
+    # @timing_decorator
     def tournament_sort(self, tournament_size=5):
         '''This function sorts the population using repeated tournament selection'''
         sorted_population = []
@@ -204,7 +196,7 @@ class EvolutionaryAlgorithm:
             self.population.remove(best_in_tournament)
         self.population = sorted_population
 
-    @timing_decorator
+    # @timing_decorator
     def rank_sort(self):
         '''This function sorts the population using rank selection (simply by fitness value)'''
         sorted_population = []
@@ -214,7 +206,7 @@ class EvolutionaryAlgorithm:
             self.population.remove(selected)
         self.population = sorted_population
 
-    @timing_decorator
+    # @timing_decorator
     def update_all_fitness_scores(self):
         '''
         This function uses the fitness_function() method to calculate the fitness score
@@ -228,7 +220,7 @@ class EvolutionaryAlgorithm:
             self.population[sol_id][0].fitness_score = revenue - \
                 operation_costs - penalties
 
-    @timing_decorator
+    # @timing_decorator
     def print_revenue_and_costs(self):
         for sol in self.population:
             print(

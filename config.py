@@ -9,7 +9,7 @@ def setup_logging(to_file):
 
     if to_file:
         # Add the file handler
-        file_handler = logging.FileHandler('log.txt')
+        file_handler = logging.FileHandler('logs/log.txt')
         file_handler.setLevel(logging.INFO)  # Set the level for the file handler
 
         # Get the root logger and add the file handler to it
