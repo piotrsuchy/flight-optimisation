@@ -12,7 +12,7 @@ class EventScheduler():
         self.current_simulation_time = 0
 
     def get_events(self):
-        return self.events 
+        return self.events
 
     def schedule_event(self, delay, function, *args):
         """Add an event to the queue."""

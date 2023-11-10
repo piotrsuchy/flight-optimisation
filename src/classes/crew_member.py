@@ -79,7 +79,7 @@ class Pilot:
             24, self.decrement_hours, "day", duration)
         # after a week decrement working hours
         scheduler_instance.schedule_event(
-            7*24, self.decrement_hours, "week", duration)
+            7 * 24, self.decrement_hours, "week", duration)
         # after a month decrement working hours
         # scheduler_instance.schedule_event(30*24, self.decrement_hours, "month", duration)
 
@@ -150,6 +150,6 @@ class FlightAttendant:
             24, self.decrement_hours, "day", duration)
         # after a week decrement working hours
         scheduler_instance.schedule_event(
-            7*24, self.decrement_hours, "week", duration)
+            7 * 24, self.decrement_hours, "week", duration)
         # after a month decrement working hours
         # scheduler_instance.schedule_event(30*24, self.decrement_hours, "month", duration)

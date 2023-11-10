@@ -8,7 +8,8 @@ from .event_scheduler import EventScheduler
 class Solution:
     schedulers = {}
 
-    def __init__(self, solution_id, passenger_demand, initial_structures, simulation_hs):
+    def __init__(self, solution_id, passenger_demand,
+                 initial_structures, simulation_hs):
         self.id = solution_id
         self.scheduler = EventScheduler()
         self.passenger_demand = passenger_demand
@@ -56,14 +57,15 @@ class Solution:
         and scheduling the start_flight() method of class Flight for them using the existing
         Schedule structure.
         '''
-        
+
         for flight in self.schedule.flight_schedule:
             # Assign crew to the flight based on AvailabilityLog
             scheduled_time = flight.simulation_time
             print(f"Scheduling flight {flight}")
             self.scheduler.schedule_event(scheduled_time, flight.start_flight)
             self.flights.append(flight)
-            print(f"Current simulation time: {self.scheduler.current_simulation_time}")
+            print(
+                f"Current simulation time: {self.scheduler.current_simulation_time}")
             logging.info(
                 f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {scheduled_time:.2f} of the simulation.")
 

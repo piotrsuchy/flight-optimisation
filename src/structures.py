@@ -7,7 +7,8 @@ from .classes.crew_member import Pilot, FlightAttendant
 
 
 class Structures:
-    def __init__(self, n_airports=10, n_pilots_f_a=12, n_attendants_f_a=24, n_planes_f_a=8):
+    def __init__(self, n_airports=10, n_pilots_f_a=12,
+                 n_attendants_f_a=24, n_planes_f_a=8):
         self.airports = []
         self.n_airports = n_airports
         self.n_pilots_f_a = n_pilots_f_a

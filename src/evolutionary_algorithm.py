@@ -12,10 +12,11 @@ TICKET_PRICE = 1000
 PLANE_OPERATIONAL_COST_PER_HOUR = 2000
 PILOT_COST_PER_HOUR = 120
 ATTENDANT_COST_PER_HOUR = 80
-FLIGHT_CANCELLATION_COST_PER_PERSON = TICKET_PRICE*1.5
+FLIGHT_CANCELLATION_COST_PER_PERSON = TICKET_PRICE * 1.5
 MAX_WEEKLY_HOURS = 60
-OVERWORK_PENALTY_PER_HOUR = PILOT_COST_PER_HOUR*2
+OVERWORK_PENALTY_PER_HOUR = PILOT_COST_PER_HOUR * 2
 DEFAULT_PLANE_CAPACITY = 500
+N_OF_FLIGHTS = 1000
 SIM_LEN = 720
 
 
@@ -32,8 +33,12 @@ class EvolutionaryAlgorithm:
     def initialize_population(self):
         for sol_id in range(self.population_size):
             initial_structures = copy.deepcopy(self.initial_structures)
-            sol = Solution(sol_id+1, self.passenger_demand, initial_structures, SIM_LEN)
-            sol.set_sol_ids(sol_id+1)
+            sol = Solution(
+                sol_id + 1,
+                self.passenger_demand,
+                initial_structures,
+                SIM_LEN)
+            sol.set_sol_ids(sol_id + 1)
             # population is a list of [sol, [revenue, op_costs, penalties]]
             self.population.append([sol, -1])
 
@@ -43,7 +48,7 @@ class EvolutionaryAlgorithm:
             sol = sol_list[0]
             for airport in sol.structures.airports:
                 airport.show_fleet_and_crew()
-        
+
     # @timing_decorator
     def print_schedules(self):
         print(f"Printing the SCHEDULES")
@@ -51,15 +56,16 @@ class EvolutionaryAlgorithm:
             print(f"Schedule for solution {sol_list[0].id}")
             print(sol_list[0].schedule)
 
-
     # @timing_decorator
+
     def assign_schedules_for_all_sols(self):
         for sol_list in self.population:
             sol_list[0].schedule = Schedule()
-            sol_list[0].schedule.create_random_schedule(sol_list[0], 10, 720, 42)
-
+            sol_list[0].schedule.create_random_schedule(
+                sol_list[0], N_OF_FLIGHTS, 720, 42)
 
     # @timing_decorator
+
     def run_schedules(self):
         for sol_list in self.population:
             sol_list[0]._schedule_flights()
@@ -84,7 +90,7 @@ class EvolutionaryAlgorithm:
     def fitness_function(self, sol):
         '''
         This function calculates revenue, operational costs and penalties of a single solution
-        If the flight is cancelled it 
+        If the flight is cancelled it
         It returns a list of [revenue, op_costs, penalties]
         '''
         # Initializing metrics
@@ -125,7 +131,8 @@ class EvolutionaryAlgorithm:
                 day_of_flight = flight.day  # Assuming the Flight class has a day attribute
                 demand = self.passenger_demand[from_airport_idx][to_airport_idx][day_of_flight]
 
-                # You can also add an upper limit based on a default plane capacity if required
+                # You can also add an upper limit based on a default plane
+                # capacity if required
                 filled_seats = min(demand, DEFAULT_PLANE_CAPACITY)
 
                 penalties += FLIGHT_CANCELLATION_COST_PER_PERSON * filled_seats
@@ -161,7 +168,8 @@ class EvolutionaryAlgorithm:
         if len(self.population) <= tournament_size:
             selected_tournament = self.population
         else:
-            selected_tournament = random.sample(self.population, tournament_size)
+            selected_tournament = random.sample(
+                self.population, tournament_size)
         best_in_tournament = max(
             selected_tournament, key=lambda sol: sol[0].fitness_score)
         return best_in_tournament
@@ -173,7 +181,8 @@ class EvolutionaryAlgorithm:
         rank_sum = len(sorted_population) * (len(sorted_population) + 1) / 2
         rank_probabilities = [
             (i + 1) / rank_sum for i in range(len(sorted_population))]
-        selected_index = np.random.choice(len(sorted_population), p=rank_probabilities)
+        selected_index = np.random.choice(
+            len(sorted_population), p=rank_probabilities)
         return sorted_population[selected_index]
 
     # @timing_decorator
@@ -251,19 +260,17 @@ class EvolutionaryAlgorithm:
         second_gen = []
 
         for i in range(self.population_size):
-            mutated_sol, simulation_time = self.mutate_solution(copy.deepcopy(self.population[i][0]))
+            mutated_sol, simulation_time = self.mutate_solution(
+                copy.deepcopy(self.population[i][0]))
             second_gen.append([mutated_sol, -1, simulation_time])
         return second_gen
 
-    def run_second_generation_from_mutation_times(self, population):
-        for i in range(self.population_size):
-            sol = population[i][0]
-            mutation_time = population[i][2]
-            # ...
-
-    def calculate_and_print_fitness_function_for_second_generation(self, population):
+    def calculate_and_print_fitness_function_for_second_generation(
+            self, population):
         for solution in population:
-            revenue, operational_costs, penalties, delay_penalty = self.fitness_function(solution[0])
-            print(f"Revenue {revenue}, operational_costs: {operational_costs}, penalties: {penalties}, delay_penalty: {delay_penalty}")
+            revenue, operational_costs, penalties, delay_penalty = self.fitness_function(
+                solution[0])
+            print(
+                f"Revenue {revenue}, operational_costs: {operational_costs}, penalties: {penalties}, delay_penalty: {delay_penalty}")
             fitness_score = revenue - operational_costs - penalties - delay_penalty
             print(f"Final fitness score: {fitness_score}")

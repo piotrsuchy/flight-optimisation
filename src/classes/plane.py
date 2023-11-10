@@ -12,7 +12,8 @@ maintenance_time = 1
 class Plane:
     _next_id = 1
 
-    def __init__(self, capacity, pilots_needed, attendants_needed, speed, base, sol_id=None):
+    def __init__(self, capacity, pilots_needed,
+                 attendants_needed, speed, base, sol_id=None):
         self.id = Plane._next_id
         Plane._next_id += 1
         self.base = base

@@ -14,7 +14,7 @@ MAINTENANCE_TIME = 0.5
 class Airport:
     _next_id = 1
 
-    def __init__(self,  x=None, y=None):
+    def __init__(self, x=None, y=None):
         self.x = x if x is not None else random.randint(0, 10000)
         self.y = y if y is not None else random.randint(0, 10000)
         self.id = Airport._next_id

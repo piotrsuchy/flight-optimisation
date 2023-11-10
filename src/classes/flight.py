@@ -9,7 +9,8 @@ DELAY_IF_AIRPORT_BUSY = 0.5
 class Flight:
     _next_id = 1
 
-    def __init__(self, base_airport, destination_airport, sol, simulation_time):
+    def __init__(self, base_airport, destination_airport,
+                 sol, simulation_time):
         self.id = Flight._next_id
         Flight._next_id += 1
         self.base_airport = base_airport
@@ -71,11 +72,11 @@ class Flight:
     def assign_crew(self):
         # take the base airport
         # take it's availability log
-        # based on the simulation_time 
+        # based on the simulation_time
         # we can know the available crew members
-        # we will take for example based on some 
+        # we will take for example based on some
         # heuristic like smallest ID
-        # or the first in the list 
+        # or the first in the list
         # or the least amount of worked hours
         # and assign the crew to the flight
         pass
@@ -85,16 +86,18 @@ class Flight:
         This function starts the flight and handles:
         - assigning random crew if it has no pilot or attendant already assigned
         - incrementing total flights count and cancelled flights in Solution class
-        - calling flight_start from POV of plane and crew 
+        - calling flight_start from POV of plane and crew
 
         To change: 2 and 4 harcoded as the number of needed pilots and attendants respectively
         '''
         if self.pilots is None or self.attendants is None:
-            logging.info(f"For flight: {self.id}, crew assignment was performed.")
+            logging.info(
+                f"For flight: {self.id}, crew assignment was performed.")
             possible_assignment = self.assign_random_crew()
             if not possible_assignment:
-                logging.info(f"The flight was cancelled at crew assignment phase")
-                return 
+                logging.info(
+                    f"The flight was cancelled at crew assignment phase")
+                return
         # print("Start flight is called")
         logging.info(
             f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")

@@ -8,13 +8,17 @@ from config import get_args, setup_logging
 
 # @timing_decorator
 # @profile
+
+
 def main():
     args = get_args()
     print(f"ARGS: {args.log}")
     setup_logging(args.log)
 
     initial_structures = Structures()
-    evol_algo = EvolutionaryAlgorithm(initial_structures=initial_structures, population_size=10)
+    evol_algo = EvolutionaryAlgorithm(
+        initial_structures=initial_structures,
+        population_size=100)
     evol_algo.initialize_population()
     evol_algo.assign_schedules_for_all_sols()
     evol_algo.print_population()

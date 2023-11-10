@@ -9,7 +9,8 @@ class Availability:
     Each instance of this class is tied to the airport and to the specific time in simulation
     '''
 
-    def __init__(self, airport, simulation_time, available_pilots, available_attendants, available_planes):
+    def __init__(self, airport, simulation_time, available_pilots,
+                 available_attendants, available_planes):
         self.airport = airport
         self.airport_id = airport.id
         self.simulation_time = simulation_time
@@ -102,7 +103,7 @@ class AvailabilityLog:
 
     def get_availability(self, simulation_time):
         '''
-        Returns the availability at the given simulation time. 
+        Returns the availability at the given simulation time.
         If there is no snapshot at exactly that time, it returns the most recent one before it.
         '''
         if not self.log:
