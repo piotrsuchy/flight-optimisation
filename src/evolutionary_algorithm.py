@@ -4,8 +4,8 @@ import numpy as np
 
 from .schedule import Schedule
 from .solution import Solution
-from .passenger_demand import generate_demand_array, visualize_demand
-from .decorators import timing_decorator
+from .passenger_demand import generate_demand_array# , visualize_demand
+# from .decorators import timing_decorator
 
 # parameters
 TICKET_PRICE = 1000
