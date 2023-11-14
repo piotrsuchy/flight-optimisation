@@ -1,23 +1,14 @@
 import copy
 import random
 import numpy as np
+import json
 
 from .schedule import Schedule
 from .solution import Solution
 from .passenger_demand import generate_demand_array# , visualize_demand
 # from .decorators import timing_decorator
-
-# parameters
-TICKET_PRICE = 1000
-PLANE_OPERATIONAL_COST_PER_HOUR = 2000
-PILOT_COST_PER_HOUR = 120
-ATTENDANT_COST_PER_HOUR = 80
-FLIGHT_CANCELLATION_COST_PER_PERSON = TICKET_PRICE * 1.5
-MAX_WEEKLY_HOURS = 60
-OVERWORK_PENALTY_PER_HOUR = PILOT_COST_PER_HOUR * 2
-DEFAULT_PLANE_CAPACITY = 500
-N_OF_FLIGHTS = 1000
-SIM_LEN = 720
+with open('parameters.json') as parameters_file:
+    config = json.load(parameters_file)
 
 
 class EvolutionaryAlgorithm:
@@ -37,7 +28,7 @@ class EvolutionaryAlgorithm:
                 sol_id + 1,
                 self.passenger_demand,
                 initial_structures,
-                SIM_LEN)
+                config['SIM_LEN'])
             sol.set_sol_ids(sol_id + 1)
             # population is a list of [sol, [revenue, op_costs, penalties]]
             self.population.append([sol, -1])
@@ -62,7 +53,7 @@ class EvolutionaryAlgorithm:
         for sol_list in self.population:
             sol_list[0].schedule = Schedule()
             sol_list[0].schedule.create_random_schedule(
-                sol_list[0], N_OF_FLIGHTS, 720, 42)
+                sol_list[0], config['N_OF_FLIGHTS'], 720, 42)
 
     # @timing_decorator
 
@@ -104,16 +95,16 @@ class EvolutionaryAlgorithm:
             if flight.status == "cancelled":
                 continue
 
-            revenue += flight.passengers * TICKET_PRICE
+            revenue += flight.passengers * config['TICKET_PRICE']
 
         # 2. Calculate Operational Costs
         for flight in sol.flights:
             if flight.status == "cancelled":
                 continue
             flight_duration = flight.duration
-            plane_cost = PLANE_OPERATIONAL_COST_PER_HOUR * flight_duration
-            pilot_cost = PILOT_COST_PER_HOUR * flight_duration
-            attendant_cost = ATTENDANT_COST_PER_HOUR * flight_duration
+            plane_cost = config['PLANE_OPERATIONAL_COST_PER_HOUR'] * flight_duration
+            pilot_cost = config['PILOT_COST_PER_HOUR'] * flight_duration
+            attendant_cost = config['ATTENDANT_COST_PER_HOUR'] * flight_duration
             operational_costs += plane_cost + 2 * pilot_cost + 4 * \
                 attendant_cost  # Assuming 2 pilots and 4 attendants
 
@@ -122,7 +113,7 @@ class EvolutionaryAlgorithm:
             if flight.delay != 0:
                 print(
                     f"Sol: {flight.sol.id} Calculating extra penalties for the delay of flight {flight.id}, {flight.delay}h")
-                delay_penalty = flight.delay * 2 * PLANE_OPERATIONAL_COST_PER_HOUR
+                delay_penalty = flight.delay * 2 * config['PLANE_OPERATIONAL_COST_PER_HOUR']
                 penalties += delay_penalty
 
             if flight.status == "cancelled":
@@ -133,21 +124,21 @@ class EvolutionaryAlgorithm:
 
                 # You can also add an upper limit based on a default plane
                 # capacity if required
-                filled_seats = min(demand, DEFAULT_PLANE_CAPACITY)
+                filled_seats = min(demand, config['DEFAULT_PLANE_CAPACITY'])
 
-                penalties += FLIGHT_CANCELLATION_COST_PER_PERSON * filled_seats
+                penalties += config['FLIGHT_CANCELLATION_COST_PER_PERSON'] * filled_seats
                 continue
 
             try:
                 for pilot in flight.pilots:
-                    if pilot.week_worked_hs > MAX_WEEKLY_HOURS:
-                        penalties += OVERWORK_PENALTY_PER_HOUR * \
-                            (pilot.week_worked_hs - MAX_WEEKLY_HOURS)
+                    if pilot.week_worked_hs > config['MAX_WEEKLY_HOURS']:
+                        penalties += config['OVERWORK_PENALTY_PER_HOUR'] * \
+                            (pilot.week_worked_hs - config['MAX_WEEKLY_HOURS'])
 
                 for attendant in flight.attendants:
-                    if attendant.week_worked_hs > MAX_WEEKLY_HOURS:
-                        penalties += OVERWORK_PENALTY_PER_HOUR * \
-                            (attendant.week_worked_hs - MAX_WEEKLY_HOURS)
+                    if attendant.week_worked_hs > config['MAX_WEEKLY_HOURS']:
+                        penalties += config['OVERWORK_PENALTY_PER_HOUR'] * \
+                            (attendant.week_worked_hs - config['MAX_WEEKLY_HOURS'])
             except TypeError:
                 print(
                     f"In sol: {sol.id} in flight: {flight.id} pilots or attendants are None")
