@@ -180,11 +180,13 @@ class Flight:
                 f"Flights {self.id}: Flight cancelled, reason unspecified.")
 
     def reset_state_after_mutation(self, sol):
-        self.plane.reset_state_after_mutation(self)
-        for pilot in self.pilots:
-            pilot.reset_state_after_mutation(self)
-        for attendant in self.attendants:
-            attendant.reset_state_after_mutation(self)
-        self.plane = None
-        self.pilots = None
-        self.attendants = None
+        if self.status != "cancelled":
+            print(f"Resetting the state for flight: {self}")
+            self.plane.reset_state_after_mutation(self)
+            for pilot in self.pilots:
+                pilot.reset_state_after_mutation(self)
+            for attendant in self.attendants:
+                attendant.reset_state_after_mutation(self)
+            self.plane = None
+            self.pilots = None
+            self.attendants = None

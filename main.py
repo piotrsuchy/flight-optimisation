@@ -27,6 +27,8 @@ def main():
     # evol_algo.print_schedules()
     evol_algo.run_events()
     evol_algo.update_all_fitness_scores()
+    sol, time = evol_algo.mutation_pilots()
+    evol_algo.reschedule_flights(sol, time)
     # evol_algo.print_revenue_and_costs()
     # Sort and print results for Roulette Selection
     # print("\nSorted Population using Roulette Selection:")

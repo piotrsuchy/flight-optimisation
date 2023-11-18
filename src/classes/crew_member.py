@@ -63,8 +63,8 @@ class Pilot:
             self.month_worked_hs -= duration
 
     def reset_state_after_mutation(self, flight):
-        self.current_base.remove_attendant(self)
-        flight.base_airport.add_attendant(self)
+        self.current_base.remove_pilot(self)
+        flight.base_airport.add_pilot(self)
 
         self.decrement_hours("day", flight.duration)
         self.decrement_hours("week", flight.duration)

@@ -54,5 +54,7 @@ class Plane:
             maintenance_time, self.base.availability_log.plane_maintenance_snapshot, self, simulation_time)
 
     def reset_state_after_mutation(self, flight):
+        flight.destination_airport.remove_plane(self)
+        flight.base_airport.add_plane(self)
         self.release()
         self.base = flight.base_airport

@@ -227,28 +227,40 @@ class EvolutionaryAlgorithm:
 
     def mutation_pilots(self):
         '''Make a random flight change the pilot / or pilots'''
-        random_sol = random.choice(self.population)
-        random_flight = random.choice(random_sol.flights)
+        random.seed(43)
+        random_sol_list = random.choice(self.population)
+        random.seed(42)
+        random_flight = random.choice(random_sol_list[0].flights)
+        print(f"Flight chosen: {random_flight}")
         simulation_time = random_flight.simulation_time
+        print(f"Simulation time: {simulation_time}")
         # old_pilots = random_flight.pilots
         base_airport = random_flight.base_airport
         log = base_airport.availability_log
-        availability = log.get_availability[random_flight.simulation_time]
-        new_pilots = random.choice(availability.pilots, 2)
+        availability = log.get_availability(random_flight.simulation_time)
+        new_pilots = random.sample(list(availability.pilots), 2)
         random_flight.pilots = new_pilots
-        return simulation_time
+        return random_sol_list[0], simulation_time
 
     def reschedule_flights(self, sol, mutation_time):
         # reschedule flights only after the mutation_time
         flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time]
+        flights_to_reschedule_ids = []
+        for flight in flights_to_reschedule:
+            flights_to_reschedule_ids.append((flight.id, int(flight.simulation_time)))
+        print(f"Flights to reschedule: {flights_to_reschedule_ids}")
+        print(f"Number of flights to reschedule: {len(flights_to_reschedule_ids)}")
 
         # remove the affected flights from the original schedule
-        for flight in flights_to_reschedule:
-            flight.reset_state_after_mutation()
+        for flight in flights_to_reschedule[::-1]:
+            print(f"Reseting the state after mutation for flight: {flight.id}")
+            flight.reset_state_after_mutation(sol)
 
         # Add back the flights to the schedule, which will now use the updated availablitity
         for flight in flights_to_reschedule:
-            sol.scheduler.schedule_event(flight.planned_flight_time, flight.start_flight)
+            print(f"Adding back the flight: {flight.id} to the schedule")
+            scheduled_time = flight.simulation_time
+            sol.scheduler.schedule_event(scheduled_time, flight.start_flight)
 
     def calculate_and_print_fitness_function_for_second_generation(
             self, population):
