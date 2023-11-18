@@ -12,30 +12,30 @@ from config import get_args, setup_logging
 
 def main():
     args = get_args()
-    print(f"ARGS: {args.log}")
+    # print(f"ARGS: {args.log}")
     setup_logging(args.log)
 
     initial_structures = Structures()
     evol_algo = EvolutionaryAlgorithm(
         initial_structures=initial_structures,
-        population_size=100)
+        population_size=1)
     evol_algo.initialize_population()
     evol_algo.assign_schedules_for_all_sols()
-    evol_algo.print_population()
+    # evol_algo.print_population()
     evol_algo.run_schedules()
-    evol_algo.print_population()
-    evol_algo.print_schedules()
+    # evol_algo.print_population()
+    # evol_algo.print_schedules()
     evol_algo.run_events()
     evol_algo.update_all_fitness_scores()
-    evol_algo.print_revenue_and_costs()
+    # evol_algo.print_revenue_and_costs()
     # Sort and print results for Roulette Selection
-    print("\nSorted Population using Roulette Selection:")
-    evol_algo.roulette_sort()
-    for individual in evol_algo.population:
-        print(
-            f"Individual: {individual[1]}, Fitness Score: {individual[0].fitness_score}")
+    # print("\nSorted Population using Roulette Selection:")
+    # evol_algo.roulette_sort()
+    # for individual in evol_algo.population:
+        # print(
+            # f"Individual: {individual[1]}, Fitness Score: {individual[0].fitness_score}")
 
-    test_availability(evol_algo)
+    # test_availability(evol_algo)
 
 
 if __name__ == "__main__":

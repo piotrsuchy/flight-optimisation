@@ -52,3 +52,7 @@ class Plane:
         simulation_time = scheduler_instance.current_simulation_time + maintenance_time
         scheduler_instance.schedule_event(
             maintenance_time, self.base.availability_log.plane_maintenance_snapshot, self, simulation_time)
+
+    def reset_state_after_mutation(self, flight):
+        self.release()
+        self.base = flight.base_airport

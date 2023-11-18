@@ -62,6 +62,19 @@ class Pilot:
         else:
             self.month_worked_hs -= duration
 
+    def reset_state_after_mutation(self, flight):
+        self.current_base.remove_attendant(self)
+        flight.base_airport.add_attendant(self)
+
+        self.decrement_hours("day", flight.duration)
+        self.decrement_hours("week", flight.duration)
+        self.decrement_hours("month", flight.duration)
+
+        self.current_base = flight.base_airport
+        self.flights_taken -= 1
+
+        self.release()
+
     def flight_start(self, duration, destination):
         self.current_base.remove_pilot(self)
         destination.add_pilot(self)
@@ -134,6 +147,19 @@ class FlightAttendant:
             self.week_worked_hs -= duration
         else:
             self.month_worked_hs -= duration
+
+    def reset_state_after_mutation(self, flight):
+        self.current_base.remove_attendant(self)
+        flight.base_airport.add_attendant(self)
+
+        self.decrement_hours("day", flight.duration)
+        self.decrement_hours("week", flight.duration)
+        self.decrement_hours("month", flight.duration)
+
+        self.current_base = flight.base_airport
+        self.flights_taken -= 1
+
+        self.release()
 
     def flight_start(self, duration, destination):
         self.current_base.remove_attendant(self)

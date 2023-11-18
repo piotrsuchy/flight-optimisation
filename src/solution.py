@@ -18,13 +18,13 @@ class Solution:
         self.simulation_hs = simulation_hs
         self.flights = []
         self.cancelled_flights = []
-        self.passengers_taken = 0
+        # self.passengers_taken = 0
         self.fitness_score = None
         self.events = None
         self.schedule = None
 
     def __str__(self):
-        return f"Sol ID: {self.id}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}, Fitness score: {self.fitness_score:.2e}, passengers taken: {self.passengers_taken}"
+        return f"Sol ID: {self.id}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}, Fitness score: {self.fitness_score:.2e}"
 
     @staticmethod
     def get_scheduler_by_id(sol_id):

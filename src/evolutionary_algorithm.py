@@ -48,7 +48,6 @@ class EvolutionaryAlgorithm:
             print(sol_list[0].schedule)
 
     # @timing_decorator
-
     def assign_schedules_for_all_sols(self):
         for sol_list in self.population:
             sol_list[0].schedule = Schedule()
@@ -91,11 +90,11 @@ class EvolutionaryAlgorithm:
         delay_penalty = 0
 
         # 1. Calculate Revenue
-        for flight in sol.flights:
-            if flight.status == "cancelled":
-                continue
+        # for flight in sol.flights:
+        #     if flight.status == "cancelled":
+        #         continue
 
-            revenue += flight.passengers * config['TICKET_PRICE']
+        #     revenue += flight.passengers * config['TICKET_PRICE']
 
         # 2. Calculate Operational Costs
         for flight in sol.flights:
@@ -231,30 +230,25 @@ class EvolutionaryAlgorithm:
         random_sol = random.choice(self.population)
         random_flight = random.choice(random_sol.flights)
         simulation_time = random_flight.simulation_time
-        old_pilots = random_flight.pilots
+        # old_pilots = random_flight.pilots
         base_airport = random_flight.base_airport
         log = base_airport.availability_log
         availability = log.get_availability[random_flight.simulation_time]
-        new_pilots = random.choice(availability.pilots)
+        new_pilots = random.choice(availability.pilots, 2)
         random_flight.pilots = new_pilots
         return simulation_time
 
-    def mutation_attendants(self):
-        '''Make a random flight change the x people from crew'''
-        pass
+    def reschedule_flights(self, sol, mutation_time):
+        # reschedule flights only after the mutation_time
+        flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time]
 
-    def mutate_solution(self, sol):
-        simulation_time = self.mutation_pilots(sol)
-        return sol, simulation_time
+        # remove the affected flights from the original schedule
+        for flight in flights_to_reschedule:
+            flight.reset_state_after_mutation()
 
-    def generate_second_generation(self):
-        second_gen = []
-
-        for i in range(self.population_size):
-            mutated_sol, simulation_time = self.mutate_solution(
-                copy.deepcopy(self.population[i][0]))
-            second_gen.append([mutated_sol, -1, simulation_time])
-        return second_gen
+        # Add back the flights to the schedule, which will now use the updated availablitity
+        for flight in flights_to_reschedule:
+            sol.scheduler.schedule_event(flight.planned_flight_time, flight.start_flight)
 
     def calculate_and_print_fitness_function_for_second_generation(
             self, population):

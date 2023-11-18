@@ -52,9 +52,6 @@ class Flight:
             return False
 
         available_planes = self.base_airport.get_available_planes()
-
-        available_planes = [
-            plane for plane in self.base_airport.planes if plane.is_available]
         if not available_planes:
             self.cancel_flight(self.sol, "plane")
             return False
@@ -63,23 +60,43 @@ class Flight:
         self.pilots = random.sample(available_pilots, 2)
         self.attendants = random.sample(available_attendants, 4)
         self.plane = random.choice(available_planes)
-        print(f"Printing self.pilots in assign_random_crew function")
-        print(self.pilots)
-        print(f"Printing self.attendants in assign_random_crew function")
-        print(self.attendants)
+        # print(f"Printing self.pilots in assign_random_crew function")
+        # print(self.pilots)
+        # print(f"Printing self.attendants in assign_random_crew function")
+        # print(self.attendants)
         return True
 
     def assign_crew(self):
-        # take the base airport
-        # take it's availability log
-        # based on the simulation_time
-        # we can know the available crew members
-        # we will take for example based on some
-        # heuristic like smallest ID
-        # or the first in the list
-        # or the least amount of worked hours
-        # and assign the crew to the flight
-        pass
+        available_pilots = self.base_airport.get_eligible_pilots()
+        if len(available_pilots) < 2:
+            self.cancel_flight(self.sol, "pilots")
+            return False
+
+        available_attendants = self.base_airport.get_eligible_attendants()
+        if len(available_attendants) < 4:
+            self.cancel_flight(self.sol, "attendants")
+            return False
+
+        available_planes = self.base_airport.get_available_planes()
+        if not available_planes:
+            self.cancel_flight(self.sol, "plane")
+            return False
+
+        # Assign the crew
+        self.pilots = available_pilots[:2]  # get the first 2 eligible pilots
+        self.attendants = available_attendants[:4]  # get the first 4 eligible attendants
+        self.plane = available_planes[0]  # get the first available plane
+
+        # Log the information about the assignment
+        logging.info(f"Assigned pilots for flight {self.id}: {[pilot.id for pilot in self.pilots]}")
+        logging.info(f"Assigned attendants for flight {self.id}: {[attendant.id for attendant in self.attendants]}")
+        logging.info(f"Assigned plane for flight {self.id}: {self.plane.id}")
+        logging.info(f"Available pilots: {[pilot.id for pilot in available_pilots]}")
+        logging.info(f"Available attendants: {[attendant.id for attendant in available_attendants]}")
+        logging.info(f"Available planes: {[plane.id for plane in available_planes]}")
+
+        return True
+        
 
     def start_flight(self):
         '''
@@ -93,7 +110,7 @@ class Flight:
         if self.pilots is None or self.attendants is None:
             logging.info(
                 f"For flight: {self.id}, crew assignment was performed.")
-            possible_assignment = self.assign_random_crew()
+            possible_assignment = self.assign_crew()
             if not possible_assignment:
                 logging.info(
                     f"The flight was cancelled at crew assignment phase")
@@ -117,10 +134,10 @@ class Flight:
         if self.distance is None or self.duration is None:
             self.set_dist_and_dur()
 
-        demand = self.sol.passenger_demand[self.base_airport.id -
-                                           1][self.destination_airport.id - 1][self.day_of_flight - 1]
-        self.passengers = min(demand, self.plane.capacity)
-        self.sol.passengers_taken += self.passengers
+        # demand = self.sol.passenger_demand[self.base_airport.id -
+        #                                   1][self.destination_airport.id - 1][self.day_of_flight - 1]
+        # self.passengers = min(demand, self.plane.capacity)
+        # self.sol.passengers_taken += self.passengers
 
         for pilot in self.pilots:
             pilot.flight_start(self.duration, self.destination_airport)
@@ -161,3 +178,13 @@ class Flight:
         else:
             logging.warning(
                 f"Flights {self.id}: Flight cancelled, reason unspecified.")
+
+    def reset_state_after_mutation(self, sol):
+        self.plane.reset_state_after_mutation(self)
+        for pilot in self.pilots:
+            pilot.reset_state_after_mutation(self)
+        for attendant in self.attendants:
+            attendant.reset_state_after_mutation(self)
+        self.plane = None
+        self.pilots = None
+        self.attendants = None
