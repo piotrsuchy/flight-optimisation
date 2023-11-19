@@ -184,6 +184,7 @@ class Flight:
             self.pilots = None
             self.attendants = None
         else:
+            print(f"Resetting for cancelled flight: {self}")
             self.status = "started"
             self.delay = 0
             sol.cancelled_flights.remove(self)

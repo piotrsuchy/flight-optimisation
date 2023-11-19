@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python main.py --log > logs/prints.txt
+python main.py --log > logs/prints.txt 2>&1

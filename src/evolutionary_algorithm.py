@@ -223,10 +223,10 @@ class EvolutionaryAlgorithm:
                 operation_costs - penalties
 
     # @timing_decorator
-    def print_revenue_and_costs(self):
+    def print_revenue_and_costs(self, iteration):
         for sol in self.population:
             print(
-                f"Sol: {sol[0]}, rev: {sol[1][0]:.2e}, op_costs: {sol[1][1]:.2e}, penalties: {sol[1][2]:.2e}, delay_penalties: {sol[1][2]:.2e}")
+                f"Iter: {iteration}, {sol[0]}, rev: {sol[1][0]:.2e}, op_costs: {sol[1][1]:.2e}, penalties: {sol[1][2]:.2e}, delay_penalties: {sol[1][2]:.2e}")
 
     def mutation_pilots(self):
         '''Make a random flight change the pilot / or pilots'''
@@ -234,6 +234,9 @@ class EvolutionaryAlgorithm:
         random_sol_list = random.choice(self.population)
         random.seed(42)
         random_flight = random.choice(random_sol_list[0].flights)
+        while random_flight.status == "cancelled":
+            print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
+            random_flight = random.choice(random_sol_list[0].flights)
         print(f"Flight chosen: {random_flight}")
         simulation_time = random_flight.simulation_time
         print(f"Simulation time: {simulation_time}")
@@ -284,6 +287,7 @@ class EvolutionaryAlgorithm:
 
     def evol_algo_loop(self, iterations_n):
         for i in range(iterations_n):
+            print(f"------------------------------------------------------------")
             print(f"Iteration number: {i}")
             sol, time = self.mutation_pilots()
             for airport in sol.structures.airports:
@@ -293,4 +297,4 @@ class EvolutionaryAlgorithm:
             self.reschedule_flights(sol, time)
             self.run_events()
             self.update_all_fitness_scores()
-            self.print_revenue_and_costs()
+            self.print_revenue_and_costs(i)

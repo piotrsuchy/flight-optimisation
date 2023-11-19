@@ -100,14 +100,14 @@ class Airport:
         
     def check_consistency(self):
         for plane in self.planes:
-            if plane.base != self.id:
-                logging.warning(f"Inconsistency found: Plane {plane.id} curr_base {plane.base.id} doesn't match Airport {self.id}")
+            if plane.base.id != self.id:
+                print(f"Inconsistency found: Plane {plane.id} curr_base {plane.base.id} doesn't match Airport {self.id}")
 
         for pilot in self.pilots:
-            if pilot.current_base != self.id:
-                logging.warning(f"Inconsistency found: Pilot {pilot.id} curr_base {pilot.current_base.id} doesn't match Airport {self.id}")
+            if pilot.current_base.id != self.id:
+                print(f"Inconsistency found: Pilot {pilot.id} curr_base {pilot.current_base.id} doesn't match Airport {self.id}")
             
         for attendant in self.attendants:
-            if attendant.current_base != self.id:
-                logging.warning(f"Inconsistency found: Attendant {attendant.id} curr_base {attendant.current_base.id} doesn't match Airport {self.id}")
+            if attendant.current_base.id != self.id:
+                print(f"Inconsistency found: Attendant {attendant.id} curr_base {attendant.current_base.id} doesn't match Airport {self.id}")
             
