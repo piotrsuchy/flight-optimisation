@@ -36,7 +36,9 @@ class Solution:
 
     def get_scheduler_events(self):
         self.all_events = self.scheduler.get_events()
-        return self.all_events
+        for event in self.all_events:
+            print(f"event: {event}")
+        # return self.all_events
 
     def set_sol_ids(self, sol_id):
         for airport in self.structures.airports:

@@ -104,8 +104,6 @@ class Flight:
         - assigning random crew if it has no pilot or attendant already assigned
         - incrementing total flights count and cancelled flights in Solution class
         - calling flight_start from POV of plane and crew
-
-        To change: 2 and 4 harcoded as the number of needed pilots and attendants respectively
         '''
         if self.pilots is None or self.attendants is None:
             logging.info(
@@ -133,11 +131,6 @@ class Flight:
 
         if self.distance is None or self.duration is None:
             self.set_dist_and_dur()
-
-        # demand = self.sol.passenger_demand[self.base_airport.id -
-        #                                   1][self.destination_airport.id - 1][self.day_of_flight - 1]
-        # self.passengers = min(demand, self.plane.capacity)
-        # self.sol.passengers_taken += self.passengers
 
         for pilot in self.pilots:
             pilot.flight_start(self.duration, self.destination_airport)
@@ -190,3 +183,5 @@ class Flight:
             self.plane = None
             self.pilots = None
             self.attendants = None
+        else:
+            sol.cancelled_flights.remove(self)

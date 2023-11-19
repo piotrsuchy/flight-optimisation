@@ -19,6 +19,7 @@ class EventScheduler():
         if function is None:
             print("Function is None!")
         event_time = self.current_simulation_time + delay
+        # print(f"Scheduling for time: {event_time}")
         event = Event(event_time, function, *args)
         heapq.heappush(self.events, event)
 
@@ -49,3 +50,6 @@ class EventScheduler():
         """Run until all events are processed."""
         while self.has_events():
             self.process_next_event()
+
+    def set_time(self, time):
+        self.current_simulation_time = time

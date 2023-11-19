@@ -54,8 +54,11 @@ class EvolutionaryAlgorithm:
             sol_list[0].schedule.create_random_schedule(
                 sol_list[0], config['N_OF_FLIGHTS'], 720, 42)
 
-    # @timing_decorator
+    def reset_schedulers(self, time):
+        for sol_list in self.population:
+            sol_list[0].scheduler.set_time(time)
 
+    # @timing_decorator
     def run_schedules(self):
         for sol_list in self.population:
             sol_list[0]._schedule_flights()
@@ -234,12 +237,21 @@ class EvolutionaryAlgorithm:
         print(f"Flight chosen: {random_flight}")
         simulation_time = random_flight.simulation_time
         print(f"Simulation time: {simulation_time}")
-        # old_pilots = random_flight.pilots
+        old_pilots = random_flight.pilots
         base_airport = random_flight.base_airport
         log = base_airport.availability_log
         availability = log.get_availability(random_flight.simulation_time)
         new_pilots = random.sample(list(availability.pilots), 2)
         random_flight.pilots = new_pilots
+        print(f"New pilots: {new_pilots}")
+        print(f"Old piltos: {old_pilots}")
+
+        if old_pilots:
+            for pilot in old_pilots:
+                availability.pilots.add(pilot)
+        for pilot in new_pilots:
+            availability.pilots.remove(pilot)
+
         return random_sol_list[0], simulation_time
 
     def reschedule_flights(self, sol, mutation_time):
@@ -260,14 +272,14 @@ class EvolutionaryAlgorithm:
         for flight in flights_to_reschedule:
             print(f"Adding back the flight: {flight.id} to the schedule")
             scheduled_time = flight.simulation_time
+            print(f"Scheduled time is: {scheduled_time} and the mutation time is: {mutation_time}")
             sol.scheduler.schedule_event(scheduled_time, flight.start_flight)
 
-    def calculate_and_print_fitness_function_for_second_generation(
-            self, population):
-        for solution in population:
-            revenue, operational_costs, penalties, delay_penalty = self.fitness_function(
-                solution[0])
-            print(
-                f"Revenue {revenue}, operational_costs: {operational_costs}, penalties: {penalties}, delay_penalty: {delay_penalty}")
-            fitness_score = revenue - operational_costs - penalties - delay_penalty
-            print(f"Final fitness score: {fitness_score}")
+    def evol_algo_loop(self, iterations_n):
+        for _ in range(iterations_n):
+            sol, time = self.mutation_pilots()
+            self.reset_schedulers(0)
+            self.reschedule_flights(sol, time)
+            self.run_events()
+            self.update_all_fitness_scores()
+            self.print_revenue_and_costs()

@@ -23,10 +23,22 @@ class Availability:
 
     def remove_flight(self, flight):
         for pilot in flight.pilots:
-            self.pilots.remove(pilot)
+            print(f"Removing pilot: {pilot} for flight {flight.id} from self.pilots set: {self.pilots}")
+            if pilot in self.pilots:
+                self.pilots.remove(pilot)
+            else:
+                print(f"Pilot: {pilot} not in self.pilots: {self.pilots}")
         for attendant in flight.attendants:
-            self.attendants.remove(attendant)
-        self.planes.remove(flight.plane)
+            print(f"Removing attendant: {attendant} for flight {flight.id} from self.attendants set: {self.pilots}")
+            if attendant in self.attendants:
+                self.attendants.remove(attendant)
+            else:
+                print(f"Attendant: {attendant} not in self.attendant: {self.attendants}")
+        print(f"Removing plane: {self.planes} for flight {flight.id} from self.plane set: {self.planes}")
+        if flight.plane in self.planes:
+            self.planes.remove(flight.plane)
+        else:
+            print(f"Plane: {flight.plane} not in self.planes: {self.planes}")
 
     def copy(self):
         copy_of_instance = Availability(
@@ -68,6 +80,7 @@ class AvailabilityLog:
         new_availability = last_availability.copy()
         new_availability.simulation_time = stimulation_time
 
+        print(f"Removing flight: {flight.id} for simulation_time: {stimulation_time} and new_availability has time: {new_availability.simulation_time}")
         new_availability.remove_flight(flight)
 
         self.log.append(new_availability)

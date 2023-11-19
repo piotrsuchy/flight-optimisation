@@ -21,14 +21,14 @@ def main():
         population_size=1)
     evol_algo.initialize_population()
     evol_algo.assign_schedules_for_all_sols()
-    # evol_algo.print_population()
     evol_algo.run_schedules()
-    # evol_algo.print_population()
-    # evol_algo.print_schedules()
     evol_algo.run_events()
     evol_algo.update_all_fitness_scores()
-    sol, time = evol_algo.mutation_pilots()
-    evol_algo.reschedule_flights(sol, time)
+    evol_algo.print_revenue_and_costs()
+    evol_algo.print_population()
+
+    # mutation
+    evol_algo.evol_algo_loop(100)
     # evol_algo.print_revenue_and_costs()
     # Sort and print results for Roulette Selection
     # print("\nSorted Population using Roulette Selection:")

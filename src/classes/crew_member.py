@@ -28,6 +28,7 @@ class Pilot:
         self.sol_id = None
 
     def __repr__(self):
+        return f"Pilot ID: {self.id}"
         return f"Pilot ID: {self.id}, sol_id: {self.sol_id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}"
 
     def set_sol_id(self, sol_id):
