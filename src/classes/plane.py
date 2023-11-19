@@ -25,6 +25,7 @@ class Plane:
         self.sol_id = sol_id
 
     def __repr__(self):
+        return f"Plane ID: {self.id}, base: {self.base.id}"
         return f"Plane id: {self.id}, capacity: {self.capacity}, speed: {self.speed}, base: {self.base}"
 
     def __str__(self):

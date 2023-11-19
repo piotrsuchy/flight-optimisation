@@ -56,6 +56,9 @@ class AvailabilityLog:
         self.airport = airport
         self.log = []
 
+    def __str__(self):
+        return f"AvailabilityLog(airport_id={self.airport.id})"
+
     def add_snapshot(self, simulation_time):
         '''
         Adds a new snapshot of availability at the given simulation time by checking
@@ -132,5 +135,5 @@ class AvailabilityLog:
         # if all snapshots in the future - return the first one
         return self.log[0]
 
-    def __str__(self):
-        return f"AvailabilityLog(airport_id={self.airport.id})"
+    def clear_logs_after_timestamp(self, timestamp):
+        self.log = [snapshot for snapshot in self.log if snapshot.simulation_time <= timestamp]

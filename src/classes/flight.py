@@ -184,4 +184,6 @@ class Flight:
             self.pilots = None
             self.attendants = None
         else:
+            self.status = "started"
+            self.delay = 0
             sol.cancelled_flights.remove(self)

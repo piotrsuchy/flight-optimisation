@@ -257,11 +257,14 @@ class EvolutionaryAlgorithm:
     def reschedule_flights(self, sol, mutation_time):
         # reschedule flights only after the mutation_time
         flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time]
-        flights_to_reschedule_ids = []
-        for flight in flights_to_reschedule:
-            flights_to_reschedule_ids.append((flight.id, int(flight.simulation_time)))
-        print(f"Flights to reschedule: {flights_to_reschedule_ids}")
-        print(f"Number of flights to reschedule: {len(flights_to_reschedule_ids)}")
+        # flights_to_reschedule_ids = []
+        # for flight in flights_to_reschedule:
+        #     flights_to_reschedule_ids.append((flight.id, int(flight.simulation_time)))
+        # print(f"Flights to reschedule: {flights_to_reschedule_ids}")
+        # print(f"Number of flights to reschedule: {len(flights_to_reschedule_ids)}")
+
+        for airport in sol.structures.airports:
+            airport.check_consistency()
 
         # remove the affected flights from the original schedule
         for flight in flights_to_reschedule[::-1]:
@@ -275,10 +278,18 @@ class EvolutionaryAlgorithm:
             print(f"Scheduled time is: {scheduled_time} and the mutation time is: {mutation_time}")
             sol.scheduler.schedule_event(scheduled_time, flight.start_flight)
 
+    def reset_logs(self, sol, mutation_time):
+        for airport in sol.structures.airports:
+            airport.availability_log.clear_logs_after_timestamp(mutation_time)
+
     def evol_algo_loop(self, iterations_n):
-        for _ in range(iterations_n):
+        for i in range(iterations_n):
+            print(f"Iteration number: {i}")
             sol, time = self.mutation_pilots()
+            for airport in sol.structures.airports:
+                airport.check_consistency()
             self.reset_schedulers(0)
+            self.reset_logs(sol, time)
             self.reschedule_flights(sol, time)
             self.run_events()
             self.update_all_fitness_scores()

@@ -5,6 +5,7 @@ number of take offs and landings the airport
 can handle in any given time frame due to capacity
 '''
 import random
+import logging
 from src.solution import Solution
 from .availability import AvailabilityLog
 
@@ -78,6 +79,7 @@ class Airport:
         self.attendants.append(attendant)
 
     def remove_plane(self, plane):
+        print(f"Will try to remove plane: {plane} from self.planes: {self.planes}")
         try:
             self.planes.remove(plane)
         except KeyError:
@@ -95,3 +97,17 @@ class Airport:
         except ValueError:
             print(
                 f"Error in function remove_attendant() for airport {self.id}")
+        
+    def check_consistency(self):
+        for plane in self.planes:
+            if plane.base != self.id:
+                logging.warning(f"Inconsistency found: Plane {plane.id} curr_base {plane.base.id} doesn't match Airport {self.id}")
+
+        for pilot in self.pilots:
+            if pilot.current_base != self.id:
+                logging.warning(f"Inconsistency found: Pilot {pilot.id} curr_base {pilot.current_base.id} doesn't match Airport {self.id}")
+            
+        for attendant in self.attendants:
+            if attendant.current_base != self.id:
+                logging.warning(f"Inconsistency found: Attendant {attendant.id} curr_base {attendant.current_base.id} doesn't match Airport {self.id}")
+            
