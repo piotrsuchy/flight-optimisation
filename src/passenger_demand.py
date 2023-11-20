@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 def generate_demand_array(airports, days=30):
     num_airports = len(airports)
     # Creating a 3D array with dimensions [num_airports][num_airports][days]
+    # print(f"Type num_airports: {type(num_airports)}, type days: {}")
     demand_array = np.zeros((num_airports, num_airports, days), dtype=int)
 
     for day in range(days):

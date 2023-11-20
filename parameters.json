@@ -12,5 +12,9 @@
     "SIM_LEN": 720,
     "SEED_1": 42,
     "SEED_2": 43,
-    "PILOTS_PER_PLANE": 2
+    "PILOTS_PER_PLANE": 2,
+    "N_AIRPORTS": 10,
+    "N_PLANES_F_A": 5,
+    "N_ATTENDANTS_F_A": 10,
+    "N_PILOTS_F_A": 2
 }

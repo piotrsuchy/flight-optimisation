@@ -1,14 +1,17 @@
 import logging
 import random
+import json
 
 from .classes.airport import Airport
 from .classes.plane import Plane
 from .classes.crew_member import Pilot, FlightAttendant
 
+with open('parameters.json') as parameters_file:
+    config = json.load(parameters_file)
 
 class Structures:
-    def __init__(self, n_airports=10, n_pilots_f_a=6,
-                 n_attendants_f_a=12, n_planes_f_a=3):
+    def __init__(self, n_airports=config["N_AIRPORTS"], n_pilots_f_a=config["N_PILOTS_F_A"],
+                 n_attendants_f_a=config["N_ATTENDANTS_F_A"], n_planes_f_a=config["N_PLANES_F_A"]):
         self.airports = []
         self.n_airports = n_airports
         self.n_pilots_f_a = n_pilots_f_a
