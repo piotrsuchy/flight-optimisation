@@ -18,7 +18,7 @@ class EvolutionaryAlgorithm:
         self.population = []
         self.initial_structures = initial_structures
         self.passenger_demand = generate_demand_array(
-            self.initial_structures.airports, config["SIM_LEN"]/24)
+            self.initial_structures.airports, config["SIM_LEN"]//24)
 
     # @timing_decorator
     def initialize_population(self):
@@ -230,32 +230,35 @@ class EvolutionaryAlgorithm:
 
     def mutation_pilots(self):
         '''Make a random flight change the pilot / or pilots'''
-        random.seed(config['SEED_2'])
-        random_sol_list = random.choice(self.population)
-        random.seed(config['SEED_1'])
-        random_flight = random.choice(random_sol_list[0].flights)
-        while random_flight.status == "cancelled":
-            print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
+        try:
+            random.seed(config['SEED_2'])
+            random_sol_list = random.choice(self.population)
+            random.seed(config['SEED_1'])
             random_flight = random.choice(random_sol_list[0].flights)
-        print(f"Flight chosen: {random_flight}")
-        simulation_time = random_flight.simulation_time
-        print(f"Simulation time: {simulation_time}")
-        old_pilots = random_flight.pilots
-        base_airport = random_flight.base_airport
-        log = base_airport.availability_log
-        availability = log.get_availability(random_flight.simulation_time)
-        new_pilots = random.sample(list(availability.pilots), config['PILOTS_PER_PLANE'])
-        random_flight.pilots = new_pilots
-        print(f"New pilots: {new_pilots}")
-        print(f"Old piltos: {old_pilots}")
+            while random_flight.status == "cancelled":
+                print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
+                random_flight = random.choice(random_sol_list[0].flights)
+            print(f"Flight chosen: {random_flight}")
+            simulation_time = random_flight.simulation_time
+            print(f"Simulation time: {simulation_time}")
+            old_pilots = random_flight.pilots
+            base_airport = random_flight.base_airport
+            log = base_airport.availability_log
+            availability = log.get_availability(random_flight.simulation_time)
+            new_pilots = random.sample(list(availability.pilots), config['PILOTS_PER_PLANE'])
+            random_flight.pilots = new_pilots
+            print(f"New pilots: {new_pilots}")
+            print(f"Old piltos: {old_pilots}")
 
-        if old_pilots:
-            for pilot in old_pilots:
-                availability.pilots.add(pilot)
-        for pilot in new_pilots:
-            availability.pilots.remove(pilot)
+            if old_pilots:
+                for pilot in old_pilots:
+                    availability.pilots.add(pilot)
+            for pilot in new_pilots:
+                availability.pilots.remove(pilot)
 
-        return random_sol_list[0], simulation_time
+            return random_sol_list[0], simulation_time
+        except ValueError as e:
+            return f"An error occurred during pilot mutation: {e}"
 
     def reschedule_flights(self, sol, mutation_time):
         # reschedule flights only after the mutation_time
@@ -289,9 +292,18 @@ class EvolutionaryAlgorithm:
         for i in range(iterations_n):
             print(f"------------------------------------------------------------")
             print(f"Iteration number: {i}")
-            sol, time = self.mutation_pilots()
+
+            mutation_successful = False
+            while not mutation_successful:
+                try:
+                    sol, time = self.mutation_pilots()
+                    mutation_successful = True
+                except ValueError:
+                    print("Error during mutation. Retrying with a different flight.")
+
             for airport in sol.structures.airports:
                 airport.check_consistency()
+
             self.reset_schedulers(0)
             self.reset_logs(sol, time)
             self.reschedule_flights(sol, time)
