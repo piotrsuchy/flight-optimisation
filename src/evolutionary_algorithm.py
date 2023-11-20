@@ -13,12 +13,12 @@ with open('parameters.json') as parameters_file:
 
 class EvolutionaryAlgorithm:
     # s@timing_decorator
-    def __init__(self, initial_structures, population_size=100):
+    def __init__(self, initial_structures, population_size=config["POPULATION_SIZE"]):
         self.population_size = population_size
         self.population = []
         self.initial_structures = initial_structures
         self.passenger_demand = generate_demand_array(
-            self.initial_structures.airports, 30)
+            self.initial_structures.airports, config["SIM_LEN"]/24)
 
     # @timing_decorator
     def initialize_population(self):
@@ -52,7 +52,7 @@ class EvolutionaryAlgorithm:
         for sol_list in self.population:
             sol_list[0].schedule = Schedule()
             sol_list[0].schedule.create_random_schedule(
-                sol_list[0], config['N_OF_FLIGHTS'], 720, 42)
+                sol_list[0], config['N_OF_FLIGHTS'], config['SIM_LEN'], config['SEED_1'])
 
     def reset_schedulers(self, time):
         for sol_list in self.population:
@@ -230,9 +230,9 @@ class EvolutionaryAlgorithm:
 
     def mutation_pilots(self):
         '''Make a random flight change the pilot / or pilots'''
-        random.seed(43)
+        random.seed(config['SEED_2'])
         random_sol_list = random.choice(self.population)
-        random.seed(42)
+        random.seed(config['SEED_1'])
         random_flight = random.choice(random_sol_list[0].flights)
         while random_flight.status == "cancelled":
             print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
@@ -244,7 +244,7 @@ class EvolutionaryAlgorithm:
         base_airport = random_flight.base_airport
         log = base_airport.availability_log
         availability = log.get_availability(random_flight.simulation_time)
-        new_pilots = random.sample(list(availability.pilots), 2)
+        new_pilots = random.sample(list(availability.pilots), config['PILOTS_PER_PLANE'])
         random_flight.pilots = new_pilots
         print(f"New pilots: {new_pilots}")
         print(f"Old piltos: {old_pilots}")
