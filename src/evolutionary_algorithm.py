@@ -228,8 +228,8 @@ class EvolutionaryAlgorithm:
             print(
                 f"Iter: {iteration}, {sol[0]}, rev: {sol[1][0]:.2e}, op_costs: {sol[1][1]:.2e}, penalties: {sol[1][2]:.2e}, delay_penalties: {sol[1][2]:.2e}")
 
-    def mutation_pilots(self):
-        '''Make a random flight change the pilot / or pilots'''
+    def mutation_attendants(self):
+        '''Make a random flight change the attendant / or attendants'''
         try:
             # random.seed(config['SEED_2'])
             random_sol_list = random.choice(self.population)
@@ -241,24 +241,56 @@ class EvolutionaryAlgorithm:
             print(f"Flight chosen: {random_flight}")
             simulation_time = random_flight.simulation_time
             print(f"Simulation time: {simulation_time}")
-            old_pilots = random_flight.pilots
+            old_attendants = random_flight.attendants
             base_airport = random_flight.base_airport
             log = base_airport.availability_log
             availability = log.get_availability(random_flight.simulation_time)
-            new_pilots = random.sample(list(availability.pilots), config['PILOTS_PER_PLANE'])
-            random_flight.pilots = new_pilots
-            print(f"New pilots: {new_pilots}")
-            print(f"Old piltos: {old_pilots}")
+            new_attendants = random.sample(list(availability.attendants), config['ATTENDANTS_PER_PLANE'])
+            random_flight.attendants = new_attendants
+            # print(f"New pilots: {new_attendants}")
+            # print(f"Old piltos: {old_attendants}")
 
-            if old_pilots:
-                for pilot in old_pilots:
-                    availability.pilots.add(pilot)
-            for pilot in new_pilots:
-                availability.pilots.remove(pilot)
+            if old_attendants:
+                for attendant in old_attendants:
+                    availability.attendants.add(attendant)
+            for attendant in old_attendants:
+                availability.attendants.remove(attendant)
 
             return random_sol_list[0], simulation_time
         except ValueError as e:
-            return f"An error occurred during pilot mutation: {e}"
+            return f"An error occurred during attendants mutation: {e}"
+
+    def mutation_pilots(self, sol):
+        '''Make a random flight change the pilot / or pilots'''
+        # random.seed(config['SEED_1'])
+        random_flight = random.choice(sol.flights)
+        while random_flight.status == "cancelled":
+            print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
+            random_flight = random.choice(sol.flights)
+        print(f"Flight chosen: {random_flight}")
+        simulation_time = random_flight.simulation_time
+        print(f"Simulation time: {simulation_time}")
+        old_pilots = random_flight.pilots
+        base_airport = random_flight.base_airport
+        log = base_airport.availability_log
+        availability = log.get_availability(random_flight.simulation_time)
+        new_pilots = random.sample(list(availability.pilots), config['PILOTS_PER_PLANE'])
+        random_flight.pilots = new_pilots
+        print(f"New pilots: {new_pilots}")
+        print(f"Old piltos: {old_pilots}")
+
+        if old_pilots:
+            for pilot in old_pilots:
+                availability.pilots.add(pilot)
+        for pilot in new_pilots:
+            availability.pilots.remove(pilot)
+
+        return simulation_time
+
+    def crossover(self, sol1, sol2):
+        '''Take two solutions and perform swap of crews?'''
+        sol1.print_flights()
+        sol2.print_flights()
 
     def reschedule_flights(self, sol, mutation_time):
         # reschedule flights only after the mutation_time
@@ -282,12 +314,12 @@ class EvolutionaryAlgorithm:
         for airport in sol.structures.airports:
             airport.availability_log.clear_logs_after_timestamp(mutation_time)
 
-    def evol_algo_loop(self, iterations_n):
+    def evol_algo_loop(self, iterations_n, sol):
         for i in range(iterations_n):
             mutation_successful = False
             while not mutation_successful:
                 try:
-                    sol, time = self.mutation_pilots()
+                    time = self.mutation_pilots(sol)
                     mutation_successful = True
                 except ValueError:
                     print("Error during mutation. Retrying with a different flight.")
