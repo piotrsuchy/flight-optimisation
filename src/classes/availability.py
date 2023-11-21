@@ -22,23 +22,26 @@ class Availability:
         return f"airport_id: {self.airport_id}, pilots: {self.pilots}, attendants: {self.attendants}"
 
     def remove_flight(self, flight):
-        for pilot in flight.pilots:
-            print(f"Removing pilot: {pilot} for flight {flight.id} from self.pilots set: {self.pilots}")
-            if pilot in self.pilots:
-                self.pilots.remove(pilot)
+        if flight.status != "cancelled":
+            for pilot in flight.pilots:
+                print(f"Removing pilot: {pilot} for flight {flight.id} from self.pilots set: {self.pilots}")
+                if pilot in self.pilots:
+                    self.pilots.remove(pilot)
+                else:
+                    print(f"Pilot: {pilot} not in self.pilots: {self.pilots}")
+            for attendant in flight.attendants:
+                print(f"Removing attendant: {attendant} for flight {flight.id} from self.attendants set: {self.pilots}")
+                if attendant in self.attendants:
+                    self.attendants.remove(attendant)
+                else:
+                    print(f"Attendant: {attendant} not in self.attendant: {self.attendants}")
+            print(f"Removing plane: {self.planes} for flight {flight.id} from self.plane set: {self.planes}")
+            if flight.plane in self.planes:
+                self.planes.remove(flight.plane)
             else:
-                print(f"Pilot: {pilot} not in self.pilots: {self.pilots}")
-        for attendant in flight.attendants:
-            print(f"Removing attendant: {attendant} for flight {flight.id} from self.attendants set: {self.pilots}")
-            if attendant in self.attendants:
-                self.attendants.remove(attendant)
-            else:
-                print(f"Attendant: {attendant} not in self.attendant: {self.attendants}")
-        print(f"Removing plane: {self.planes} for flight {flight.id} from self.plane set: {self.planes}")
-        if flight.plane in self.planes:
-            self.planes.remove(flight.plane)
+                print(f"Plane: {flight.plane} not in self.planes: {self.planes}")
         else:
-            print(f"Plane: {flight.plane} not in self.planes: {self.planes}")
+            print(f"Flight was cancelled so no need to remove Nones")
 
     def copy(self):
         copy_of_instance = Availability(
