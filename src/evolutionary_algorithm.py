@@ -231,9 +231,9 @@ class EvolutionaryAlgorithm:
     def mutation_pilots(self):
         '''Make a random flight change the pilot / or pilots'''
         try:
-            random.seed(config['SEED_2'])
+            # random.seed(config['SEED_2'])
             random_sol_list = random.choice(self.population)
-            random.seed(config['SEED_1'])
+            # random.seed(config['SEED_1'])
             random_flight = random.choice(random_sol_list[0].flights)
             while random_flight.status == "cancelled":
                 print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
@@ -263,18 +263,12 @@ class EvolutionaryAlgorithm:
     def reschedule_flights(self, sol, mutation_time):
         # reschedule flights only after the mutation_time
         flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time]
-        # flights_to_reschedule_ids = []
-        # for flight in flights_to_reschedule:
-        #     flights_to_reschedule_ids.append((flight.id, int(flight.simulation_time)))
-        # print(f"Flights to reschedule: {flights_to_reschedule_ids}")
-        # print(f"Number of flights to reschedule: {len(flights_to_reschedule_ids)}")
 
         for airport in sol.structures.airports:
             airport.check_consistency()
 
         # remove the affected flights from the original schedule
         for flight in flights_to_reschedule[::-1]:
-            print(f"Reseting the state after mutation for flight: {flight.id}")
             flight.reset_state_after_mutation(sol)
 
         # Add back the flights to the schedule, which will now use the updated availablitity
@@ -290,9 +284,6 @@ class EvolutionaryAlgorithm:
 
     def evol_algo_loop(self, iterations_n):
         for i in range(iterations_n):
-            print(f"------------------------------------------------------------")
-            print(f"Iteration number: {i}")
-
             mutation_successful = False
             while not mutation_successful:
                 try:
