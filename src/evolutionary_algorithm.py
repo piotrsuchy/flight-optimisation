@@ -6,6 +6,7 @@ import json
 from .schedule import Schedule
 from .solution import Solution
 from .passenger_demand import generate_demand_array# , visualize_demand
+
 # from .decorators import timing_decorator
 with open('parameters.json') as parameters_file:
     config = json.load(parameters_file)

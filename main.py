@@ -18,7 +18,7 @@ def main():
     initial_structures = Structures()
     evol_algo = EvolutionaryAlgorithm(
         initial_structures=initial_structures,
-        population_size=1)
+        population_size=2)
     evol_algo.initialize_population()
     evol_algo.assign_schedules_for_all_sols()
     evol_algo.run_schedules()
@@ -28,7 +28,12 @@ def main():
     evol_algo.print_population()
 
     # mutation
-    evol_algo.evol_algo_loop(100)
+    for sol_list in evol_algo.population:
+        sol = sol_list[0]
+        evol_algo.evol_algo_loop(100, sol)
+
+    print(f"Crossover Check")
+    evol_algo.crossover(evol_algo.population[0][0], evol_algo.population[1][0])
     # evol_algo.print_revenue_and_costs()
     # Sort and print results for Roulette Selection
     # print("\nSorted Population using Roulette Selection:")

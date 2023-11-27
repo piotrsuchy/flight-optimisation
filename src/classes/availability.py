@@ -139,4 +139,7 @@ class AvailabilityLog:
         return self.log[0]
 
     def clear_logs_after_timestamp(self, timestamp):
-        self.log = [snapshot for snapshot in self.log if snapshot.simulation_time <= timestamp]
+        try:
+            self.log = [snapshot for snapshot in self.log if snapshot.simulation_time <= timestamp]
+        except TypeError:
+            print(f"type(snapshot.simulation_time): {type(self.log[0].simulation_time)} type(timestamp): {timestamp}")
