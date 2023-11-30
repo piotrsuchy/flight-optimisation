@@ -1,4 +1,5 @@
 import time
+import json
 from src.structures import Structures
 from src.evolutionary_algorithm import EvolutionaryAlgorithm
 from src.decorators import timing_decorator
@@ -11,6 +12,9 @@ from config import get_args, setup_logging
 
 
 def main():
+    with open('parameters.json') as parameters_file:
+        config = json.load(parameters_file)
+
     args = get_args()
     # print(f"ARGS: {args.log}")
     setup_logging(args.log)
@@ -18,7 +22,7 @@ def main():
     initial_structures = Structures()
     evol_algo = EvolutionaryAlgorithm(
         initial_structures=initial_structures,
-        population_size=2)
+        population_size=config['algo']['POPULATION_SIZE'])
     evol_algo.initialize_population()
     evol_algo.assign_schedules_for_all_sols()
     evol_algo.run_schedules()
@@ -28,19 +32,7 @@ def main():
     evol_algo.print_population()
 
     # mutation
-    for sol_list in evol_algo.population:
-        sol = sol_list[0]
-        evol_algo.evol_algo_loop(100, sol)
-
-    print(f"Crossover Check")
-    evol_algo.crossover(evol_algo.population[0][0], evol_algo.population[1][0])
-    # evol_algo.print_costs()
-    # Sort and print results for Roulette Selection
-    # print("\nSorted Population using Roulette Selection:")
-    # evol_algo.roulette_sort()
-    # for individual in evol_algo.population:
-        # print(
-            # f"Individual: {individual[1]}, Fitness Score: {individual[0].fitness_score}")
+    evol_algo.evol_algo_loop(config['algo']['N_ITERATIONS'])
 
     # test_availability(evol_algo)
 

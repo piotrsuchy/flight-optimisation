@@ -14,22 +14,22 @@ with open('parameters.json') as parameters_file:
 
 class EvolutionaryAlgorithm:
     # s@timing_decorator
-    def __init__(self, initial_structures, population_size=config["POPULATION_SIZE"]):
+    def __init__(self, initial_structures, population_size=config['algo']['POPULATION_SIZE']):
         self.population_size = population_size
         self.population = []
         self.initial_structures = initial_structures
         self.passenger_demand = generate_demand_array(
-            self.initial_structures.airports, config["SIM_LEN"]//24)
+            self.initial_structures.airports, config['sim']['SIM_LEN']//24)
 
     # @timing_decorator
     def initialize_population(self):
-        for sol_id in range(self.population_size):
+        for sol_id in range(len(self.population), self.population_size):
             initial_structures = copy.deepcopy(self.initial_structures)
             sol = Solution(
                 sol_id + 1,
                 self.passenger_demand,
                 initial_structures,
-                config['SIM_LEN'])
+                config['sim']['SIM_LEN'])
             sol.set_sol_ids(sol_id + 1)
             # population is a list of [sol, [op_costs, penalties]]
             self.population.append([sol, -1])
@@ -53,7 +53,7 @@ class EvolutionaryAlgorithm:
         for sol_list in self.population:
             sol_list[0].schedule = Schedule()
             sol_list[0].schedule.create_random_schedule(
-                sol_list[0], config['N_OF_FLIGHTS'], config['SIM_LEN'], config['SEED_1'])
+                sol_list[0], config['sim']['N_OF_FLIGHTS'], config['sim']['SIM_LEN'], config['structs']['SEED_1'])
 
     def reset_schedulers(self, time):
         for sol_list in self.population:
@@ -94,12 +94,14 @@ class EvolutionaryAlgorithm:
 
         # 2. Calculate Operational Costs
         for flight in sol.flights:
-            if flight.status == "cancelled":
+            if flight.status != "completed":
                 continue
             flight_duration = flight.duration
-            plane_cost = config['PLANE_OPERATIONAL_COST_PER_HOUR'] * flight_duration
-            pilot_cost = config['PILOT_COST_PER_HOUR'] * flight_duration
-            attendant_cost = config['ATTENDANT_COST_PER_HOUR'] * flight_duration
+            print(f"Flight duration: {flight_duration}")
+            print(f"Flight status: {flight.status}")
+            plane_cost = config['sim']['PLANE_OPERATIONAL_COST_PER_HOUR'] * flight_duration
+            pilot_cost = config['sim']['PILOT_COST_PER_HOUR'] * flight_duration
+            attendant_cost = config['sim']['ATTENDANT_COST_PER_HOUR'] * flight_duration
             operational_costs += plane_cost + 2 * pilot_cost + 4 * \
                 attendant_cost  # Assuming 2 pilots and 4 attendants
 
@@ -108,7 +110,7 @@ class EvolutionaryAlgorithm:
             if flight.delay != 0:
                 print(
                     f"Sol: {flight.sol.id} Calculating extra penalties for the delay of flight {flight.id}, {flight.delay}h")
-                delay_penalty = flight.delay * 2 * config['PLANE_OPERATIONAL_COST_PER_HOUR']
+                delay_penalty = flight.delay * 2 * config['sim']['PLANE_OPERATIONAL_COST_PER_HOUR']
                 penalties += delay_penalty
 
             if flight.status == "cancelled":
@@ -119,21 +121,21 @@ class EvolutionaryAlgorithm:
 
                 # You can also add an upper limit based on a default plane
                 # capacity if required
-                filled_seats = min(demand, config['DEFAULT_PLANE_CAPACITY'])
+                filled_seats = min(demand, config['sim']['DEFAULT_PLANE_CAPACITY'])
 
-                penalties += config['FLIGHT_CANCELLATION_COST_PER_PERSON'] * filled_seats
+                penalties += config['sim']['FLIGHT_CANCELLATION_COST_PER_PERSON'] * filled_seats
                 continue
 
             try:
                 for pilot in flight.pilots:
-                    if pilot.week_worked_hs > config['MAX_WEEKLY_HOURS']:
-                        penalties += config['OVERWORK_PENALTY_PER_HOUR'] * \
-                            (pilot.week_worked_hs - config['MAX_WEEKLY_HOURS'])
+                    if pilot.week_worked_hs > config['sim']['MAX_WEEKLY_HOURS']:
+                        penalties += config['sim']['OVERWORK_PENALTY_PER_HOUR'] * \
+                            (pilot.week_worked_hs - config['sim']['MAX_WEEKLY_HOURS'])
 
                 for attendant in flight.attendants:
-                    if attendant.week_worked_hs > config['MAX_WEEKLY_HOURS']:
-                        penalties += config['OVERWORK_PENALTY_PER_HOUR'] * \
-                            (attendant.week_worked_hs - config['MAX_WEEKLY_HOURS'])
+                    if attendant.week_worked_hs > config['sim']['MAX_WEEKLY_HOURS']:
+                        penalties += config['sim']['OVERWORK_PENALTY_PER_HOUR'] * \
+                            (attendant.week_worked_hs - config['sim']['MAX_WEEKLY_HOURS'])
             except TypeError:
                 print(
                     f"In sol: {sol.id} in flight: {flight.id} pilots or attendants are None")
@@ -162,6 +164,7 @@ class EvolutionaryAlgorithm:
 
     def rank_selection(self):
         '''This function selects a solution using rank selection'''
+        print(f"Sorted pop: {self.population}")
         sorted_population = sorted(
             self.population, key=lambda sol: sol[0].fitness_score)
         rank_sum = len(sorted_population) * (len(sorted_population) + 1) / 2
@@ -223,9 +226,9 @@ class EvolutionaryAlgorithm:
     def mutation_attendants(self):
         '''Make a random flight change the attendant / or attendants'''
         try:
-            # random.seed(config['SEED_2'])
+            # random.seed(config['structs']['SEED_2'])
             random_sol_list = random.choice(self.population)
-            # random.seed(config['SEED_1'])
+            # random.seed(config['structs']['SEED_1'])
             random_flight = random.choice(random_sol_list[0].flights)
             while random_flight.status == "cancelled":
                 print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
@@ -237,7 +240,7 @@ class EvolutionaryAlgorithm:
             base_airport = random_flight.base_airport
             log = base_airport.availability_log
             availability = log.get_availability(random_flight.simulation_time)
-            new_attendants = random.sample(list(availability.attendants), config['ATTENDANTS_PER_PLANE'])
+            new_attendants = random.sample(list(availability.attendants), config['sim']['ATTENDANTS_PER_PLANE'])
             random_flight.attendants = new_attendants
             # print(f"New pilots: {new_attendants}")
             # print(f"Old piltos: {old_attendants}")
@@ -254,7 +257,7 @@ class EvolutionaryAlgorithm:
 
     def mutation_pilots(self, sol):
         '''Make a random flight change the pilot / or pilots'''
-        # random.seed(config['SEED_1'])
+        # random.seed(config['structs]['SEED_1'])
         random_flight = random.choice(sol.flights)
         while random_flight.status == "cancelled":
             print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
@@ -266,7 +269,7 @@ class EvolutionaryAlgorithm:
         base_airport = random_flight.base_airport
         log = base_airport.availability_log
         availability = log.get_availability(random_flight.simulation_time)
-        new_pilots = random.sample(list(availability.pilots), config['PILOTS_PER_PLANE'])
+        new_pilots = random.sample(list(availability.pilots), config['structs']['PILOTS_PER_PLANE'])
         random_flight.pilots = new_pilots
         print(f"New pilots: {new_pilots}")
         print(f"Old piltos: {old_pilots}")
@@ -306,8 +309,22 @@ class EvolutionaryAlgorithm:
         for airport in sol.structures.airports:
             airport.availability_log.clear_logs_after_timestamp(mutation_time)
 
-    def evol_algo_loop(self, iterations_n, sol):
-        for i in range(iterations_n):
+    def evol_algo_loop(self, iterations_n):
+        '''
+        Function responsible for the actual evolutionary algorithm loop
+        Has following sections: selection, mutation, (crossover), creation of a new generation
+        '''
+        for iteration in range(iterations_n):
+            self.update_all_fitness_scores()
+            self.rank_selection()
+            self.population = self.population[:len(self.population)//2]
+            # create new bottom half
+            self.initialize_population()
+            self.assign_schedules_for_all_sols()
+            self.run_schedules()
+
+        for sol_list in self.population[len(self.population)//2:]:
+            sol = sol_list[0]
             mutation_successful = False
             while not mutation_successful:
                 try:
@@ -316,12 +333,13 @@ class EvolutionaryAlgorithm:
                 except ValueError:
                     print("Error during mutation. Retrying with a different flight.")
 
-            for airport in sol.structures.airports:
-                airport.check_consistency()
+            # for airport in sol.structures.airports:
+            #     airport.check_consistency()
 
             self.reset_schedulers(0)
             self.reset_logs(sol, time)
             self.reschedule_flights(sol, time)
-            self.run_events()
-            self.update_all_fitness_scores()
-            self.print_costs(i)
+
+        self.run_events()
+        self.update_all_fitness_scores()
+        self.print_costs(iteration)

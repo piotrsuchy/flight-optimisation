@@ -1,20 +1,27 @@
 {
-    "POPULATION_SIZE": 100,
-    "TICKET_PRICE": 1000,
-    "PLANE_OPERATIONAL_COST_PER_HOUR": 2000,
-    "PILOT_COST_PER_HOUR": 120,
-    "ATTENDANT_COST_PER_HOUR": 80,
-    "FLIGHT_CANCELLATION_COST_PER_PERSON": 1500,
-    "MAX_WEEKLY_HOURS": 60,
-    "OVERWORK_PENALTY_PER_HOUR": 240,
-    "DEFAULT_PLANE_CAPACITY": 500,
-    "N_OF_FLIGHTS": 300,
-    "SIM_LEN": 720,
-    "SEED_1": 41,
-    "SEED_2": 43,
-    "PILOTS_PER_PLANE": 2,
-    "N_AIRPORTS": 10,
-    "N_PLANES_F_A": 5,
-    "N_ATTENDANTS_F_A": 20,
-    "N_PILOTS_F_A": 10
+    "algo": {
+        "POPULATION_SIZE": 10,
+        "N_ITERATIONS": 10
+    },
+    "sim": {
+        "SIM_LEN": 720,
+        "TICKET_PRICE": 1000,
+        "PLANE_OPERATIONAL_COST_PER_HOUR": 2000,
+        "PILOT_COST_PER_HOUR": 120,
+        "ATTENDANT_COST_PER_HOUR": 80,
+        "FLIGHT_CANCELLATION_COST_PER_PERSON": 1500,
+        "MAX_WEEKLY_HOURS": 60,
+        "OVERWORK_PENALTY_PER_HOUR": 240,
+        "DEFAULT_PLANE_CAPACITY": 500,
+        "N_OF_FLIGHTS": 300
+    },
+    "structs": {
+        "SEED_1": 41,
+        "SEED_2": 43,
+        "PILOTS_PER_PLANE": 2,
+        "N_AIRPORTS": 10,
+        "N_PLANES_F_A": 5,
+        "N_ATTENDANTS_F_A": 20,
+        "N_PILOTS_F_A": 10
+    }
 }
