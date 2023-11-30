@@ -31,7 +31,7 @@ class EvolutionaryAlgorithm:
                 initial_structures,
                 config['SIM_LEN'])
             sol.set_sol_ids(sol_id + 1)
-            # population is a list of [sol, [revenue, op_costs, penalties]]
+            # population is a list of [sol, [op_costs, penalties]]
             self.population.append([sol, -1])
 
     # @timing_decorator
@@ -83,22 +83,14 @@ class EvolutionaryAlgorithm:
     # @timing_decorator
     def fitness_function(self, sol):
         '''
-        This function calculates revenue, operational costs and penalties of a single solution
+        This function calculates operational costs and penalties of a single solution
         If the flight is cancelled it
-        It returns a list of [revenue, op_costs, penalties]
+        It returns a list of [op_costs, penalties]
         '''
         # Initializing metrics
-        revenue = 0
         operational_costs = 0
         penalties = 0
         delay_penalty = 0
-
-        # 1. Calculate Revenue
-        # for flight in sol.flights:
-        #     if flight.status == "cancelled":
-        #         continue
-
-        #     revenue += flight.passengers * config['TICKET_PRICE']
 
         # 2. Calculate Operational Costs
         for flight in sol.flights:
@@ -146,7 +138,7 @@ class EvolutionaryAlgorithm:
                 print(
                     f"In sol: {sol.id} in flight: {flight.id} pilots or attendants are None")
 
-        return [revenue, operational_costs, penalties, delay_penalty]
+        return [operational_costs, penalties, delay_penalty]
 
     def roulette_selection(self):
         '''This function selects a solution using roulette wheel selection'''
@@ -216,15 +208,14 @@ class EvolutionaryAlgorithm:
         of all solutions in the population
         '''
         for sol_id, sol in enumerate(self.population):
-            revenue, operation_costs, penalties, delay_penalty = self.fitness_function(
+            operation_costs, penalties, delay_penalty = self.fitness_function(
                 sol[0])
             self.population[sol_id][1] = [
-                revenue, operation_costs, penalties, delay_penalty]
-            self.population[sol_id][0].fitness_score = revenue - \
-                operation_costs - penalties
+                operation_costs, penalties, delay_penalty]
+            self.population[sol_id][0].fitness_score = operation_costs - penalties
 
     # @timing_decorator
-    def print_revenue_and_costs(self, iteration):
+    def print_costs(self, iteration):
         for sol in self.population:
             print(
                 f"Iter: {iteration}, {sol[0]}, rev: {sol[1][0]:.2e}, op_costs: {sol[1][1]:.2e}, penalties: {sol[1][2]:.2e}, delay_penalties: {sol[1][2]:.2e}")
@@ -333,4 +324,4 @@ class EvolutionaryAlgorithm:
             self.reschedule_flights(sol, time)
             self.run_events()
             self.update_all_fitness_scores()
-            self.print_revenue_and_costs(i)
+            self.print_costs(i)

@@ -24,7 +24,7 @@ def main():
     evol_algo.run_schedules()
     evol_algo.run_events()
     evol_algo.update_all_fitness_scores()
-    evol_algo.print_revenue_and_costs(0)
+    evol_algo.print_costs(0)
     evol_algo.print_population()
 
     # mutation
@@ -34,7 +34,7 @@ def main():
 
     print(f"Crossover Check")
     evol_algo.crossover(evol_algo.population[0][0], evol_algo.population[1][0])
-    # evol_algo.print_revenue_and_costs()
+    # evol_algo.print_costs()
     # Sort and print results for Roulette Selection
     # print("\nSorted Population using Roulette Selection:")
     # evol_algo.roulette_sort()
