@@ -219,9 +219,9 @@ class EvolutionaryAlgorithm:
 
     # @timing_decorator
     def print_costs(self, iteration):
-        for sol in self.population:
+        for sol_list in self.population:
             print(
-                f"Iter: {iteration}, {sol[0]}, rev: {sol[1][0]:.2e}, op_costs: {sol[1][1]:.2e}, penalties: {sol[1][2]:.2e}, delay_penalties: {sol[1][2]:.2e}")
+                f"Iter: {iteration}, {sol_list[0]} fit. score: {sol_list[0].fitness_score}")
 
     def mutation_attendants(self):
         '''Make a random flight change the attendant / or attendants'''
@@ -289,7 +289,7 @@ class EvolutionaryAlgorithm:
 
     def reschedule_flights(self, sol, mutation_time):
         # reschedule flights only after the mutation_time
-        flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time]
+        flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time and f.status == "completed"]
 
         for airport in sol.structures.airports:
             airport.check_consistency()
@@ -339,6 +339,7 @@ class EvolutionaryAlgorithm:
             self.reset_schedulers(0)
             self.reset_logs(sol, time)
             self.reschedule_flights(sol, time)
+            self.print_costs(iteration)
 
         self.run_events()
         self.update_all_fitness_scores()

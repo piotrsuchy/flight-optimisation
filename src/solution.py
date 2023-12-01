@@ -24,6 +24,7 @@ class Solution:
         self.schedule = None
 
     def __str__(self):
+        return f"Sol ID: {self.id}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}"
         return f"Sol ID: {self.id}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}, Fitness score: {self.fitness_score:.2e}"
 
     @staticmethod

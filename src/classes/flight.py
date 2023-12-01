@@ -173,7 +173,7 @@ class Flight:
                 f"Flights {self.id}: Flight cancelled, reason unspecified.")
 
     def reset_state_after_mutation(self, sol):
-        if self.status != "cancelled":
+        if self.status == "completed":
             print(f"Resetting the state for flight: {self}")
             self.plane.reset_state_after_mutation(self)
             for pilot in self.pilots:
@@ -183,8 +183,9 @@ class Flight:
             self.plane = None
             self.pilots = None
             self.attendants = None
-        else:
+        elif self.status == "cancelled":
             print(f"Resetting for cancelled flight: {self}")
             sol.cancelled_flights.remove(self)
+        # self.status == "started - new flight"
         self.status = "started"
         self.delay = 0
