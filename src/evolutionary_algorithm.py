@@ -62,6 +62,7 @@ class EvolutionaryAlgorithm:
     # @timing_decorator
     def run_schedules(self):
         for sol_list in self.population:
+            sol_list[0].flights = []
             sol_list[0]._schedule_flights()
 
     # @timing_decorator

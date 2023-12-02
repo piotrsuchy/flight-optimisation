@@ -73,7 +73,7 @@ class Solution:
                 f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {scheduled_time:.2f} of the simulation.")
 
     def get_cancelled_flights_num(self):
-        return len(self.cancelled_flights)
+        return len([f for f in self.flights if f.status == "cancelled"])
 
     def run_events(self):
         '''
