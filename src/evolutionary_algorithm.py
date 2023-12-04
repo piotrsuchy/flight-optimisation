@@ -317,7 +317,7 @@ class EvolutionaryAlgorithm:
         '''
         for iteration in range(iterations_n):
             self.update_all_fitness_scores()
-            self.rank_selection()
+            self.rank_sort()
             self.population = self.population[:len(self.population)//2]
             # create new bottom half
             self.initialize_population()
