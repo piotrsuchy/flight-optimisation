@@ -36,14 +36,22 @@ class EvolutionaryAlgorithm:
 
     # @timing_decorator
     def print_population(self):
+        print(f"---Printing the population---")
         for sol_list in self.population:
             sol = sol_list[0]
             for airport in sol.structures.airports:
                 airport.show_fleet_and_crew()
 
+    def print_fitness_scores(self):
+        print(f"---Printing fitness scores---")
+        for sol_list in self.population:
+            sol = sol_list[0]
+            print(f"Sol ID: {sol.id}")
+            print(f"Fitness score {sol.fitness_score} cancelled flights: {sol.get_cancelled_flights_num()}")
+
     # @timing_decorator
     def print_schedules(self):
-        print(f"Printing the SCHEDULES")
+        print(f"---Printing the schedules---")
         for sol_list in self.population:
             print(f"Schedule for solution {sol_list[0].id}")
             print(sol_list[0].schedule)
@@ -98,8 +106,8 @@ class EvolutionaryAlgorithm:
             if flight.status != "completed":
                 continue
             flight_duration = flight.duration
-            print(f"Flight duration: {flight_duration}")
-            print(f"Flight status: {flight.status}")
+            # print(f"Flight duration: {flight_duration}")
+            # print(f"Flight status: {flight.status}")
             plane_cost = config['sim']['PLANE_OPERATIONAL_COST_PER_HOUR'] * flight_duration
             pilot_cost = config['sim']['PILOT_COST_PER_HOUR'] * flight_duration
             attendant_cost = config['sim']['ATTENDANT_COST_PER_HOUR'] * flight_duration
@@ -109,8 +117,8 @@ class EvolutionaryAlgorithm:
         # 3. Calculate Penalties
         for flight in sol.flights:
             if flight.delay != 0:
-                print(
-                    f"Sol: {flight.sol.id} Calculating extra penalties for the delay of flight {flight.id}, {flight.delay}h")
+                # print(
+                    # f"Sol: {flight.sol.id} Calculating extra penalties for the delay of flight {flight.id}, {flight.delay}h")
                 delay_penalty = flight.delay * 2 * config['sim']['PLANE_OPERATIONAL_COST_PER_HOUR']
                 penalties += delay_penalty
 
@@ -165,9 +173,8 @@ class EvolutionaryAlgorithm:
 
     def rank_selection(self):
         '''This function selects a solution using rank selection'''
-        print(f"Sorted pop: {self.population}")
         sorted_population = sorted(
-            self.population, key=lambda sol: sol[0].fitness_score)
+            self.population, key=lambda sol: sol[0].fitness_score, reverse=True)
         rank_sum = len(sorted_population) * (len(sorted_population) + 1) / 2
         rank_probabilities = [
             (i + 1) / rank_sum for i in range(len(sorted_population))]
@@ -216,7 +223,7 @@ class EvolutionaryAlgorithm:
                 sol[0])
             self.population[sol_id][1] = [
                 operation_costs, penalties, delay_penalty]
-            self.population[sol_id][0].fitness_score = operation_costs - penalties
+            self.population[sol_id][0].fitness_score = operation_costs + penalties + delay_penalty
 
     # @timing_decorator
     def print_costs(self, iteration):
@@ -289,6 +296,8 @@ class EvolutionaryAlgorithm:
         sol2.print_flights()
 
     def reschedule_flights(self, sol, mutation_time):
+        self.reset_schedulers(0)
+        self.reset_logs(sol, mutation_time)
         # reschedule flights only after the mutation_time
         flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time and f.status == "completed"]
 
@@ -310,38 +319,44 @@ class EvolutionaryAlgorithm:
         for airport in sol.structures.airports:
             airport.availability_log.clear_logs_after_timestamp(mutation_time)
 
+    def sort_population(self):
+        self.population = sorted(
+            self.population, key=lambda sol: sol[0].fitness_score, reverse=False)
+
     def evol_algo_loop(self, iterations_n):
         '''
         Function responsible for the actual evolutionary algorithm loop
         Has following sections: selection, mutation, (crossover), creation of a new generation
         '''
         for iteration in range(iterations_n):
+            print(f"------------------- ITERATION {iteration} --------------------------")
             self.update_all_fitness_scores()
-            self.rank_sort()
+            # self.rank_sort()
+            self.sort_population()
+            print(f"Self population after sorting: ")
+            self.print_fitness_scores()
             self.population = self.population[:len(self.population)//2]
+            print(f"---After cutting the population in half: ---")
+            self.print_fitness_scores()
             # create new bottom half
             self.initialize_population()
             self.assign_schedules_for_all_sols()
             self.run_schedules()
 
-        for sol_list in self.population[len(self.population)//2:]:
-            sol = sol_list[0]
-            mutation_successful = False
-            while not mutation_successful:
-                try:
-                    time = self.mutation_pilots(sol)
-                    mutation_successful = True
-                except ValueError:
-                    print("Error during mutation. Retrying with a different flight.")
+            for sol_list in self.population[:len(self.population)//2]:
+                sol = sol_list[0]
+                mutation_successful = False
+                while not mutation_successful:
+                    try:
+                        time = self.mutation_pilots(sol)
+                        mutation_successful = True
+                    except ValueError:
+                        print("Error during mutation. Retrying with a different flight.")
 
-            # for airport in sol.structures.airports:
-            #     airport.check_consistency()
-
-            self.reset_schedulers(0)
-            self.reset_logs(sol, time)
+            for airport in sol.structures.airports:
+                airport.check_consistency()
             self.reschedule_flights(sol, time)
-            self.print_costs(iteration)
-
-        self.run_events()
-        self.update_all_fitness_scores()
-        self.print_costs(iteration)
+            self.run_events()
+            self.update_all_fitness_scores()
+            self.sort_population()
+            self.print_fitness_scores()

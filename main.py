@@ -20,6 +20,8 @@ def main():
     setup_logging(args.log)
 
     initial_structures = Structures()
+
+    # initial population
     evol_algo = EvolutionaryAlgorithm(
         initial_structures=initial_structures,
         population_size=config['algo']['POPULATION_SIZE'])
@@ -28,8 +30,8 @@ def main():
     evol_algo.run_schedules()
     evol_algo.run_events()
     evol_algo.update_all_fitness_scores()
-    evol_algo.print_costs(0)
-    evol_algo.print_population()
+    evol_algo.sort_population()
+    evol_algo.print_fitness_scores()
 
     # mutation
     evol_algo.evol_algo_loop(config['algo']['N_ITERATIONS'])

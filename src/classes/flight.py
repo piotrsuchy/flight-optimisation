@@ -40,7 +40,7 @@ class Flight:
         self.distance = self.calculate_distance()
         self.duration = self.calculate_duration()
 
-    def assign_random_crew(self) -> bool:
+    def get_available_crew(self):
         available_pilots = self.base_airport.get_eligible_pilots()
         if len(available_pilots) < 2:
             self.cancel_flight(self.sol, "pilots")
@@ -55,32 +55,33 @@ class Flight:
         if not available_planes:
             self.cancel_flight(self.sol, "plane")
             return False
+        
+        return available_pilots, available_attendants, available_planes
+        
 
+    def assign_random_crew(self) -> bool:
+        res = self.get_available_crew()
+        if not res:
+            return False
+        else:
+            available_pilots = res[0]
+            available_attendants = res[1]
+            available_planes = res[2]
+        
         # random heuristic - could be a different one
         self.pilots = random.sample(available_pilots, 2)
         self.attendants = random.sample(available_attendants, 4)
         self.plane = random.choice(available_planes)
-        # print(f"Printing self.pilots in assign_random_crew function")
-        # print(self.pilots)
-        # print(f"Printing self.attendants in assign_random_crew function")
-        # print(self.attendants)
         return True
 
     def assign_crew(self):
-        available_pilots = self.base_airport.get_eligible_pilots()
-        if len(available_pilots) < 2:
-            self.cancel_flight(self.sol, "pilots")
+        res = self.get_available_crew()
+        if not res:
             return False
-
-        available_attendants = self.base_airport.get_eligible_attendants()
-        if len(available_attendants) < 4:
-            self.cancel_flight(self.sol, "attendants")
-            return False
-
-        available_planes = self.base_airport.get_available_planes()
-        if not available_planes:
-            self.cancel_flight(self.sol, "plane")
-            return False
+        else:
+            available_pilots = res[0]
+            available_attendants = res[1]
+            available_planes = res[2]
 
         # Assign the crew
         self.pilots = available_pilots[:2]  # get the first 2 eligible pilots
@@ -108,7 +109,7 @@ class Flight:
         if self.pilots is None or self.attendants is None:
             logging.info(
                 f"For flight: {self.id}, crew assignment was performed.")
-            possible_assignment = self.assign_crew()
+            possible_assignment = self.assign_random_crew()
             if not possible_assignment:
                 logging.info(
                     f"The flight was cancelled at crew assignment phase")
@@ -158,7 +159,6 @@ class Flight:
 
     def cancel_flight(self, sol, reason):
         self.status = "cancelled"
-        sol.cancelled_flights.append(self)
         if reason == "pilots":
             logging.warning(
                 f"Flight {self.id}: Not enough available pilots at airport {self.base_airport.id}, flight cancelled.")
@@ -183,9 +183,6 @@ class Flight:
             self.plane = None
             self.pilots = None
             self.attendants = None
-        elif self.status == "cancelled":
-            print(f"Resetting for cancelled flight: {self}")
-            sol.cancelled_flights.remove(self)
         # self.status == "started - new flight"
         self.status = "started"
         self.delay = 0
