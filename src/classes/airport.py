@@ -79,7 +79,7 @@ class Airport:
         self.attendants.append(attendant)
 
     def remove_plane(self, plane):
-        print(f"Will try to remove plane: {plane} from self.planes: {self.planes}")
+        # print(f"Will try to remove plane: {plane} from self.planes: {self.planes}")
         try:
             self.planes.remove(plane)
         except KeyError:
