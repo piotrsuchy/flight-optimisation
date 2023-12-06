@@ -22,7 +22,6 @@ class Airport:
         Airport._next_id += 1
         self.availability_log = AvailabilityLog(self)
         self.free = True
-        self.planes = []
         self.pilots = []
         self.attendants = []
         self.lanes = []
@@ -40,9 +39,6 @@ class Airport:
 
     def show_fleet_and_crew(self):
         print(f"FOR AIRPORT ID: {self.id}:")
-        print(f"---PLANES:---")
-        for plane in self.planes:
-            print(plane)
         print(f"---PILOTS:---")
         for pilot in self.pilots:
             print(pilot)
@@ -56,9 +52,6 @@ class Airport:
     def get_eligible_attendants(self):
         return [attendant for attendant in self.attendants if attendant.is_eligible()]
 
-    def get_available_planes(self):
-        return [plane for plane in self.planes if plane.is_available]
-
     def release(self):
         self.occupied = False
 
@@ -67,22 +60,11 @@ class Airport:
         scheduler_instance = Solution.get_scheduler_by_id(self.sol_id)
         scheduler_instance.schedule_event(MAINTENANCE_TIME, self.release)
 
-    def add_plane(self, plane):
-        self.planes.append(plane)
-
     def add_pilot(self, pilot):
         self.pilots.append(pilot)
 
     def add_attendant(self, attendant):
         self.attendants.append(attendant)
-
-    def remove_plane(self, plane):
-        print(f"Will try to remove plane: {plane} from self.planes: {self.planes}")
-        try:
-            self.planes.remove(plane)
-        except KeyError or ValueError:
-            print(f"Error in function remove_plane() for airport {self.id}")
-            print(f"DEBUG: self.flights of plane: {plane.flights}")
 
     def remove_pilot(self, pilot):
         try:
@@ -98,10 +80,6 @@ class Airport:
                 f"Error in function remove_attendant() for airport {self.id}")
         
     def check_consistency(self):
-        for plane in self.planes:
-            if plane.base.id != self.id:
-                print(f"Inconsistency found: Plane {plane.id} curr_base {plane.base.id} doesn't match Airport {self.id}")
-
         for pilot in self.pilots:
             if pilot.current_base.id != self.id:
                 print(f"Inconsistency found: Pilot {pilot.id} curr_base {pilot.current_base.id} doesn't match Airport {self.id}")

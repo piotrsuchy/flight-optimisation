@@ -3,7 +3,6 @@ import random
 import json
 
 from .classes.airport import Airport
-from .classes.plane import Plane
 from .classes.crew_member import Pilot, FlightAttendant
 
 with open('parameters.json') as parameters_file:
@@ -11,12 +10,11 @@ with open('parameters.json') as parameters_file:
 
 class Structures:
     def __init__(self, n_airports=config['structs']['N_AIRPORTS'], n_pilots_f_a=config['structs']['N_PILOTS_F_A'],
-                 n_attendants_f_a=config['structs']['N_ATTENDANTS_F_A'], n_planes_f_a=config['structs']['N_PLANES_F_A']):
+                 n_attendants_f_a=config['structs']['N_ATTENDANTS_F_A']):
         self.airports = []
         self.n_airports = n_airports
         self.n_pilots_f_a = n_pilots_f_a
         self.n_attendants_f_a = n_attendants_f_a
-        self.n_planes_f_a = n_planes_f_a
         self.generate_structs()
 
     def generate_structs(self):
@@ -26,7 +24,6 @@ class Structures:
         for airport in self.airports:
             self._create_crew(airport, self.n_pilots_f_a,
                               self.n_attendants_f_a)
-            self._create_planes(airport, self.n_planes_f_a)
             airport.availability_log.add_snapshot(0)
         logging.info(
             f"--------------------STRUCTURE GENERATION ENDED--------------------")
@@ -35,17 +32,8 @@ class Structures:
         for _ in range(quantity):
             airport = Airport()
             self.airports.append(airport)
-            self._create_planes(airport, quantity=self.n_planes_f_a)
             self._create_crew(airport, pilots_q=self.n_pilots_f_a,
                               attendants_q=self.n_attendants_f_a)
-
-    def _create_planes(self, airport, quantity):
-        for _ in range(quantity):
-            capacity = random.randint(50, 400)
-            speed = random.uniform(500, 800)
-            plane = Plane(capacity, base=airport, speed=speed,
-                          pilots_needed=2, attendants_needed=4)
-            airport.add_plane(plane)  # Added directly to airport instance
 
     def _create_crew(self, airport, pilots_q, attendants_q):
         # Directly allocating pilots and attendants to the airport instance

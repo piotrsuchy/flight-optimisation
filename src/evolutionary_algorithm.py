@@ -108,10 +108,9 @@ class EvolutionaryAlgorithm:
             if flight.status[-1] != "completed":
                 continue
             flight_duration = flight.duration
-            plane_cost = config['sim']['PLANE_OPERATIONAL_COST_PER_HOUR'] * flight_duration
             pilot_cost = config['sim']['PILOT_COST_PER_HOUR'] * flight_duration
             attendant_cost = config['sim']['ATTENDANT_COST_PER_HOUR'] * flight_duration
-            operational_costs += plane_cost + 2 * pilot_cost + 4 * \
+            operational_costs += 2 * pilot_cost + 4 * \
                 attendant_cost  # Assuming 2 pilots and 4 attendants
 
         # 3. Calculate Penalties

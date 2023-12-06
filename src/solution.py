@@ -47,9 +47,6 @@ class Solution:
     def set_sol_ids(self, sol_id):
         for airport in self.structures.airports:
             airport.set_sol_id(sol_id)
-            # print("setting sol for airport ", airport.id)
-            for plane in airport.planes:
-                plane.set_sol_id(sol_id)
 
             for pilot in airport.pilots:
                 pilot.set_sol_id(sol_id)

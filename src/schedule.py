@@ -66,5 +66,4 @@ class Schedule:
             if flight.simulation_time >= simulation_time:  # Proceed if the condition matches
                 flight.pilots = None
                 flight.attendant = None
-                flight.plane = None
                 flight.status.append("started")

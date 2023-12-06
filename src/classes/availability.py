@@ -10,13 +10,12 @@ class Availability:
     '''
 
     def __init__(self, airport, simulation_time, available_pilots,
-                 available_attendants, available_planes):
+                 available_attendants):
         self.airport = airport
         self.airport_id = airport.id
         self.simulation_time = simulation_time
         self.pilots = set(available_pilots)
         self.attendants = set(available_attendants)
-        self.planes = set(available_planes)
 
     def __str__(self):
         return f"airport_id: {self.airport_id}, pilots: {self.pilots}, attendants: {self.attendants}"
@@ -32,12 +31,9 @@ class Availability:
                 if attendant in self.attendants:
                     self.attendants.remove(attendant)
 
-            if flight.plane in self.planes:
-                self.planes.remove(flight.plane)
-
     def copy(self):
         copy_of_instance = Availability(
-            self.airport, self.simulation_time, self.pilots, self.attendants, self.planes)
+            self.airport, self.simulation_time, self.pilots, self.attendants)
         return copy_of_instance
 
 
@@ -57,13 +53,12 @@ class AvailabilityLog:
     def add_snapshot(self, simulation_time):
         '''
         Adds a new snapshot of availability at the given simulation time by checking
-        the availability of pilots, attendants and planes at the airport
+        the availability of pilots, attendants at the airport
         '''
         available_pilots = self.airport.get_eligible_pilots()
         available_attendants = self.airport.get_eligible_attendants()
-        available_planes = self.airport.get_available_planes()
         availability = Availability(
-            self.airport, simulation_time, available_pilots, available_attendants, available_planes)
+            self.airport, simulation_time, available_pilots, available_attendants)
         self.log.append(availability)
 
     def flight_start_snapshot(self, flight, stimulation_time):
@@ -99,17 +94,6 @@ class AvailabilityLog:
             new_availability.attendants.add(person)
         # print(f"To compare with new availability after modifications: {new_availability}")
 
-        self.log.append(new_availability)
-
-    def plane_maintenance_snapshot(self, plane, simulation_time):
-        '''
-        Adds a new snapshot after plane maintenance period ends.
-        '''
-        last_availability = self.log[-1]
-        new_availability = last_availability.copy()
-        new_availability.simulation_time = simulation_time
-
-        new_availability.planes.add(plane)
         self.log.append(new_availability)
 
     def get_availability(self, simulation_time):
