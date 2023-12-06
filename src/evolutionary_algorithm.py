@@ -47,6 +47,7 @@ class EvolutionaryAlgorithm:
         for sol_list in self.population:
             sol = sol_list[0]
             print(f"Sol ID: {sol.id}")
+            print(f"Status: {sol.initialized}")
             print(f"Fitness score {sol.fitness_score} cancelled flights: {sol.get_cancelled_flights_num()}")
 
     # @timing_decorator
@@ -63,9 +64,8 @@ class EvolutionaryAlgorithm:
             sol_list[0].schedule.create_random_schedule(
                 sol_list[0], config['sim']['N_OF_FLIGHTS'], config['sim']['SIM_LEN'], config['structs']['SEED_1'])
 
-    def reset_schedulers(self, time):
-        for sol_list in self.population:
-            sol_list[0].scheduler.set_time(time)
+    def reset_schedulers(self, sol, time):
+        sol.scheduler.set_time(time)
 
     # @timing_decorator
     def run_schedules(self):
@@ -296,7 +296,7 @@ class EvolutionaryAlgorithm:
         sol2.print_flights()
 
     def reschedule_flights(self, sol, mutation_time):
-        self.reset_schedulers(0)
+        self.reset_schedulers(sol, mutation_time)
         self.reset_logs(sol, mutation_time)
         # reschedule flights only after the mutation_time
         flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time and f.status == "completed"]
@@ -339,11 +339,13 @@ class EvolutionaryAlgorithm:
             print(f"---After cutting the population in half: ---")
             self.print_fitness_scores()
             # create new bottom half
-            self.initialize_population()
-            self.assign_schedules_for_all_sols()
-            self.run_schedules()
+            
+            print("---POPULATION---")
+            print(self.population)
+            print("---POPULATION in half---")
+            print(self.population[:len(self.population) // 2])
 
-            for sol_list in self.population[:len(self.population)//2]:
+            for sol_list in self.population:
                 sol = sol_list[0]
                 mutation_successful = False
                 while not mutation_successful:
@@ -352,11 +354,19 @@ class EvolutionaryAlgorithm:
                         mutation_successful = True
                     except ValueError:
                         print("Error during mutation. Retrying with a different flight.")
+                sol.initialized = "Mutated"
+                for airport in sol.structures.airports:
+                    airport.check_consistency()
+                self.reschedule_flights(sol, time)
 
-            for airport in sol.structures.airports:
-                airport.check_consistency()
-            self.reschedule_flights(sol, time)
             self.run_events()
-            self.update_all_fitness_scores()
-            self.sort_population()
-            self.print_fitness_scores()
+            self.add_new_solutions()
+
+    def add_new_solutions(self):
+        self.initialize_population()
+        self.assign_schedules_for_all_sols()
+        self.run_schedules()
+        self.run_events()
+        self.update_all_fitness_scores()
+        self.sort_population()
+        self.print_fitness_scores()
