@@ -1,15 +1,8 @@
-'''
-For consideration:
-- slot restrictions - restrictions on the
-number of take offs and landings the airport
-can handle in any given time frame due to capacity
-'''
 import random
-import logging
 from src.solution import Solution
 from .availability import AvailabilityLog
 
-MAINTENANCE_TIME = 0.5
+MAINTENANCE_TIME = 0
 
 
 class Airport:

@@ -3,7 +3,7 @@ import random
 import logging
 
 DAY_LENGTH = 24
-DELAY_IF_AIRPORT_BUSY = 0.5
+DELAY_IF_AIRPORT_BUSY = 0
 
 
 class Flight:
@@ -95,25 +95,15 @@ class Flight:
         - calling flight_start from POV of crew
         '''
         if self.pilots is None or self.attendants is None:
-            # print(
-            #  f"For flight: {self.id}, crew assignment was performed.")
             possible_assignment = self.assign_random_crew()
             if not possible_assignment:
-                print(
-                    f"The flight was cancelled at crew assignment phase")
                 return
-        # print("Start flight is called")
-        # print(
-          #   f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")
 
         # if the airport is not available - add a delay to the flight
         if self.base_airport.occupied:
             self.delay += DELAY_IF_AIRPORT_BUSY
 
-        # print(f"My crew for the flight is: {self.pilots[0]} and {self.pilots[1]}")
-
         scheduler_instance = self.sol.get_scheduler_by_id(self.sol.id)
-        # print(f"Scheduler instance from flight.py: {scheduler_instance}")
         current_time = scheduler_instance.current_simulation_time + self.delay
         self.simulation_time = current_time
         self.day_of_flight = int(current_time // DAY_LENGTH)
@@ -131,8 +121,6 @@ class Flight:
 
         self.base_airport.availability_log.flight_start_snapshot(
             self, current_time)
-        # print(
-          #   f"At hour {scheduler_instance.current_simulation_time:.2f}: Scheduled flight: {self}")
         scheduler_instance.schedule_event(self.duration, self.end_flight)
 
     def end_flight(self):
@@ -145,16 +133,17 @@ class Flight:
 
     def cancel_flight(self, sol, reason):
         self.status.append("cancelled")
-        print(f"Status of flight: {self.id} --- status: {self.status}")
-        if reason == "pilots":
-            print(
-                f"Flight {self.id}: Not enough available pilots at airport {self.base_airport.id}, flight cancelled.")
-        elif reason == "attendants":
-            print(
-                f"Flight {self.id}: Not enough available attendants at airport {self.base_airport.id}, flight cancelled.")
-        else:
-            print(
-                f"Flights {self.id}: Flight cancelled, reason unspecified.")
+
+        # DEBUG LOGS
+        # if reason == "pilots":
+        #     print(
+        #         f"Flight {self.id}: Not enough available pilots at airport {self.base_airport.id}, flight cancelled.")
+        # elif reason == "attendants":
+        #     print(
+        #         f"Flight {self.id}: Not enough available attendants at airport {self.base_airport.id}, flight cancelled.")
+        # else:
+        #     print(
+        #         f"Flights {self.id}: Flight cancelled, reason unspecified.")
 
     def reset_state_after_mutation(self, sol):
         if self.status[-1] == "completed":

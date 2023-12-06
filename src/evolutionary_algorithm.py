@@ -46,9 +46,7 @@ class EvolutionaryAlgorithm:
         print(f"---ITER: {iter} ---Printing fitness scores---")
         for sol_list in self.population:
             sol = sol_list[0]
-            print(f"Sol ID: {sol.id}")
-            print(f"Status: {sol.initialized}")
-            print(f"Fitness score {sol.fitness_score} cancelled flights: {sol.get_cancelled_flights_num()}")
+            print(f"Sol ID: {sol.id} Fitness score {sol.fitness_score} Status: {sol.initialized} cancelled flights: {sol.get_cancelled_flights_num()}")
 
     # @timing_decorator
     def print_schedules(self):
@@ -333,18 +331,8 @@ class EvolutionaryAlgorithm:
             self.population, key=lambda sol: sol[0].fitness_score, reverse=False)
 
     def evol_algo_loop(self, iterations_n):
-        '''
-        Function responsible for the actual evolutionary algorithm loop
-        Has following sections: selection, mutation, (crossover), creation of a new generation
-        '''
-        for iteration in range(iterations_n):
-            print(f"------------------- ITERATION {iteration} --------------------------")
-            self.update_all_fitness_scores()
-            self.sort_population()
+        for i in range(iterations_n):
             self.population = self.population[:len(self.population)//2]
-            print(f"---After cutting the population in half: ---")
-            self.print_fitness_scores()
-
             for sol_list in self.population:
                 sol = sol_list[0]
                 mutation_successful = False
@@ -355,20 +343,16 @@ class EvolutionaryAlgorithm:
                     except ValueError:
                         print("Error during mutation. Retrying with a different flight.")
                 sol.initialized = "Mutated"
+
                 for airport in sol.structures.airports:
                     airport.check_consistency()
-                self.reschedule_flights(sol, time)
+                self.reschedule_flights(sol, time, i)
 
             self.run_events()
             self.add_new_solutions()
             self.update_all_fitness_scores()
             self.sort_population()
-            self.print_fitness_scores()
-
-        for sol_list in self.population:
-            print(f"------FLIGHTS OF SOL: {sol_list[0]}-------")
-            sol_list[0].print_flights()
-            print(f"------------------------------------------")
+            self.print_fitness_scores(i)
 
     def add_new_solutions(self):
         self.initialize_population()
