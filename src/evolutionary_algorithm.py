@@ -13,7 +13,7 @@ with open('parameters.json') as parameters_file:
 
 
 class EvolutionaryAlgorithm:
-    # s@timing_decorator
+    # @timing_decorator
     def __init__(self, initial_structures, population_size=config['algo']['POPULATION_SIZE']):
         self.population_size = population_size
         self.population = []
@@ -58,13 +58,14 @@ class EvolutionaryAlgorithm:
             print(sol_list[0].schedule)
 
     # @timing_decorator
-    def assign_schedules_for_all_sols(self):
+    def assign_schedules_for_initialized_sols(self):
         for sol_list in self.population:
-            sol_list[0].schedule = Schedule()
-            sol_list[0].schedule.create_random_schedule(
-                sol_list[0], config['sim']['N_OF_FLIGHTS'], config['sim']['SIM_LEN'], config['structs']['SEED_1'])
+            if sol_list[0].initialized == "Initialized":
+                sol_list[0].schedule = Schedule()
+                sol_list[0].schedule.create_random_schedule(
+                    sol_list[0], config['sim']['N_OF_FLIGHTS'], config['sim']['SIM_LEN'], config['structs']['SEED_1'])
 
-    def reset_schedulers(self, sol, time):
+    def reset_scheduler(self, sol, time):
         sol.scheduler.set_time(time)
 
     # @timing_decorator
@@ -266,6 +267,7 @@ class EvolutionaryAlgorithm:
     def mutation_pilots(self, sol):
         '''Make a random flight change the pilot / or pilots'''
         # random.seed(config['structs]['SEED_1'])
+        random.seed(random.randint(0, 50))
         random_flight = random.choice(sol.flights)
         while random_flight.status == "cancelled":
             print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
@@ -296,9 +298,8 @@ class EvolutionaryAlgorithm:
         sol2.print_flights()
 
     def reschedule_flights(self, sol, mutation_time):
-        self.reset_schedulers(sol, mutation_time)
-        self.reset_logs(sol, mutation_time)
         # reschedule flights only after the mutation_time
+        self.reset_scheduler(sol, 0)
         flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time and f.status == "completed"]
 
         for airport in sol.structures.airports:
@@ -312,8 +313,11 @@ class EvolutionaryAlgorithm:
         for flight in flights_to_reschedule:
             print(f"Adding back the flight: {flight.id} to the schedule")
             scheduled_time = flight.simulation_time
+            print(f"Current simulation time of scheduler: {sol.scheduler.current_simulation_time}")
             print(f"Scheduled time is: {scheduled_time} and the mutation time is: {mutation_time}")
             sol.scheduler.schedule_event(scheduled_time, flight.start_flight)
+
+        self.reset_logs(sol, mutation_time)
 
     def reset_logs(self, sol, mutation_time):
         for airport in sol.structures.airports:
@@ -361,12 +365,17 @@ class EvolutionaryAlgorithm:
 
             self.run_events()
             self.add_new_solutions()
+            self.update_all_fitness_scores()
+            self.sort_population()
+            self.print_fitness_scores()
+
+        for sol_list in self.population:
+            print(f"------FLIGHTS OF SOL: {sol_list[0]}-------")
+            sol_list[0].print_flights()
+            print(f"------------------------------------------")
 
     def add_new_solutions(self):
         self.initialize_population()
-        self.assign_schedules_for_all_sols()
+        self.assign_schedules_for_initialized_sols()
         self.run_schedules()
         self.run_events()
-        self.update_all_fitness_scores()
-        self.sort_population()
-        self.print_fitness_scores()

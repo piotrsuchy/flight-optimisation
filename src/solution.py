@@ -11,7 +11,7 @@ class Solution:
     def __init__(self, solution_id, passenger_demand,
                  initial_structures, simulation_hs):
         self.id = solution_id
-        self.initialized = "Initialize Population"
+        self.initialized = "Initialized"
         self.scheduler = EventScheduler()
         self.passenger_demand = passenger_demand
         Solution.schedulers[self.id] = self.scheduler
@@ -24,7 +24,7 @@ class Solution:
         self.schedule = None
 
     def __str__(self):
-        return f"Sol ID: {self.id}, status: {self.initialized}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}"
+        return f"Sol ID: {self.id}, fitness score: {self.fitness_score}, status: {self.initialized}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}"
 
     @staticmethod
     def get_scheduler_by_id(sol_id):

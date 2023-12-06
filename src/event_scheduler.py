@@ -46,6 +46,10 @@ class EventScheduler():
             return self.events[0].time
         return None
 
+    def peek_all_events(self):
+        for event in self.events:
+            print(event)
+
     def run_until_no_events(self):
         """Run until all events are processed."""
         while self.has_events():

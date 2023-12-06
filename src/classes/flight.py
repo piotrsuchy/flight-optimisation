@@ -27,7 +27,7 @@ class Flight:
         self.sol = sol
 
     def __repr__(self):
-        return f"ID: {self.id}, from airport {self.base_airport.id} to airport {self.destination_airport.id}, time of the flight: {self.simulation_time:.2f}"
+        return f"ID: {self.id}, from airport {self.base_airport.id} to airport {self.destination_airport.id}, time of the flight: {self.simulation_time:.2f}, status: {self.status}"
 
     def calculate_distance(self):
         return math.sqrt((self.base_airport.x - self.destination_airport.x)**2 +
