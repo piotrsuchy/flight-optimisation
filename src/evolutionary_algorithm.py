@@ -42,8 +42,8 @@ class EvolutionaryAlgorithm:
             for airport in sol.structures.airports:
                 airport.show_fleet_and_crew()
 
-    def print_fitness_scores(self):
-        print(f"---Printing fitness scores---")
+    def print_fitness_scores(self, iter):
+        print(f"---ITER: {iter} ---Printing fitness scores---")
         for sol_list in self.population:
             sol = sol_list[0]
             print(f"Sol ID: {sol.id}")
@@ -65,8 +65,9 @@ class EvolutionaryAlgorithm:
                 sol_list[0].schedule.create_random_schedule(
                     sol_list[0], config['sim']['N_OF_FLIGHTS'], config['sim']['SIM_LEN'], config['structs']['SEED_1'])
 
-    def reset_scheduler(self, sol, time):
-        sol.scheduler.set_time(time)
+    def reset_scheduler(self, time):
+        for sol_list in self.population:
+            sol_list[0].scheduler.set_time(time)
 
     # @timing_decorator
     def run_schedules(self):
@@ -104,11 +105,9 @@ class EvolutionaryAlgorithm:
 
         # 2. Calculate Operational Costs
         for flight in sol.flights:
-            if flight.status != "completed":
+            if flight.status[-1] != "completed":
                 continue
             flight_duration = flight.duration
-            # print(f"Flight duration: {flight_duration}")
-            # print(f"Flight status: {flight.status}")
             plane_cost = config['sim']['PLANE_OPERATIONAL_COST_PER_HOUR'] * flight_duration
             pilot_cost = config['sim']['PILOT_COST_PER_HOUR'] * flight_duration
             attendant_cost = config['sim']['ATTENDANT_COST_PER_HOUR'] * flight_duration
@@ -123,7 +122,7 @@ class EvolutionaryAlgorithm:
                 delay_penalty = flight.delay * 2 * config['sim']['PLANE_OPERATIONAL_COST_PER_HOUR']
                 penalties += delay_penalty
 
-            if flight.status == "cancelled":
+            if flight.status[-1] == "cancelled":
                 from_airport_idx = flight.base_airport.id - 1
                 to_airport_idx = flight.destination_airport.id - 1
                 day_of_flight = flight.day  # Assuming the Flight class has a day attribute
@@ -239,12 +238,12 @@ class EvolutionaryAlgorithm:
             random_sol_list = random.choice(self.population)
             # random.seed(config['structs']['SEED_1'])
             random_flight = random.choice(random_sol_list[0].flights)
-            while random_flight.status == "cancelled":
+            while random_flight.status[-1] == "cancelled":
                 print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
                 random_flight = random.choice(random_sol_list[0].flights)
             print(f"Flight chosen: {random_flight}")
             simulation_time = random_flight.simulation_time
-            print(f"Simulation time: {simulation_time}")
+            print(f"Simulation time: {random_flight.simulation_time}")
             old_attendants = random_flight.attendants
             base_airport = random_flight.base_airport
             log = base_airport.availability_log
@@ -269,12 +268,18 @@ class EvolutionaryAlgorithm:
         # random.seed(config['structs]['SEED_1'])
         random.seed(random.randint(0, 50))
         random_flight = random.choice(sol.flights)
-        while random_flight.status == "cancelled":
+        while random_flight.status[-1] == "cancelled":
             print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
             random_flight = random.choice(sol.flights)
+
+        # Debug portion
         print(f"Flight chosen: {random_flight}")
+        print(f"Size of sol.flights: {len(sol.flights)}")
         simulation_time = random_flight.simulation_time
-        print(f"Simulation time: {simulation_time}")
+        print(f"Simulation time of chosen flight: {random_flight.simulation_time}")
+        print(f"---Simulation times of all flights:---")
+        sol.print_flight_simulation_times()
+
         old_pilots = random_flight.pilots
         base_airport = random_flight.base_airport
         log = base_airport.availability_log
@@ -297,10 +302,11 @@ class EvolutionaryAlgorithm:
         sol1.print_flights()
         sol2.print_flights()
 
-    def reschedule_flights(self, sol, mutation_time):
+    def reschedule_flights(self, sol, mutation_time, iteration_number):
         # reschedule flights only after the mutation_time
-        self.reset_scheduler(sol, 0)
-        flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time and f.status == "completed"]
+        print(f"Rescheduling in iter: {iteration_number}, sol: {sol.id}")
+        self.reset_scheduler(0)
+        flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time]
 
         for airport in sol.structures.airports:
             airport.check_consistency()
@@ -335,19 +341,10 @@ class EvolutionaryAlgorithm:
         for iteration in range(iterations_n):
             print(f"------------------- ITERATION {iteration} --------------------------")
             self.update_all_fitness_scores()
-            # self.rank_sort()
             self.sort_population()
-            print(f"Self population after sorting: ")
-            self.print_fitness_scores()
             self.population = self.population[:len(self.population)//2]
             print(f"---After cutting the population in half: ---")
             self.print_fitness_scores()
-            # create new bottom half
-            
-            print("---POPULATION---")
-            print(self.population)
-            print("---POPULATION in half---")
-            print(self.population[:len(self.population) // 2])
 
             for sol_list in self.population:
                 sol = sol_list[0]

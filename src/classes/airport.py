@@ -71,19 +71,18 @@ class Airport:
         self.planes.append(plane)
 
     def add_pilot(self, pilot):
-        # print(f"Added pilot {pilot.id}, to the base {self.id}")
         self.pilots.append(pilot)
 
     def add_attendant(self, attendant):
-        # print(f"Added attendant {attendant.id}, to the base {self.id}")
         self.attendants.append(attendant)
 
     def remove_plane(self, plane):
-        # print(f"Will try to remove plane: {plane} from self.planes: {self.planes}")
+        print(f"Will try to remove plane: {plane} from self.planes: {self.planes}")
         try:
             self.planes.remove(plane)
-        except KeyError:
+        except KeyError or ValueError:
             print(f"Error in function remove_plane() for airport {self.id}")
+            print(f"DEBUG: self.flights of plane: {plane.flights}")
 
     def remove_pilot(self, pilot):
         try:

@@ -22,7 +22,7 @@ class Availability:
         return f"airport_id: {self.airport_id}, pilots: {self.pilots}, attendants: {self.attendants}"
 
     def remove_flight(self, flight):
-        if flight.status != "cancelled":
+        if flight.status[-1] != "cancelled":
 
             for pilot in flight.pilots:
                 if pilot in self.pilots:

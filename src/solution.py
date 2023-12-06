@@ -30,6 +30,10 @@ class Solution:
     def get_scheduler_by_id(sol_id):
         return Solution.schedulers.get(sol_id)
 
+    def print_flight_simulation_times(self):
+        for flight in self.flights:
+            print(flight.simulation_time)
+
     def print_flights(self):
         for flight in self.flights:
             print(flight)
@@ -72,7 +76,7 @@ class Solution:
                 f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {scheduled_time:.2f} of the simulation.")
 
     def get_cancelled_flights_num(self):
-        return len([f for f in self.flights if f.status == "cancelled"])
+        return len([f for f in self.flights if f.status[-1] == "cancelled"])
 
     def run_events(self):
         '''

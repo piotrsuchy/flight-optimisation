@@ -67,4 +67,4 @@ class Schedule:
                 flight.pilots = None
                 flight.attendant = None
                 flight.plane = None
-                flight.status = "started"
+                flight.status.append("started")

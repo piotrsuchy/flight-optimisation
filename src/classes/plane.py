@@ -23,10 +23,10 @@ class Plane:
         self.speed = int(speed)
         self.is_available = True
         self.sol_id = sol_id
+        self.flights_statuses = []
 
     def __repr__(self):
         return f"Plane ID: {self.id}, base: {self.base.id}"
-        return f"Plane id: {self.id}, capacity: {self.capacity}, speed: {self.speed}, base: {self.base}"
 
     def __str__(self):
         return self.__repr__()
@@ -34,10 +34,11 @@ class Plane:
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
 
-    def flight_start(self, destination):
+    def flight_start(self, destination, flight_status):
         self.occupy()
         self.base.remove_plane(self)
         destination.add_plane(self)
+        self.flights_statuses.append(flight_status)
         self.base = destination
 
     def occupy(self):

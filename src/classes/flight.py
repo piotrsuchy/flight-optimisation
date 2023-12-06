@@ -21,7 +21,7 @@ class Flight:
         self.attendants = None
         self.distance = None
         self.duration = None
-        self.status = "started"
+        self.status = ["started"]
         self.day_of_flight = None
         self.delay = 0
         self.sol = sol
@@ -107,16 +107,16 @@ class Flight:
         - calling flight_start from POV of plane and crew
         '''
         if self.pilots is None or self.attendants is None:
-            logging.info(
-                f"For flight: {self.id}, crew assignment was performed.")
+            # print(
+            #  f"For flight: {self.id}, crew assignment was performed.")
             possible_assignment = self.assign_random_crew()
             if not possible_assignment:
-                logging.info(
+                print(
                     f"The flight was cancelled at crew assignment phase")
                 return
         # print("Start flight is called")
-        logging.info(
-            f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")
+        # print(
+          #   f"Choosing crew for the flight {self.id} from base {self.base_airport.id} to base {self.id}")
 
         # if the airport is not available - add a delay to the flight
         if self.base_airport.occupied:
@@ -139,50 +139,50 @@ class Flight:
         for attendant in self.attendants:
             attendant.flight_start(self.duration, self.destination_airport)
 
-        self.plane.flight_start(self.destination_airport)
+        self.plane.flight_start(self.destination_airport, self.id)
         self.base_airport.airport_maintenance()
 
         self.base_airport.availability_log.flight_start_snapshot(
             self, current_time)
-        logging.info(
-            f"At hour {scheduler_instance.current_simulation_time:.2f}: Scheduled flight: {self}")
+        # print(
+          #   f"At hour {scheduler_instance.current_simulation_time:.2f}: Scheduled flight: {self}")
         scheduler_instance.schedule_event(self.duration, self.end_flight)
 
     def end_flight(self):
-        self.status = "completed"
+        self.status.append("completed")
         self.plane.maintenance()
+        self.destination_airport.airport_maintenance()
         for pilot in self.pilots:
             pilot.start_rest(min(12, self.duration))
         for attendant in self.attendants:
             attendant.start_rest(min(12, self.duration))
-        self.destination_airport.airport_maintenance()
 
     def cancel_flight(self, sol, reason):
-        self.status = "cancelled"
+        self.status.append("cancelled")
+        print(f"Status of flight: {self.id} --- status: {self.status}")
         if reason == "pilots":
-            logging.warning(
+            print(
                 f"Flight {self.id}: Not enough available pilots at airport {self.base_airport.id}, flight cancelled.")
         elif reason == "attendants":
-            logging.warning(
+            print(
                 f"Flight {self.id}: Not enough available attendants at airport {self.base_airport.id}, flight cancelled.")
-        elif reason == "planes":
-            logging.warning(
+        elif reason == "plane":
+            print(
                 f"Flight {self.id}: Not enough available planes at airport {self.base_airport.id}, flight cancelled.")
         else:
-            logging.warning(
+            print(
                 f"Flights {self.id}: Flight cancelled, reason unspecified.")
 
     def reset_state_after_mutation(self, sol):
-        if self.status == "completed":
-            print(f"Resetting the state for flight: {self}")
-            self.plane.reset_state_after_mutation(self)
+        if self.status[-1] == "completed":
+            # print(f"Resetting the state for flight: {self}")
             for pilot in self.pilots:
                 pilot.reset_state_after_mutation(self)
             for attendant in self.attendants:
                 attendant.reset_state_after_mutation(self)
+            self.plane.reset_state_after_mutation(self)
             self.plane = None
             self.pilots = None
             self.attendants = None
-        # self.status == "started - new flight"
-        self.status = "started"
+        self.status.append("started")
         self.delay = 0
