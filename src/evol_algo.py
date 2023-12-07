@@ -61,7 +61,7 @@ class EvolutionaryAlgorithm:
             if sol_list[0].initialized == "Initialized":
                 sol_list[0].schedule = Schedule()
                 sol_list[0].schedule.create_random_schedule(
-                    sol_list[0], config['sim']['N_OF_FLIGHTS'], config['sim']['SIM_LEN'], config['structs']['SEED_1'])
+                    sol_list[0], config['sim']['N_FLIGHTS'], config['sim']['SIM_LEN'], config['structs']['SEED_1'])
 
     def reset_scheduler(self, time):
         for sol_list in self.population:
