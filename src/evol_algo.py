@@ -70,8 +70,10 @@ class EvolutionaryAlgorithm:
     # @timing_decorator
     def run_schedules(self):
         for sol_list in self.population:
-            sol_list[0].flights = []
-            sol_list[0]._schedule_flights()
+            sol = sol_list[0]
+            sol.flights = []
+            sol.scheduler.set_time(0)
+            sol._schedule_flights()
 
     # @timing_decorator
     def save_events_for_all_sols(self):
@@ -231,9 +233,7 @@ class EvolutionaryAlgorithm:
     def mutation_attendants(self):
         '''Make a random flight change the attendant / or attendants'''
         try:
-            # random.seed(config['structs']['SEED_2'])
             random_sol_list = random.choice(self.population)
-            # random.seed(config['structs']['SEED_1'])
             random_flight = random.choice(random_sol_list[0].flights)
             while random_flight.status[-1] == "cancelled":
                 print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
@@ -262,8 +262,6 @@ class EvolutionaryAlgorithm:
 
     def mutation_pilots(self, sol):
         '''Make a random flight change the pilot / or pilots'''
-        # random.seed(config['structs]['SEED_1'])
-        random.seed(random.randint(0, 50))
         random_flight = random.choice(sol.flights)
         while random_flight.status[-1] == "cancelled":
             print(f"The chosen flight was cancelled!!!!!!!!!!!!!")
@@ -314,9 +312,7 @@ class EvolutionaryAlgorithm:
 
         # Add back the flights to the schedule, which will now use the updated availablitity
         for flight in flights_to_reschedule:
-            print(f"Adding back the flight: {flight.id} to the schedule")
             scheduled_time = flight.simulation_time
-            print(f"Current simulation time of scheduler: {sol.scheduler.current_simulation_time}")
             print(f"Scheduled time is: {scheduled_time} and the mutation time is: {mutation_time}")
             sol.scheduler.schedule_event(scheduled_time, flight.start_flight)
 
@@ -335,6 +331,7 @@ class EvolutionaryAlgorithm:
             self.population = self.population[:len(self.population)//2]
             for sol_list in self.population:
                 sol = sol_list[0]
+                sol.scheduler.set_time(0)
                 mutation_successful = False
                 while not mutation_successful:
                     try:
@@ -346,15 +343,18 @@ class EvolutionaryAlgorithm:
 
                 for airport in sol.structures.airports:
                     airport.check_consistency()
-                self.reschedule_flights(sol, time, i)
 
+                self.reschedule_flights(sol, time, i)
             self.run_events()
+
+            # add new solutions and run them
             self.add_new_solutions()
             self.update_all_fitness_scores()
-            self.sort_population()
+            self.rank_sort()
             self.print_fitness_scores(i)
 
     def add_new_solutions(self):
+        '''This function '''
         self.initialize_population()
         self.assign_schedules_for_initialized_sols()
         self.run_schedules()

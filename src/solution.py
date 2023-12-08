@@ -15,6 +15,7 @@ class Solution:
         self.scheduler = EventScheduler()
         self.passenger_demand = passenger_demand
         Solution.schedulers[self.id] = self.scheduler
+        self.scheduler.set_time(0)
         self.structures = initial_structures
         self.simulation_hs = simulation_hs
         self.flights = []
