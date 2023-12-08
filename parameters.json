@@ -1,6 +1,6 @@
 {
     "algo": {
-        "POPULATION_SIZE": 50,
+        "POPULATION_SIZE": 20,
         "N_ITERATIONS": 20
     },
     "sim": {
@@ -13,7 +13,7 @@
         "MAX_WEEKLY_HOURS": 60,
         "OVERWORK_PENALTY_PER_HOUR": 240,
         "DEFAULT_PLANE_CAPACITY": 500,
-        "N_OF_FLIGHTS": 600
+        "N_FLIGHTS": 1200
     },
     "structs": {
         "SEED_1": 43,
