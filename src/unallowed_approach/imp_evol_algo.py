@@ -87,11 +87,17 @@ class ImpossibleEvolutionaryAlgorithm:
                         crew_member_status = pilot_status[crew_member_idx - 1]  # Adjust the index if necessary
                     else:
                         crew_member_status = attendant_status[crew_member_idx - 1]  # Adjust the index if necessary
+                    # print(f"Crew member {crew_member_idx} location: {crew_member_status['location']} :::: should be: {src_id}")
+                    # print(f"Crew member rest_time: {timestamp - crew_member_status['time']}")
 
                     if crew_member_status['location'] != src_id:
+                        # print(f"Location penalty applied for flight from {flight[0]} to {flight[1]} - crew_member: {crew_member_idx}")
+                        # print(f"Crew member location: {crew_member_status['location']}")
                         fitness_score -= location_penalty
 
                     if timestamp - crew_member_status['time'] < required_rest_time:
+                        # print(f"Rest penalty applied for flight from {flight[0]} to {flight[1]} - crew_member: {crew_member_idx}")
+                        # print(f"Crew member rest_time: {timestamp - crew_member_status['time']}")
                         fitness_score -= rest_penalty
 
                     crew_member_status['location'] = dst_id
@@ -114,6 +120,9 @@ class ImpossibleEvolutionaryAlgorithm:
 
                 # Assign pilots
                 available_pilots = [idx for idx, status in enumerate(self.pilots_status_pop[sol_idx]) if status['location'] == src_id]
+                # print(f"For flight from {flight[0]} to {flight[1]} available pilots: {available_pilots}")
+                # for idx in available_pilots:
+                #     print(f"Current location of pilot with id: {idx} -- {self.pilots_status_pop[sol_idx][idx]['location']}")
                 for slot in range(config['structs']['PILOTS_PER_PLANE']):
                     if available_pilots:
                         chosen_idx = random.choice(available_pilots)
@@ -122,6 +131,9 @@ class ImpossibleEvolutionaryAlgorithm:
 
                 # Assign attendants
                 available_attendants = [idx for idx, status in enumerate(self.attend_status_pop[sol_idx]) if status['location'] == src_id]
+                # print(f"For flight from {flight[0]} to {flight[1]} available attendants: {available_attendants}")
+                # for idx in available_attendants:
+                #     print(f"Current location of attendant with id: {idx} -- {self.attend_status_pop[sol_idx][idx]['location']}")
                 for slot in range(config['structs']['PILOTS_PER_PLANE'], config['structs']['PILOTS_PER_PLANE'] + config['structs']['ATTEND_PER_PLANE']):
                     if available_attendants:
                         chosen_idx = random.choice(available_attendants)
