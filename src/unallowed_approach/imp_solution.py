@@ -19,11 +19,14 @@ class ImpossibleSolution:
         for flight in self.schedule:
             print(flight)
 
+    def print_flights_one_by_one(self):
+        for flight in self.schedule:
+            print(flight)
+
     def get_initial_schedule(self):
         self.assign_source_and_dest_to_flight()
         self.assign_timestamp_to_flight()
         return self.schedule
-
 
     def assign_source_and_dest_to_flight(self):
         for flight in self.schedule:
