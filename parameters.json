@@ -1,9 +1,10 @@
 {
     "algo": {
-        "POPULATION_SIZE": 4,
+        "POPULATION_SIZE": 20,
         "N_ITERATIONS": 3,
         "CROSSOVER_RATE": 0.1,
-        "MUTATION_RATE": 0.4
+        "MUTATION_RATE": 0.4,
+        "SELECTION_RATE": 0.5
     },
     "sim": {
         "SIM_LEN": 720,
@@ -15,7 +16,7 @@
         "MAX_WEEKLY_HOURS": 60,
         "OVERWORK_PENALTY_PER_HOUR": 240,
         "DEFAULT_PLANE_CAPACITY": 500,
-        "N_FLIGHTS": 5
+        "N_FLIGHTS": 2
     },
     "pen": {
         "LOCATION_PENALTY": 1000,
