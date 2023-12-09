@@ -20,6 +20,7 @@ class ImpossibleEvolutionaryAlgorithm:
         self.n_airports = config['structs']['N_AIRPORTS']
         self.mutation_rate = config['algo']['MUTATION_RATE']
         self.crossover_rate = config['algo']['CROSSOVER_RATE']
+        self.selection_rate = config['algo']['SELECTION_RATE']
 
         self.distance_matrix = [[None for _ in range(self.n_airports)] for _ in range(self.n_airports)]
         self.population = [None for _ in range(self.pop_size)]
@@ -163,7 +164,12 @@ class ImpossibleEvolutionaryAlgorithm:
         random.seed(None)
 
     def select_solutions(self):
-        pass
+        num_to_select = int(self.pop_size * self.selection_rate)
+        solutions_with_scores = list(zip(self.population, self.fitness_scores))
+
+        solutions_with_scores.sort(key=lambda x: x[1])
+        selected_solutions = [solution for solution, _ in solutions_with_scores[:num_to_select]]
+        return selected_solutions
 
     def crossover_solutions(self, selected_solutions):
         pass
@@ -207,8 +213,10 @@ def test_main():
     imp_evol_algo.create_initial_generation()
     imp_evol_algo.print_population()
     imp_evol_algo.update_fitness_for_all_sols()
+    solutions = imp_evol_algo.select_solutions()
+    print(solutions)
 
-    print(imp_evol_algo.fitness_scores)
+    # print(imp_evol_algo.fitness_scores)
 
     
 test_main()
