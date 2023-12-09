@@ -14,6 +14,9 @@ MAX_MONTHLY_HOURS = 190
 
 class Pilot:
     _next_id = 1
+    _daily_limits = 0
+    _weekly_limits = 0
+    _monthly_limits = 0
 
     def __init__(self, base):
         self.id = Pilot._next_id
@@ -29,12 +32,18 @@ class Pilot:
 
     def __repr__(self):
         return f"Pilot ID: {self.id}"
-        return f"Pilot ID: {self.id}, sol_id: {self.sol_id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}"
+        return f"Pilot ID: {self.id}, sol_id: {self.sol_id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.month_worked_hs}, flights taken: {self.flights_taken}"
 
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
 
     def is_eligible(self):
+        if self.day_worked_hs > MAX_DAILY_HOURS:
+            Pilot._daily_limits += 1
+        if self.week_worked_hs > MAX_WEEKLY_HOURS:
+            Pilot._weekly_limits += 1
+        if self.month_worked_hs > MAX_WEEKLY_HOURS:
+            Pilot._monthly_limits += 1
         return (self.is_available and
                 self.day_worked_hs <= MAX_DAILY_HOURS and
                 self.week_worked_hs <= MAX_WEEKLY_HOURS and
@@ -93,13 +102,16 @@ class Pilot:
             24, self.decrement_hours, "day", duration)
         # after a week decrement working hours
         scheduler_instance.schedule_event(
-            7 * 24, self.decrement_hours, "week", duration)
+            168, self.decrement_hours, "week", duration)
         # after a month decrement working hours
         # scheduler_instance.schedule_event(30*24, self.decrement_hours, "month", duration)
 
 
 class FlightAttendant:
     _next_id = 1
+    _daily_limits = 0
+    _weekly_limits = 0
+    _monthly_limits = 0
 
     def __init__(self, base):
         self.id = FlightAttendant._next_id
@@ -115,12 +127,18 @@ class FlightAttendant:
         self.sol_id = None
 
     def __repr__(self):
-        return f"Attendant ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.week_worked_hs}, flights taken: {self.flights_taken}, status: {self.is_available}"
+        return f"Attendant ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.month_worked_hs}, flights taken: {self.flights_taken}, status: {self.is_available}"
 
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
 
     def is_eligible(self):
+        if self.day_worked_hs > MAX_DAILY_HOURS:
+            FlightAttendant._daily_limits += 1
+        if self.week_worked_hs > MAX_WEEKLY_HOURS:
+            FlightAttendant._weekly_limits += 1
+        if self.month_worked_hs > MAX_WEEKLY_HOURS:
+            FlightAttendant._monthly_limits += 1
         return (self.is_available and
                 self.day_worked_hs <= MAX_DAILY_HOURS and
                 self.week_worked_hs <= MAX_WEEKLY_HOURS and
