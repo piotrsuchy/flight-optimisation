@@ -7,8 +7,9 @@ from imp_solution import ImpossibleSolution
 with open('parameters.json') as parameters_file:
     config = json.load(parameters_file)
 
-location_penalty = config['sim']['LOCATION_PENALTY']
-rest_penalty = config['sim']['REST_PENALTY']
+location_penalty = config['pen']['LOCATION_PENALTY']
+rest_penalty = config['pen']['REST_PENALTY']
+cancellation_penalty = config['pen']['CANCEL_PENALTY']
 plane_speed = config['structs']['PLANE_SPEED']
     
 class ImpossibleEvolutionaryAlgorithm:
@@ -17,6 +18,8 @@ class ImpossibleEvolutionaryAlgorithm:
         self.pilots_per_sol = config['structs']['N_PILOTS_F_A'] * config['structs']['N_AIRPORTS'] 
         self.attend_per_sol = config['structs']['N_ATTENDANTS_F_A'] * config['structs']['N_AIRPORTS']
         self.n_airports = config['structs']['N_AIRPORTS']
+        self.mutation_rate = config['algo']['MUTATION_RATE']
+        self.crossover_rate = config['algo']['CROSSOVER_RATE']
 
         self.distance_matrix = [[None for _ in range(self.n_airports)] for _ in range(self.n_airports)]
         self.population = [None for _ in range(self.pop_size)]
@@ -77,6 +80,9 @@ class ImpossibleEvolutionaryAlgorithm:
         for flight in solution:
             src_id, dst_id, *crew_members, timestamp = flight
 
+            if None in crew_members:
+                fitness_score -= cancellation_penalty
+                continue  # Skip the rest of the checks for this flight
             flight_duration = self.distance_matrix[src_id - 1][dst_id - 1] // plane_speed
             required_rest_time = min(8, flight_duration)
 
@@ -156,18 +162,52 @@ class ImpossibleEvolutionaryAlgorithm:
 
         random.seed(None)
 
+    def select_solutions(self):
+        pass
+
+    def crossover_solutions(self, selected_solutions):
+        pass
+
+    def mutate_solutions(self, solutions):
+        pass
+
+    def replace_old_population(self, combined_population):
+        pass
+
+    def evolutionary_algorithm_loop(self, n_iterations):
+        '''
+        selection based on the fitness function
+        from the chosen solutions mutate the solution with some probability
+        from the chosen solutiosn crossover the solutions with some probability
+        '''
+        for _ in range(n_iterations):
+            # selection
+            selected_solutions = self.select_solutions()
+            # crossover
+            new_solutions = self.crossover_solutions(selected_solutions)
+
+            # mutation
+            self.mutate_solutions(new_solutions)
+
+            # # combine new and old solutions
+            # combined_population = self.population + new_solutions
+            self.population = new_solutions
+
+            self.update_fitness_for_all_sols()
+
 
 def test_main():
     imp_evol_algo = ImpossibleEvolutionaryAlgorithm()
 
+    # initial assignments - made only once
     imp_evol_algo.fill_in_distance_matrix()
     imp_evol_algo.assign_airports_to_crew_members()
-
     imp_evol_algo.create_initial_sols()
-    imp_evol_algo.create_initial_generation()
 
+    imp_evol_algo.create_initial_generation()
     imp_evol_algo.print_population()
     imp_evol_algo.update_fitness_for_all_sols()
+
     print(imp_evol_algo.fitness_scores)
 
     
