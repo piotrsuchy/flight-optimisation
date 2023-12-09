@@ -66,7 +66,7 @@ class Flight:
         self.attendants = random.sample(available_attendants, 4)
         return True
 
-    def assign_crew(self):
+    def assign_crew(self) -> bool:
         res = self.get_available_crew()
         if not res:
             return False
@@ -79,10 +79,10 @@ class Flight:
         self.attendants = available_attendants[:4]  # get the first 4 eligible attendants
 
         # Log the information about the assignment
-        logging.info(f"Assigned pilots for flight {self.id}: {[pilot.id for pilot in self.pilots]}")
-        logging.info(f"Assigned attendants for flight {self.id}: {[attendant.id for attendant in self.attendants]}")
-        logging.info(f"Available pilots: {[pilot.id for pilot in available_pilots]}")
-        logging.info(f"Available attendants: {[attendant.id for attendant in available_attendants]}")
+        # logging.info(f"Assigned pilots for flight {self.id}: {[pilot.id for pilot in self.pilots]}")
+        # logging.info(f"Assigned attendants for flight {self.id}: {[attendant.id for attendant in self.attendants]}")
+        # logging.info(f"Available pilots: {[pilot.id for pilot in available_pilots]}")
+        # logging.info(f"Available attendants: {[attendant.id for attendant in available_attendants]}")
 
         return True
         
@@ -95,7 +95,7 @@ class Flight:
         - calling flight_start from POV of crew
         '''
         if self.pilots is None or self.attendants is None:
-            possible_assignment = self.assign_random_crew()
+            possible_assignment = self.assign_crew()
             if not possible_assignment:
                 return
 
@@ -103,10 +103,7 @@ class Flight:
         if self.base_airport.occupied:
             self.delay += DELAY_IF_AIRPORT_BUSY
 
-        scheduler_instance = self.sol.get_scheduler_by_id(self.sol.id)
-        current_time = scheduler_instance.current_simulation_time + self.delay
-        self.simulation_time = current_time
-        self.day_of_flight = int(current_time // DAY_LENGTH)
+        self.day_of_flight = int(self.simulation_time // DAY_LENGTH)
 
         if self.distance is None or self.duration is None:
             self.set_dist_and_dur()
@@ -120,7 +117,9 @@ class Flight:
         self.base_airport.airport_maintenance()
 
         self.base_airport.availability_log.flight_start_snapshot(
-            self, current_time)
+            self, self.simulation_time)
+        
+        scheduler_instance = self.sol.get_scheduler_by_id(self.sol.id)
         scheduler_instance.schedule_event(self.duration, self.end_flight)
 
     def end_flight(self):

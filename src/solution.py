@@ -19,7 +19,6 @@ class Solution:
         self.structures = initial_structures
         self.simulation_hs = simulation_hs
         self.flights = []
-        # self.passengers_taken = 0
         self.fitness_score = None
         self.events = None
         self.schedule = None
@@ -43,7 +42,6 @@ class Solution:
         self.all_events = self.scheduler.get_events()
         for event in self.all_events:
             print(f"event: {event}")
-        # return self.all_events
 
     def set_sol_ids(self, sol_id):
         for airport in self.structures.airports:
@@ -65,11 +63,8 @@ class Solution:
         for flight in self.schedule.flight_schedule:
             # Assign crew to the flight based on AvailabilityLog
             scheduled_time = flight.simulation_time
-            # print(f"Scheduling flight {flight}")
             self.scheduler.schedule_event(scheduled_time, flight.start_flight)
             self.flights.append(flight)
-            # print(
-                # f"Current simulation time: {self.scheduler.current_simulation_time}")
             logging.info(
                 f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {scheduled_time:.2f} of the simulation.")
 

@@ -1,7 +1,7 @@
 {
     "algo": {
-        "POPULATION_SIZE": 20,
-        "N_ITERATIONS": 20
+        "POPULATION_SIZE": 50,
+        "N_ITERATIONS": 10
     },
     "sim": {
         "SIM_LEN": 720,
@@ -13,7 +13,7 @@
         "MAX_WEEKLY_HOURS": 60,
         "OVERWORK_PENALTY_PER_HOUR": 240,
         "DEFAULT_PLANE_CAPACITY": 500,
-        "N_FLIGHTS": 1200
+        "N_FLIGHTS": 600
     },
     "structs": {
         "SEED_1": 43,
@@ -21,7 +21,7 @@
         "PILOTS_PER_PLANE": 2,
         "N_AIRPORTS": 10,
         "N_PLANES_F_A": 5,
-        "N_ATTENDANTS_F_A": 20,
-        "N_PILOTS_F_A": 10
+        "N_ATTENDANTS_F_A": 15,
+        "N_PILOTS_F_A": 8
     }
 }

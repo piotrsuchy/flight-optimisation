@@ -116,8 +116,6 @@ class EvolutionaryAlgorithm:
         # 3. Calculate Penalties
         for flight in sol.flights:
             if flight.delay != 0:
-                # print(
-                    # f"Sol: {flight.sol.id} Calculating extra penalties for the delay of flight {flight.id}, {flight.delay}h")
                 delay_penalty = flight.delay * 2 * config['sim']['PLANE_OPERATIONAL_COST_PER_HOUR']
                 penalties += delay_penalty
 
@@ -127,8 +125,6 @@ class EvolutionaryAlgorithm:
                 day_of_flight = flight.day  # Assuming the Flight class has a day attribute
                 demand = self.passenger_demand[from_airport_idx][to_airport_idx][day_of_flight]
 
-                # You can also add an upper limit based on a default plane
-                # capacity if required
                 filled_seats = min(demand, config['sim']['DEFAULT_PLANE_CAPACITY'])
 
                 penalties += config['sim']['FLIGHT_CANCELLATION_COST_PER_PERSON'] * filled_seats
@@ -166,7 +162,7 @@ class EvolutionaryAlgorithm:
         else:
             selected_tournament = random.sample(
                 self.population, tournament_size)
-        best_in_tournament = max(
+        best_in_tournament = min(
             selected_tournament, key=lambda sol: sol[0].fitness_score)
         return best_in_tournament
 
@@ -299,7 +295,6 @@ class EvolutionaryAlgorithm:
 
     def reschedule_flights(self, sol, mutation_time, iteration_number):
         # reschedule flights only after the mutation_time
-        print(f"Rescheduling in iter: {iteration_number}, sol: {sol.id}")
         self.reset_scheduler(0)
         flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time]
 
@@ -313,7 +308,6 @@ class EvolutionaryAlgorithm:
         # Add back the flights to the schedule, which will now use the updated availablitity
         for flight in flights_to_reschedule:
             scheduled_time = flight.simulation_time
-            print(f"Scheduled time is: {scheduled_time} and the mutation time is: {mutation_time}")
             sol.scheduler.schedule_event(scheduled_time, flight.start_flight)
 
         self.reset_logs(sol, mutation_time)
@@ -350,7 +344,7 @@ class EvolutionaryAlgorithm:
             # add new solutions and run them
             self.add_new_solutions()
             self.update_all_fitness_scores()
-            self.rank_sort()
+            self.tournament_sort()
             self.print_fitness_scores(i)
 
     def add_new_solutions(self):

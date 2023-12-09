@@ -24,7 +24,7 @@ class Schedule:
             while base == destination:
                 destination = random.choice(sol.structures.airports)
 
-            simulation_time = int(random.uniform(0, simulation_length))
+            simulation_time = int(random.uniform(1, simulation_length))
             flight = Flight(base, destination, sol, simulation_time)
 
             flight.day = int(simulation_time / 24)
