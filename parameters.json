@@ -1,9 +1,9 @@
 {
     "algo": {
-        "POPULATION_SIZE": 8,
-        "N_ITERATIONS": 3,
-        "CROSSOVER_RATE": 0.4,
-        "MUTATION_RATE": 0.8,
+        "POPULATION_SIZE": 10,
+        "N_ITERATIONS": 100,
+        "CROSSOVER_RATE": 0.5,
+        "MUTATION_RATE": 1,
         "SELECTION_RATE": 0.5
     },
     "sim": {
@@ -16,7 +16,7 @@
         "MAX_WEEKLY_HOURS": 60,
         "OVERWORK_PENALTY_PER_HOUR": 240,
         "DEFAULT_PLANE_CAPACITY": 500,
-        "N_FLIGHTS": 4
+        "N_FLIGHTS": 4000
     },
     "pen": {
         "LOCATION_PENALTY": 1000,
@@ -30,8 +30,8 @@
         "ATTEND_PER_PLANE": 4,
         "N_AIRPORTS": 10,
         "N_PLANES_F_A": 5,
-        "N_ATTENDANTS_F_A": 8,
-        "N_PILOTS_F_A": 4,
+        "N_ATTENDANTS_F_A": 20,
+        "N_PILOTS_F_A": 10,
         "PLANE_SPEED": 700
     }
 }
