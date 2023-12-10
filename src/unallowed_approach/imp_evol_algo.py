@@ -32,6 +32,10 @@ class ImpossibleEvolutionaryAlgorithm:
                                 for _ in range(self.pop_size)]
         self.fitness_scores = [None for _ in range(self.pop_size)]
 
+        self.loc_penalty_count = 0
+        self.canc_penalty_count = 0
+        self.rest_penalty_count = 0
+
     def create_initial_sols(self):
         sol = ImpossibleSolution()
         initial_sol_schedule = sol.get_initial_schedule()
@@ -59,10 +63,22 @@ class ImpossibleEvolutionaryAlgorithm:
             print(row)
 
     def print_population(self):
+        print(f"--- PRINTING THE POPULATION ---")
         for id, sol in enumerate(self.population):
             print(f"Sol: {id}: ")
             for flight in sol:
                 print(flight)
+
+    def print_fitness_scores(self):
+        print(f"--- PRINTING FITNESS SCORES ---")
+        for fit_score in self.fitness_scores:
+            print(fit_score)
+
+    def print_penalty_counts(self):
+        print("Printing penalty counts:")
+        print("Location pen.: ", self.loc_penalty_count)
+        print("Cancellation pen.: ", self.canc_penalty_count)
+        print("Rest pen.: ", self.rest_penalty_count)
 
     def check_consistency(self):
         key_params = [[flight[0], flight[1], flight[-1]] for flight in self.population[0]]
@@ -79,6 +95,7 @@ class ImpossibleEvolutionaryAlgorithm:
             src_id, dst_id, *crew_members, timestamp = flight
 
             if None in crew_members:
+                self.canc_penalty_count += 1
                 fitness_score -= cancellation_penalty
                 continue  # Skip the rest of the checks for this flight
             flight_duration = self.distance_matrix[src_id - 1][dst_id - 1] // plane_speed
@@ -86,7 +103,6 @@ class ImpossibleEvolutionaryAlgorithm:
 
             for idx, crew_member_idx in enumerate(crew_members):
                 if crew_member_idx is not None:
-                    print(f"Debug: crew_member_idx={crew_member_idx}, len(pilot_status)={len(pilot_status)} len(pilot_status[0])={len(pilot_status[0])}")
                     # Determine if the crew member is a pilot or an attendant
                     if idx < config['structs']['PILOTS_PER_PLANE']:
                         crew_member_status = pilot_status[crew_member_idx - 1]  # Adjust the index if necessary
@@ -98,11 +114,13 @@ class ImpossibleEvolutionaryAlgorithm:
                     if crew_member_status['location'] != src_id:
                         # print(f"Location penalty applied for flight from {flight[0]} to {flight[1]} - crew_member: {crew_member_idx}")
                         # print(f"Crew member location: {crew_member_status['location']}")
+                        self.loc_penalty_count += 1
                         fitness_score -= location_penalty
 
                     if timestamp - crew_member_status['time'] < required_rest_time:
                         # print(f"Rest penalty applied for flight from {flight[0]} to {flight[1]} - crew_member: {crew_member_idx}")
                         # print(f"Crew member rest_time: {timestamp - crew_member_status['time']}")
+                        self.rest_penalty_count += 1
                         fitness_score -= rest_penalty
 
                     crew_member_status['location'] = dst_id
@@ -161,11 +179,14 @@ class ImpossibleEvolutionaryAlgorithm:
 
         random.seed(None)
 
+    def reset_state_of_status_pops(self):
+        self.assign_airports_to_crew_members()
+
     def select_solutions(self):
         num_to_select = int(self.pop_size * self.selection_rate)
         solutions_with_scores = list(zip(self.population, self.fitness_scores))
 
-        solutions_with_scores.sort(key=lambda x: x[1])
+        solutions_with_scores.sort(key=lambda x: x[1], reverse=True)
         selected_solutions = [solution for solution, _ in solutions_with_scores[:num_to_select]]
         return selected_solutions
 
@@ -195,35 +216,23 @@ class ImpossibleEvolutionaryAlgorithm:
 
         return new_solutions
 
-    def combine_populations(self, new_solutions):
-        # Combine and sort the entire population (old + new) based on fitness
-        combined_population = self.population + new_solutions
-        for i, sol in enumerate(combined_population):
-            fitness_score = self.calculate_fitness(sol, self.pilots_status_pop[i], self.attend_status_pop[i])
-            # sort the population by fitness score but don't update the self.fitness_score just yet
-            
-        # combined_population.sort(key=lambda sol: self.calculate_fitness(sol, self.pilots_status_pop, self.attend_status_pop))
-        
-        # Select the top solutions to form the new population
-        return combined_population[:self.pop_size]
-
     def mutate_solution(self, solution):
         # Randomly select two distinct flights
         if len(solution) > 1:
             flight_indexes = random.sample(range(len(solution)), 2)
             flight1_idx, flight2_idx = flight_indexes[0], flight_indexes[1]
-            print(f"Chosen flights before mutation:")
-            print(solution[flight1_idx])
-            print(solution[flight2_idx])
+            # print(f"Chosen flights before mutation:")
+            # print(solution[flight1_idx])
+            # print(solution[flight2_idx])
 
             # Swap crew assignments between the two flights
             # Assuming crew assignments are from index 2 to the second last index
             solution[flight1_idx][2:-1], solution[flight2_idx][2:-1] = solution[flight2_idx][2:-1], solution[flight1_idx][2:-1]
 
             # Print the flights after mutation for verification 
-            print(f"Mutated Flights:")
-            print(solution[flight1_idx])
-            print(solution[flight2_idx])
+            # print(f"Mutated Flights:")
+            # print(solution[flight1_idx])
+            # print(solution[flight2_idx])
 
         return solution
 
@@ -245,13 +254,20 @@ class ImpossibleEvolutionaryAlgorithm:
         from the chosen solutiosn crossover the solutions with some probability
         '''
         for _ in range(n_iterations):
-            # selection
-            selected_solutions = self.select_solutions()
-            # crossover
-            new_solutions = self.crossover_solutions(selected_solutions)
+            top_solutions = self.select_solutions()
+            to_crossover = copy.deepcopy(top_solutions)
+
+            # Perform crossover and mutation on copies of these top solutions
+            new_solutions = self.crossover_solutions(to_crossover)
             mutated_new_solutions = self.mutate_solutions(new_solutions)
-            self.population = self.combine_populations(mutated_new_solutions) 
-            # self.update_fitness_for_all_sols()
+
+            # Combine the top 50% of the original population with the new solutions
+            self.population = top_solutions + mutated_new_solutions
+
+            # Update fitness scores for the entire population
+            self.update_fitness_for_all_sols()
+            self.print_fitness_scores()
+            self.reset_state_of_status_pops()
 
 
 def test_main():
@@ -265,16 +281,14 @@ def test_main():
     imp_evol_algo.create_initial_generation()
     imp_evol_algo.print_population()
     imp_evol_algo.update_fitness_for_all_sols()
+    imp_evol_algo.print_fitness_scores()
 
-    # imp_evol_algo.evolutionary_algorithm_loop(100)
+    imp_evol_algo.evolutionary_algorithm_loop(config['algo']['N_ITERATIONS'])
 
-    solutions = imp_evol_algo.select_solutions()
-    new_solutions = imp_evol_algo.crossover_solutions(solutions)
-    mutated_new_solutions = imp_evol_algo.mutate_solutions(new_solutions)
-
-    imp_evol_algo.population = imp_evol_algo.combine_populations(mutated_new_solutions)
     print("Population after crossover and mutation: ")
     imp_evol_algo.print_population()
     imp_evol_algo.update_fitness_for_all_sols()
+    imp_evol_algo.print_fitness_scores()
+    imp_evol_algo.print_penalty_counts()
     
 test_main()
