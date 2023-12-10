@@ -1,0 +1,1400 @@
+START of first gen----
+Penalties for sol: 0 in iter: 0
+Loc: 1693, Rest: 411, Canc: 0 Prop. alloc: 707
+END of first gen----
+START of first gen----
+Penalties for sol: 1 in iter: 0
+Loc: 1676, Rest: 417, Canc: 0 Prop. alloc: 724
+END of first gen----
+START of first gen----
+Penalties for sol: 2 in iter: 0
+Loc: 1681, Rest: 374, Canc: 0 Prop. alloc: 719
+END of first gen----
+START of first gen----
+Penalties for sol: 3 in iter: 0
+Loc: 1681, Rest: 403, Canc: 0 Prop. alloc: 719
+END of first gen----
+START of first gen----
+Penalties for sol: 4 in iter: 0
+Loc: 1686, Rest: 387, Canc: 0 Prop. alloc: 714
+END of first gen----
+START of first gen----
+Penalties for sol: 5 in iter: 0
+Loc: 1685, Rest: 388, Canc: 0 Prop. alloc: 715
+END of first gen----
+START of first gen----
+Penalties for sol: 6 in iter: 0
+Loc: 1684, Rest: 371, Canc: 0 Prop. alloc: 716
+END of first gen----
+START of first gen----
+Penalties for sol: 7 in iter: 0
+Loc: 1676, Rest: 383, Canc: 0 Prop. alloc: 724
+END of first gen----
+START of first gen----
+Penalties for sol: 8 in iter: 0
+Loc: 1671, Rest: 392, Canc: 0 Prop. alloc: 729
+END of first gen----
+START of first gen----
+Penalties for sol: 9 in iter: 0
+Loc: 1688, Rest: 375, Canc: 0 Prop. alloc: 712
+END of first gen----
+START of first gen----
+Penalties for sol: 10 in iter: 0
+Loc: 1687, Rest: 411, Canc: 0 Prop. alloc: 713
+END of first gen----
+START of first gen----
+Penalties for sol: 11 in iter: 0
+Loc: 1683, Rest: 394, Canc: 0 Prop. alloc: 717
+END of first gen----
+START of first gen----
+Penalties for sol: 12 in iter: 0
+Loc: 1671, Rest: 395, Canc: 0 Prop. alloc: 729
+END of first gen----
+START of first gen----
+Penalties for sol: 13 in iter: 0
+Loc: 1686, Rest: 416, Canc: 0 Prop. alloc: 714
+END of first gen----
+START of first gen----
+Penalties for sol: 14 in iter: 0
+Loc: 1672, Rest: 397, Canc: 0 Prop. alloc: 728
+END of first gen----
+START of first gen----
+Penalties for sol: 15 in iter: 0
+Loc: 1687, Rest: 415, Canc: 0 Prop. alloc: 713
+END of first gen----
+START of first gen----
+Penalties for sol: 16 in iter: 0
+Loc: 1686, Rest: 403, Canc: 0 Prop. alloc: 714
+END of first gen----
+START of first gen----
+Penalties for sol: 17 in iter: 0
+Loc: 1681, Rest: 376, Canc: 0 Prop. alloc: 719
+END of first gen----
+START of first gen----
+Penalties for sol: 18 in iter: 0
+Loc: 1688, Rest: 405, Canc: 0 Prop. alloc: 712
+END of first gen----
+START of first gen----
+Penalties for sol: 19 in iter: 0
+Loc: 1685, Rest: 377, Canc: 0 Prop. alloc: 715
+END of first gen----
+START of first gen----
+Penalties for sol: 20 in iter: 0
+Loc: 1684, Rest: 419, Canc: 0 Prop. alloc: 716
+END of first gen----
+START of first gen----
+Penalties for sol: 21 in iter: 0
+Loc: 1676, Rest: 392, Canc: 0 Prop. alloc: 724
+END of first gen----
+START of first gen----
+Penalties for sol: 22 in iter: 0
+Loc: 1692, Rest: 404, Canc: 0 Prop. alloc: 708
+END of first gen----
+START of first gen----
+Penalties for sol: 23 in iter: 0
+Loc: 1687, Rest: 412, Canc: 0 Prop. alloc: 713
+END of first gen----
+START of first gen----
+Penalties for sol: 24 in iter: 0
+Loc: 1680, Rest: 390, Canc: 0 Prop. alloc: 720
+END of first gen----
+START of first gen----
+Penalties for sol: 25 in iter: 0
+Loc: 1692, Rest: 401, Canc: 0 Prop. alloc: 708
+END of first gen----
+START of first gen----
+Penalties for sol: 26 in iter: 0
+Loc: 1683, Rest: 408, Canc: 0 Prop. alloc: 717
+END of first gen----
+START of first gen----
+Penalties for sol: 27 in iter: 0
+Loc: 1678, Rest: 387, Canc: 0 Prop. alloc: 722
+END of first gen----
+START of first gen----
+Penalties for sol: 28 in iter: 0
+Loc: 1676, Rest: 412, Canc: 0 Prop. alloc: 724
+END of first gen----
+START of first gen----
+Penalties for sol: 29 in iter: 0
+Loc: 1693, Rest: 340, Canc: 0 Prop. alloc: 707
+END of first gen----
+START of first gen----
+Penalties for sol: 30 in iter: 0
+Loc: 1681, Rest: 416, Canc: 0 Prop. alloc: 719
+END of first gen----
+START of first gen----
+Penalties for sol: 31 in iter: 0
+Loc: 1679, Rest: 380, Canc: 0 Prop. alloc: 721
+END of first gen----
+START of first gen----
+Penalties for sol: 32 in iter: 0
+Loc: 1676, Rest: 418, Canc: 0 Prop. alloc: 724
+END of first gen----
+START of first gen----
+Penalties for sol: 33 in iter: 0
+Loc: 1684, Rest: 412, Canc: 0 Prop. alloc: 716
+END of first gen----
+START of first gen----
+Penalties for sol: 34 in iter: 0
+Loc: 1685, Rest: 416, Canc: 0 Prop. alloc: 715
+END of first gen----
+START of first gen----
+Penalties for sol: 35 in iter: 0
+Loc: 1684, Rest: 417, Canc: 0 Prop. alloc: 716
+END of first gen----
+START of first gen----
+Penalties for sol: 36 in iter: 0
+Loc: 1684, Rest: 370, Canc: 0 Prop. alloc: 716
+END of first gen----
+START of first gen----
+Penalties for sol: 37 in iter: 0
+Loc: 1677, Rest: 396, Canc: 0 Prop. alloc: 723
+END of first gen----
+START of first gen----
+Penalties for sol: 38 in iter: 0
+Loc: 1685, Rest: 385, Canc: 0 Prop. alloc: 715
+END of first gen----
+START of first gen----
+Penalties for sol: 39 in iter: 0
+Loc: 1682, Rest: 379, Canc: 0 Prop. alloc: 718
+END of first gen----
+Sol: 0, fit_score: -17135500
+Sol: 1, fit_score: -16968500
+Sol: 2, fit_score: -16997000
+Sol: 3, fit_score: -17011500
+Sol: 4, fit_score: -17053500
+Sol: 5, fit_score: -17044000
+Sol: 6, fit_score: -17025500
+Sol: 7, fit_score: -16951500
+Sol: 8, fit_score: -16906000
+Sol: 9, fit_score: -17067500
+Sol: 10, fit_score: -17075500
+Sol: 11, fit_score: -17027000
+Sol: 12, fit_score: -16907500
+Sol: 13, fit_score: -17068000
+Sol: 14, fit_score: -16918500
+Sol: 15, fit_score: -17077500
+Sol: 16, fit_score: -17061500
+Sol: 17, fit_score: -16998000
+Sol: 18, fit_score: -17082500
+Sol: 19, fit_score: -17038500
+Sol: 20, fit_score: -17049500
+Sol: 21, fit_score: -16956000
+Sol: 22, fit_score: -17122000
+Sol: 23, fit_score: -17076000
+Sol: 24, fit_score: -16995000
+Sol: 25, fit_score: -17120500
+Sol: 26, fit_score: -17034000
+Sol: 27, fit_score: -16973500
+Sol: 28, fit_score: -16966000
+Sol: 29, fit_score: -17100000
+Sol: 30, fit_score: -17018000
+Sol: 31, fit_score: -16980000
+Sol: 32, fit_score: -16969000
+Sol: 33, fit_score: -17046000
+Sol: 34, fit_score: -17058000
+Sol: 35, fit_score: -17048500
+Sol: 36, fit_score: -17025000
+Sol: 37, fit_score: -16968000
+Sol: 38, fit_score: -17042500
+Sol: 39, fit_score: -17009500
+Sol: 0, fit_score: -23834000
+Sol: 1, fit_score: -23834500
+Sol: 2, fit_score: -23880500
+Sol: 3, fit_score: -23837000
+Sol: 4, fit_score: -23797500
+Sol: 5, fit_score: -23734000
+Sol: 6, fit_score: -23748500
+Sol: 7, fit_score: -23846000
+Sol: 8, fit_score: -23776000
+Sol: 9, fit_score: -23861000
+Sol: 10, fit_score: -23620500
+Sol: 11, fit_score: -23992500
+Sol: 12, fit_score: -23953500
+Sol: 13, fit_score: -23766500
+Sol: 14, fit_score: -23781500
+Sol: 15, fit_score: -23704000
+Sol: 16, fit_score: -23809500
+Sol: 17, fit_score: -23851500
+Sol: 18, fit_score: -23770500
+Sol: 19, fit_score: -23802000
+Sol: 20, fit_score: -23330000
+Sol: 21, fit_score: -23683000
+Sol: 22, fit_score: -23408000
+Sol: 23, fit_score: -23521500
+Sol: 24, fit_score: -23635000
+Sol: 25, fit_score: -23570000
+Sol: 26, fit_score: -23464000
+Sol: 27, fit_score: -23222500
+Sol: 28, fit_score: -23212500
+Sol: 29, fit_score: -23358000
+Sol: 30, fit_score: -23457000
+Sol: 31, fit_score: -23544500
+Sol: 32, fit_score: -23335500
+Sol: 33, fit_score: -23256500
+Sol: 34, fit_score: -23247000
+Sol: 35, fit_score: -23438500
+Sol: 36, fit_score: -23405500
+Sol: 37, fit_score: -23377500
+Sol: 38, fit_score: -23583500
+Sol: 39, fit_score: -23684000
+Penalties for sol: 0 in iter: 0
+Loc: 2333, Rest: 1008, Canc: 0 Prop. alloc: 67
+Penalties for sol: 1 in iter: 0
+Loc: 2333, Rest: 1009, Canc: 0 Prop. alloc: 67
+Penalties for sol: 2 in iter: 0
+Loc: 2337, Rest: 1021, Canc: 0 Prop. alloc: 63
+Penalties for sol: 3 in iter: 0
+Loc: 2333, Rest: 1014, Canc: 0 Prop. alloc: 67
+Penalties for sol: 4 in iter: 0
+Loc: 2329, Rest: 1015, Canc: 0 Prop. alloc: 71
+Penalties for sol: 5 in iter: 0
+Loc: 2322, Rest: 1028, Canc: 0 Prop. alloc: 78
+Penalties for sol: 6 in iter: 0
+Loc: 2324, Rest: 1017, Canc: 0 Prop. alloc: 76
+Penalties for sol: 7 in iter: 0
+Loc: 2332, Rest: 1052, Canc: 0 Prop. alloc: 68
+Penalties for sol: 8 in iter: 0
+Loc: 2326, Rest: 1032, Canc: 0 Prop. alloc: 74
+Penalties for sol: 9 in iter: 0
+Loc: 2336, Rest: 1002, Canc: 0 Prop. alloc: 64
+Penalties for sol: 10 in iter: 0
+Loc: 2312, Rest: 1001, Canc: 0 Prop. alloc: 88
+Penalties for sol: 11 in iter: 0
+Loc: 2349, Rest: 1005, Canc: 0 Prop. alloc: 51
+Penalties for sol: 12 in iter: 0
+Loc: 2346, Rest: 987, Canc: 0 Prop. alloc: 54
+Penalties for sol: 13 in iter: 0
+Loc: 2327, Rest: 993, Canc: 0 Prop. alloc: 73
+Penalties for sol: 14 in iter: 0
+Loc: 2328, Rest: 1003, Canc: 0 Prop. alloc: 72
+Penalties for sol: 15 in iter: 0
+Loc: 2320, Rest: 1008, Canc: 0 Prop. alloc: 80
+Penalties for sol: 16 in iter: 0
+Loc: 2330, Rest: 1019, Canc: 0 Prop. alloc: 70
+Penalties for sol: 17 in iter: 0
+Loc: 2336, Rest: 983, Canc: 0 Prop. alloc: 64
+Penalties for sol: 18 in iter: 0
+Loc: 2328, Rest: 981, Canc: 0 Prop. alloc: 72
+Penalties for sol: 19 in iter: 0
+Loc: 2330, Rest: 1004, Canc: 0 Prop. alloc: 70
+Penalties for sol: 20 in iter: 0
+Loc: 2285, Rest: 960, Canc: 0 Prop. alloc: 115
+Penalties for sol: 21 in iter: 0
+Loc: 2316, Rest: 1046, Canc: 0 Prop. alloc: 84
+Penalties for sol: 22 in iter: 0
+Loc: 2291, Rest: 996, Canc: 0 Prop. alloc: 109
+Penalties for sol: 23 in iter: 0
+Loc: 2301, Rest: 1023, Canc: 0 Prop. alloc: 99
+Penalties for sol: 24 in iter: 0
+Loc: 2312, Rest: 1030, Canc: 0 Prop. alloc: 88
+Penalties for sol: 25 in iter: 0
+Loc: 2307, Rest: 1000, Canc: 0 Prop. alloc: 93
+Penalties for sol: 26 in iter: 0
+Loc: 2296, Rest: 1008, Canc: 0 Prop. alloc: 104
+Penalties for sol: 27 in iter: 0
+Loc: 2272, Rest: 1005, Canc: 0 Prop. alloc: 128
+Penalties for sol: 28 in iter: 0
+Loc: 2271, Rest: 1005, Canc: 0 Prop. alloc: 129
+Penalties for sol: 29 in iter: 0
+Loc: 2285, Rest: 1016, Canc: 0 Prop. alloc: 115
+Penalties for sol: 30 in iter: 0
+Loc: 2296, Rest: 994, Canc: 0 Prop. alloc: 104
+Penalties for sol: 31 in iter: 0
+Loc: 2302, Rest: 1049, Canc: 0 Prop. alloc: 98
+Penalties for sol: 32 in iter: 0
+Loc: 2283, Rest: 1011, Canc: 0 Prop. alloc: 117
+Penalties for sol: 33 in iter: 0
+Loc: 2277, Rest: 973, Canc: 0 Prop. alloc: 123
+Penalties for sol: 34 in iter: 0
+Loc: 2274, Rest: 1014, Canc: 0 Prop. alloc: 126
+Penalties for sol: 35 in iter: 0
+Loc: 2293, Rest: 1017, Canc: 0 Prop. alloc: 107
+Penalties for sol: 36 in iter: 0
+Loc: 2290, Rest: 1011, Canc: 0 Prop. alloc: 110
+Penalties for sol: 37 in iter: 0
+Loc: 2287, Rest: 1015, Canc: 0 Prop. alloc: 113
+Penalties for sol: 38 in iter: 0
+Loc: 2308, Rest: 1007, Canc: 0 Prop. alloc: 92
+Penalties for sol: 39 in iter: 0
+Loc: 2318, Rest: 1008, Canc: 0 Prop. alloc: 82
+Sol: 0, fit_score: -23240500
+Sol: 1, fit_score: -23204500
+Sol: 2, fit_score: -23444000
+Sol: 3, fit_score: -17671500
+Sol: 4, fit_score: -23304500
+Sol: 5, fit_score: -23376500
+Sol: 6, fit_score: -23438000
+Sol: 7, fit_score: -23553000
+Sol: 8, fit_score: -23109500
+Sol: 9, fit_score: -23606000
+Sol: 10, fit_score: -23418500
+Sol: 11, fit_score: -23392500
+Sol: 12, fit_score: -23337000
+Sol: 13, fit_score: -23602500
+Sol: 14, fit_score: -23313500
+Sol: 15, fit_score: -23659500
+Sol: 16, fit_score: -23512500
+Sol: 17, fit_score: -23720000
+Sol: 18, fit_score: -23681000
+Sol: 19, fit_score: -23510500
+Sol: 20, fit_score: -23078500
+Sol: 21, fit_score: -22791500
+Sol: 22, fit_score: -23351000
+Sol: 23, fit_score: -23188000
+Sol: 24, fit_score: -23445500
+Sol: 25, fit_score: -23173500
+Sol: 26, fit_score: -23040000
+Sol: 27, fit_score: -23382000
+Sol: 28, fit_score: -23352000
+Sol: 29, fit_score: -23177000
+Sol: 30, fit_score: -23562500
+Sol: 31, fit_score: -23080500
+Sol: 32, fit_score: -23602000
+Sol: 33, fit_score: -23260000
+Sol: 34, fit_score: -23546000
+Sol: 35, fit_score: -23293000
+Sol: 36, fit_score: -23167000
+Sol: 37, fit_score: -23372500
+Sol: 38, fit_score: -23102500
+Sol: 39, fit_score: -22852000
+Penalties for sol: 0 in iter: 1
+Loc: 2273, Rest: 1021, Canc: 0 Prop. alloc: 127
+Penalties for sol: 1 in iter: 1
+Loc: 2269, Rest: 1029, Canc: 0 Prop. alloc: 131
+Penalties for sol: 2 in iter: 1
+Loc: 2293, Rest: 1028, Canc: 0 Prop. alloc: 107
+Penalties for sol: 3 in iter: 1
+Loc: 1717, Rest: 1003, Canc: 0 Prop. alloc: 683
+Penalties for sol: 4 in iter: 1
+Loc: 2279, Rest: 1029, Canc: 0 Prop. alloc: 121
+Penalties for sol: 5 in iter: 1
+Loc: 2287, Rest: 1013, Canc: 0 Prop. alloc: 113
+Penalties for sol: 6 in iter: 1
+Loc: 2292, Rest: 1036, Canc: 0 Prop. alloc: 108
+Penalties for sol: 7 in iter: 1
+Loc: 2304, Rest: 1026, Canc: 0 Prop. alloc: 96
+Penalties for sol: 8 in iter: 1
+Loc: 2259, Rest: 1039, Canc: 0 Prop. alloc: 141
+Penalties for sol: 9 in iter: 1
+Loc: 2306, Rest: 1092, Canc: 0 Prop. alloc: 94
+Penalties for sol: 10 in iter: 1
+Loc: 2289, Rest: 1057, Canc: 0 Prop. alloc: 111
+Penalties for sol: 11 in iter: 1
+Loc: 2288, Rest: 1025, Canc: 0 Prop. alloc: 112
+Penalties for sol: 12 in iter: 1
+Loc: 2282, Rest: 1034, Canc: 0 Prop. alloc: 118
+Penalties for sol: 13 in iter: 1
+Loc: 2308, Rest: 1045, Canc: 0 Prop. alloc: 92
+Penalties for sol: 14 in iter: 1
+Loc: 2280, Rest: 1027, Canc: 0 Prop. alloc: 120
+Penalties for sol: 15 in iter: 1
+Loc: 2314, Rest: 1039, Canc: 0 Prop. alloc: 86
+Penalties for sol: 16 in iter: 1
+Loc: 2300, Rest: 1025, Canc: 0 Prop. alloc: 100
+Penalties for sol: 17 in iter: 1
+Loc: 2321, Rest: 1020, Canc: 0 Prop. alloc: 79
+Penalties for sol: 18 in iter: 1
+Loc: 2316, Rest: 1042, Canc: 0 Prop. alloc: 84
+Penalties for sol: 19 in iter: 1
+Loc: 2300, Rest: 1021, Canc: 0 Prop. alloc: 100
+Penalties for sol: 20 in iter: 1
+Loc: 2258, Rest: 997, Canc: 0 Prop. alloc: 142
+Penalties for sol: 21 in iter: 1
+Loc: 2227, Rest: 1043, Canc: 0 Prop. alloc: 173
+Penalties for sol: 22 in iter: 1
+Loc: 2282, Rest: 1062, Canc: 0 Prop. alloc: 118
+Penalties for sol: 23 in iter: 1
+Loc: 2267, Rest: 1036, Canc: 0 Prop. alloc: 133
+Penalties for sol: 24 in iter: 1
+Loc: 2290, Rest: 1091, Canc: 0 Prop. alloc: 110
+Penalties for sol: 25 in iter: 1
+Loc: 2266, Rest: 1027, Canc: 0 Prop. alloc: 134
+Penalties for sol: 26 in iter: 1
+Loc: 2251, Rest: 1060, Canc: 0 Prop. alloc: 149
+Penalties for sol: 27 in iter: 1
+Loc: 2286, Rest: 1044, Canc: 0 Prop. alloc: 114
+Penalties for sol: 28 in iter: 1
+Loc: 2284, Rest: 1024, Canc: 0 Prop. alloc: 116
+Penalties for sol: 29 in iter: 1
+Loc: 2268, Rest: 994, Canc: 0 Prop. alloc: 132
+Penalties for sol: 30 in iter: 1
+Loc: 2304, Rest: 1045, Canc: 0 Prop. alloc: 96
+Penalties for sol: 31 in iter: 1
+Loc: 2257, Rest: 1021, Canc: 0 Prop. alloc: 143
+Penalties for sol: 32 in iter: 1
+Loc: 2309, Rest: 1024, Canc: 0 Prop. alloc: 91
+Penalties for sol: 33 in iter: 1
+Loc: 2275, Rest: 1020, Canc: 0 Prop. alloc: 125
+Penalties for sol: 34 in iter: 1
+Loc: 2303, Rest: 1032, Canc: 0 Prop. alloc: 97
+Penalties for sol: 35 in iter: 1
+Loc: 2278, Rest: 1026, Canc: 0 Prop. alloc: 122
+Penalties for sol: 36 in iter: 1
+Loc: 2265, Rest: 1034, Canc: 0 Prop. alloc: 135
+Penalties for sol: 37 in iter: 1
+Loc: 2283, Rest: 1085, Canc: 0 Prop. alloc: 117
+Penalties for sol: 38 in iter: 1
+Loc: 2259, Rest: 1025, Canc: 0 Prop. alloc: 141
+Penalties for sol: 39 in iter: 1
+Loc: 2234, Rest: 1024, Canc: 0 Prop. alloc: 166
+Sol: 0, fit_score: -23259500
+Sol: 1, fit_score: -23154000
+Sol: 2, fit_score: -21614000
+Sol: 3, fit_score: -23079500
+Sol: 4, fit_score: -23152000
+Sol: 5, fit_score: -23296000
+Sol: 6, fit_score: -23231500
+Sol: 7, fit_score: -23421000
+Sol: 8, fit_score: -21738000
+Sol: 9, fit_score: -23350000
+Sol: 10, fit_score: -23206500
+Sol: 11, fit_score: -23094000
+Sol: 12, fit_score: -23215500
+Sol: 13, fit_score: -23283500
+Sol: 14, fit_score: -23389000
+Sol: 15, fit_score: -23180000
+Sol: 16, fit_score: -23525000
+Sol: 17, fit_score: -23386000
+Sol: 18, fit_score: -23426000
+Sol: 19, fit_score: -23489500
+Sol: 20, fit_score: -23190000
+Sol: 21, fit_score: -23138500
+Sol: 22, fit_score: -23096500
+Sol: 23, fit_score: -23218500
+Sol: 24, fit_score: -22839000
+Sol: 25, fit_score: -23050000
+Sol: 26, fit_score: -23080000
+Sol: 27, fit_score: -20522500
+Sol: 28, fit_score: -23162000
+Sol: 29, fit_score: -22877500
+Sol: 30, fit_score: -23178000
+Sol: 31, fit_score: -22915000
+Sol: 32, fit_score: -21761500
+Sol: 33, fit_score: -23168500
+Sol: 34, fit_score: -23513500
+Sol: 35, fit_score: -23069500
+Sol: 36, fit_score: -23188500
+Sol: 37, fit_score: -22853500
+Sol: 38, fit_score: -22978000
+Sol: 39, fit_score: -22952500
+Penalties for sol: 0 in iter: 2
+Loc: 2275, Rest: 1019, Canc: 0 Prop. alloc: 125
+Penalties for sol: 1 in iter: 2
+Loc: 2264, Rest: 1028, Canc: 0 Prop. alloc: 136
+Penalties for sol: 2 in iter: 2
+Loc: 2111, Rest: 1008, Canc: 0 Prop. alloc: 289
+Penalties for sol: 3 in iter: 2
+Loc: 2257, Rest: 1019, Canc: 0 Prop. alloc: 143
+Penalties for sol: 4 in iter: 2
+Loc: 2265, Rest: 1004, Canc: 0 Prop. alloc: 135
+Penalties for sol: 5 in iter: 2
+Loc: 2278, Rest: 1032, Canc: 0 Prop. alloc: 122
+Penalties for sol: 6 in iter: 2
+Loc: 2272, Rest: 1023, Canc: 0 Prop. alloc: 128
+Penalties for sol: 7 in iter: 2
+Loc: 2290, Rest: 1042, Canc: 0 Prop. alloc: 110
+Penalties for sol: 8 in iter: 2
+Loc: 2122, Rest: 1036, Canc: 0 Prop. alloc: 278
+Penalties for sol: 9 in iter: 2
+Loc: 2284, Rest: 1020, Canc: 0 Prop. alloc: 116
+Penalties for sol: 10 in iter: 2
+Loc: 2271, Rest: 993, Canc: 0 Prop. alloc: 129
+Penalties for sol: 11 in iter: 2
+Loc: 2258, Rest: 1028, Canc: 0 Prop. alloc: 142
+Penalties for sol: 12 in iter: 2
+Loc: 2270, Rest: 1031, Canc: 0 Prop. alloc: 130
+Penalties for sol: 13 in iter: 2
+Loc: 2277, Rest: 1027, Canc: 0 Prop. alloc: 123
+Penalties for sol: 14 in iter: 2
+Loc: 2287, Rest: 1038, Canc: 0 Prop. alloc: 113
+Penalties for sol: 15 in iter: 2
+Loc: 2266, Rest: 1040, Canc: 0 Prop. alloc: 134
+Penalties for sol: 16 in iter: 2
+Loc: 2303, Rest: 990, Canc: 0 Prop. alloc: 97
+Penalties for sol: 17 in iter: 2
+Loc: 2285, Rest: 1072, Canc: 0 Prop. alloc: 115
+Penalties for sol: 18 in iter: 2
+Loc: 2291, Rest: 1032, Canc: 0 Prop. alloc: 109
+Penalties for sol: 19 in iter: 2
+Loc: 2296, Rest: 1059, Canc: 0 Prop. alloc: 104
+Penalties for sol: 20 in iter: 2
+Loc: 2266, Rest: 1060, Canc: 0 Prop. alloc: 134
+Penalties for sol: 21 in iter: 2
+Loc: 2263, Rest: 1017, Canc: 0 Prop. alloc: 137
+Penalties for sol: 22 in iter: 2
+Loc: 2258, Rest: 1033, Canc: 0 Prop. alloc: 142
+Penalties for sol: 23 in iter: 2
+Loc: 2271, Rest: 1017, Canc: 0 Prop. alloc: 129
+Penalties for sol: 24 in iter: 2
+Loc: 2235, Rest: 978, Canc: 0 Prop. alloc: 165
+Penalties for sol: 25 in iter: 2
+Loc: 2254, Rest: 1020, Canc: 0 Prop. alloc: 146
+Penalties for sol: 26 in iter: 2
+Loc: 2257, Rest: 1020, Canc: 0 Prop. alloc: 143
+Penalties for sol: 27 in iter: 2
+Loc: 2000, Rest: 1045, Canc: 0 Prop. alloc: 400
+Penalties for sol: 28 in iter: 2
+Loc: 2264, Rest: 1044, Canc: 0 Prop. alloc: 136
+Penalties for sol: 29 in iter: 2
+Loc: 2236, Rest: 1035, Canc: 0 Prop. alloc: 164
+Penalties for sol: 30 in iter: 2
+Loc: 2267, Rest: 1016, Canc: 0 Prop. alloc: 133
+Penalties for sol: 31 in iter: 2
+Loc: 2239, Rest: 1050, Canc: 0 Prop. alloc: 161
+Penalties for sol: 32 in iter: 2
+Loc: 2125, Rest: 1023, Canc: 0 Prop. alloc: 275
+Penalties for sol: 33 in iter: 2
+Loc: 2266, Rest: 1017, Canc: 0 Prop. alloc: 134
+Penalties for sol: 34 in iter: 2
+Loc: 2299, Rest: 1047, Canc: 0 Prop. alloc: 101
+Penalties for sol: 35 in iter: 2
+Loc: 2255, Rest: 1039, Canc: 0 Prop. alloc: 145
+Penalties for sol: 36 in iter: 2
+Loc: 2268, Rest: 1017, Canc: 0 Prop. alloc: 132
+Penalties for sol: 37 in iter: 2
+Loc: 2236, Rest: 987, Canc: 0 Prop. alloc: 164
+Penalties for sol: 38 in iter: 2
+Loc: 2250, Rest: 956, Canc: 0 Prop. alloc: 150
+Penalties for sol: 39 in iter: 2
+Loc: 2242, Rest: 1065, Canc: 0 Prop. alloc: 158
+Sol: 0, fit_score: -23343000
+Sol: 1, fit_score: -22887500
+Sol: 2, fit_score: -23152000
+Sol: 3, fit_score: -22920000
+Sol: 4, fit_score: -22978000
+Sol: 5, fit_score: -22834000
+Sol: 6, fit_score: -23095000
+Sol: 7, fit_score: -19490500
+Sol: 8, fit_score: -22958500
+Sol: 9, fit_score: -23138500
+Sol: 10, fit_score: -23091000
+Sol: 11, fit_score: -22326500
+Sol: 12, fit_score: -22956000
+Sol: 13, fit_score: -23116000
+Sol: 14, fit_score: -23104000
+Sol: 15, fit_score: -23367500
+Sol: 16, fit_score: -23225500
+Sol: 17, fit_score: -23050000
+Sol: 18, fit_score: -23214500
+Sol: 19, fit_score: -23240000
+Sol: 20, fit_score: -23224500
+Sol: 21, fit_score: -22771000
+Sol: 22, fit_score: -22973000
+Sol: 23, fit_score: -23105000
+Sol: 24, fit_score: -23087500
+Sol: 25, fit_score: -23068000
+Sol: 26, fit_score: -22934000
+Sol: 27, fit_score: -22861000
+Sol: 28, fit_score: -22711000
+Sol: 29, fit_score: -22880500
+Sol: 30, fit_score: -22962500
+Sol: 31, fit_score: -22915500
+Sol: 32, fit_score: -17986500
+Sol: 33, fit_score: -23143500
+Sol: 34, fit_score: -23161500
+Sol: 35, fit_score: -23000500
+Sol: 36, fit_score: -23010000
+Sol: 37, fit_score: -22605500
+Sol: 38, fit_score: -22862500
+Sol: 39, fit_score: -22946500
+Penalties for sol: 0 in iter: 3
+Loc: 2282, Rest: 1046, Canc: 0 Prop. alloc: 118
+Penalties for sol: 1 in iter: 3
+Loc: 2238, Rest: 1015, Canc: 0 Prop. alloc: 162
+Penalties for sol: 2 in iter: 3
+Loc: 2264, Rest: 1024, Canc: 0 Prop. alloc: 136
+Penalties for sol: 3 in iter: 3
+Loc: 2241, Rest: 1020, Canc: 0 Prop. alloc: 159
+Penalties for sol: 4 in iter: 3
+Loc: 2248, Rest: 996, Canc: 0 Prop. alloc: 152
+Penalties for sol: 5 in iter: 3
+Loc: 2234, Rest: 988, Canc: 0 Prop. alloc: 166
+Penalties for sol: 6 in iter: 3
+Loc: 2258, Rest: 1030, Canc: 0 Prop. alloc: 142
+Penalties for sol: 7 in iter: 3
+Loc: 1897, Rest: 1041, Canc: 0 Prop. alloc: 503
+Penalties for sol: 8 in iter: 3
+Loc: 2243, Rest: 1057, Canc: 0 Prop. alloc: 157
+Penalties for sol: 9 in iter: 3
+Loc: 2266, Rest: 957, Canc: 0 Prop. alloc: 134
+Penalties for sol: 10 in iter: 3
+Loc: 2257, Rest: 1042, Canc: 0 Prop. alloc: 143
+Penalties for sol: 11 in iter: 3
+Loc: 2181, Rest: 1033, Canc: 0 Prop. alloc: 219
+Penalties for sol: 12 in iter: 3
+Loc: 2245, Rest: 1012, Canc: 0 Prop. alloc: 155
+Penalties for sol: 13 in iter: 3
+Loc: 2260, Rest: 1032, Canc: 0 Prop. alloc: 140
+Penalties for sol: 14 in iter: 3
+Loc: 2259, Rest: 1028, Canc: 0 Prop. alloc: 141
+Penalties for sol: 15 in iter: 3
+Loc: 2285, Rest: 1035, Canc: 0 Prop. alloc: 115
+Penalties for sol: 16 in iter: 3
+Loc: 2272, Rest: 1011, Canc: 0 Prop. alloc: 128
+Penalties for sol: 17 in iter: 3
+Loc: 2255, Rest: 1000, Canc: 0 Prop. alloc: 145
+Penalties for sol: 18 in iter: 3
+Loc: 2270, Rest: 1029, Canc: 0 Prop. alloc: 130
+Penalties for sol: 19 in iter: 3
+Loc: 2272, Rest: 1040, Canc: 0 Prop. alloc: 128
+Penalties for sol: 20 in iter: 3
+Loc: 2271, Rest: 1029, Canc: 0 Prop. alloc: 129
+Penalties for sol: 21 in iter: 3
+Loc: 2226, Rest: 1022, Canc: 0 Prop. alloc: 174
+Penalties for sol: 22 in iter: 3
+Loc: 2246, Rest: 1026, Canc: 0 Prop. alloc: 154
+Penalties for sol: 23 in iter: 3
+Loc: 2259, Rest: 1030, Canc: 0 Prop. alloc: 141
+Penalties for sol: 24 in iter: 3
+Loc: 2256, Rest: 1055, Canc: 0 Prop. alloc: 144
+Penalties for sol: 25 in iter: 3
+Loc: 2254, Rest: 1056, Canc: 0 Prop. alloc: 146
+Penalties for sol: 26 in iter: 3
+Loc: 2240, Rest: 1068, Canc: 0 Prop. alloc: 160
+Penalties for sol: 27 in iter: 3
+Loc: 2238, Rest: 962, Canc: 0 Prop. alloc: 162
+Penalties for sol: 28 in iter: 3
+Loc: 2219, Rest: 1042, Canc: 0 Prop. alloc: 181
+Penalties for sol: 29 in iter: 3
+Loc: 2238, Rest: 1001, Canc: 0 Prop. alloc: 162
+Penalties for sol: 30 in iter: 3
+Loc: 2245, Rest: 1025, Canc: 0 Prop. alloc: 155
+Penalties for sol: 31 in iter: 3
+Loc: 2241, Rest: 1011, Canc: 0 Prop. alloc: 159
+Penalties for sol: 32 in iter: 3
+Loc: 1747, Rest: 1033, Canc: 0 Prop. alloc: 653
+Penalties for sol: 33 in iter: 3
+Loc: 2263, Rest: 1027, Canc: 0 Prop. alloc: 137
+Penalties for sol: 34 in iter: 3
+Loc: 2265, Rest: 1023, Canc: 0 Prop. alloc: 135
+Penalties for sol: 35 in iter: 3
+Loc: 2249, Rest: 1021, Canc: 0 Prop. alloc: 151
+Penalties for sol: 36 in iter: 3
+Loc: 2249, Rest: 1040, Canc: 0 Prop. alloc: 151
+Penalties for sol: 37 in iter: 3
+Loc: 2208, Rest: 1051, Canc: 0 Prop. alloc: 192
+Penalties for sol: 38 in iter: 3
+Loc: 2235, Rest: 1025, Canc: 0 Prop. alloc: 165
+Penalties for sol: 39 in iter: 3
+Loc: 2243, Rest: 1033, Canc: 0 Prop. alloc: 157
+Sol: 0, fit_score: -22726500
+Sol: 1, fit_score: -23020000
+Sol: 2, fit_score: -22989500
+Sol: 3, fit_score: -22765000
+Sol: 4, fit_score: -22816500
+Sol: 5, fit_score: -22843500
+Sol: 6, fit_score: -17759000
+Sol: 7, fit_score: -22939500
+Sol: 8, fit_score: -22764500
+Sol: 9, fit_score: -22898000
+Sol: 10, fit_score: -23173000
+Sol: 11, fit_score: -22904500
+Sol: 12, fit_score: -22778500
+Sol: 13, fit_score: -22825500
+Sol: 14, fit_score: -22828500
+Sol: 15, fit_score: -22935000
+Sol: 16, fit_score: -22840000
+Sol: 17, fit_score: -23009000
+Sol: 18, fit_score: -23053000
+Sol: 19, fit_score: -22940500
+Sol: 20, fit_score: -22898000
+Sol: 21, fit_score: -21324000
+Sol: 22, fit_score: -22781000
+Sol: 23, fit_score: -22877000
+Sol: 24, fit_score: -22758500
+Sol: 25, fit_score: -22972000
+Sol: 26, fit_score: -23007500
+Sol: 27, fit_score: -22590000
+Sol: 28, fit_score: -22974500
+Sol: 29, fit_score: -22733000
+Sol: 30, fit_score: -22887500
+Sol: 31, fit_score: -22031500
+Sol: 32, fit_score: -22726500
+Sol: 33, fit_score: -22824000
+Sol: 34, fit_score: -22808500
+Sol: 35, fit_score: -22772000
+Sol: 36, fit_score: -22370000
+Sol: 37, fit_score: -22928000
+Sol: 38, fit_score: -23073500
+Sol: 39, fit_score: -22815500
+Penalties for sol: 0 in iter: 4
+Loc: 2221, Rest: 1033, Canc: 0 Prop. alloc: 179
+Penalties for sol: 1 in iter: 4
+Loc: 2250, Rest: 1040, Canc: 0 Prop. alloc: 150
+Penalties for sol: 2 in iter: 4
+Loc: 2248, Rest: 1019, Canc: 0 Prop. alloc: 152
+Penalties for sol: 3 in iter: 4
+Loc: 2226, Rest: 1010, Canc: 0 Prop. alloc: 174
+Penalties for sol: 4 in iter: 4
+Loc: 2229, Rest: 1053, Canc: 0 Prop. alloc: 171
+Penalties for sol: 5 in iter: 4
+Loc: 2233, Rest: 1027, Canc: 0 Prop. alloc: 167
+Penalties for sol: 6 in iter: 4
+Loc: 1726, Rest: 998, Canc: 0 Prop. alloc: 674
+Penalties for sol: 7 in iter: 4
+Loc: 2246, Rest: 959, Canc: 0 Prop. alloc: 154
+Penalties for sol: 8 in iter: 4
+Loc: 2227, Rest: 989, Canc: 0 Prop. alloc: 173
+Penalties for sol: 9 in iter: 4
+Loc: 2239, Rest: 1016, Canc: 0 Prop. alloc: 161
+Penalties for sol: 10 in iter: 4
+Loc: 2264, Rest: 1066, Canc: 0 Prop. alloc: 136
+Penalties for sol: 11 in iter: 4
+Loc: 2240, Rest: 1009, Canc: 0 Prop. alloc: 160
+Penalties for sol: 12 in iter: 4
+Loc: 2227, Rest: 1017, Canc: 0 Prop. alloc: 173
+Penalties for sol: 13 in iter: 4
+Loc: 2229, Rest: 1071, Canc: 0 Prop. alloc: 171
+Penalties for sol: 14 in iter: 4
+Loc: 2232, Rest: 1017, Canc: 0 Prop. alloc: 168
+Penalties for sol: 15 in iter: 4
+Loc: 2243, Rest: 1010, Canc: 0 Prop. alloc: 157
+Penalties for sol: 16 in iter: 4
+Loc: 2231, Rest: 1060, Canc: 0 Prop. alloc: 169
+Penalties for sol: 17 in iter: 4
+Loc: 2248, Rest: 1058, Canc: 0 Prop. alloc: 152
+Penalties for sol: 18 in iter: 4
+Loc: 2254, Rest: 1026, Canc: 0 Prop. alloc: 146
+Penalties for sol: 19 in iter: 4
+Loc: 2245, Rest: 981, Canc: 0 Prop. alloc: 155
+Penalties for sol: 20 in iter: 4
+Loc: 2238, Rest: 1036, Canc: 0 Prop. alloc: 162
+Penalties for sol: 21 in iter: 4
+Loc: 2080, Rest: 1048, Canc: 0 Prop. alloc: 320
+Penalties for sol: 22 in iter: 4
+Loc: 2228, Rest: 1002, Canc: 0 Prop. alloc: 172
+Penalties for sol: 23 in iter: 4
+Loc: 2236, Rest: 1034, Canc: 0 Prop. alloc: 164
+Penalties for sol: 24 in iter: 4
+Loc: 2225, Rest: 1017, Canc: 0 Prop. alloc: 175
+Penalties for sol: 25 in iter: 4
+Loc: 2245, Rest: 1044, Canc: 0 Prop. alloc: 155
+Penalties for sol: 26 in iter: 4
+Loc: 2250, Rest: 1015, Canc: 0 Prop. alloc: 150
+Penalties for sol: 27 in iter: 4
+Loc: 2208, Rest: 1020, Canc: 0 Prop. alloc: 192
+Penalties for sol: 28 in iter: 4
+Loc: 2248, Rest: 989, Canc: 0 Prop. alloc: 152
+Penalties for sol: 29 in iter: 4
+Loc: 2223, Rest: 1006, Canc: 0 Prop. alloc: 177
+Penalties for sol: 30 in iter: 4
+Loc: 2238, Rest: 1015, Canc: 0 Prop. alloc: 162
+Penalties for sol: 31 in iter: 4
+Loc: 2151, Rest: 1043, Canc: 0 Prop. alloc: 249
+Penalties for sol: 32 in iter: 4
+Loc: 2221, Rest: 1033, Canc: 0 Prop. alloc: 179
+Penalties for sol: 33 in iter: 4
+Loc: 2231, Rest: 1028, Canc: 0 Prop. alloc: 169
+Penalties for sol: 34 in iter: 4
+Loc: 2229, Rest: 1037, Canc: 0 Prop. alloc: 171
+Penalties for sol: 35 in iter: 4
+Loc: 2228, Rest: 984, Canc: 0 Prop. alloc: 172
+Penalties for sol: 36 in iter: 4
+Loc: 2186, Rest: 1020, Canc: 0 Prop. alloc: 214
+Penalties for sol: 37 in iter: 4
+Loc: 2242, Rest: 1016, Canc: 0 Prop. alloc: 158
+Penalties for sol: 38 in iter: 4
+Loc: 2255, Rest: 1047, Canc: 0 Prop. alloc: 145
+Penalties for sol: 39 in iter: 4
+Loc: 2228, Rest: 1071, Canc: 0 Prop. alloc: 172
+Sol: 0, fit_score: -23028000
+Sol: 1, fit_score: -22733500
+Sol: 2, fit_score: -21884500
+Sol: 3, fit_score: -22900000
+Sol: 4, fit_score: -22787500
+Sol: 5, fit_score: -22706000
+Sol: 6, fit_score: -22794500
+Sol: 7, fit_score: -22771500
+Sol: 8, fit_score: -22541500
+Sol: 9, fit_score: -22932000
+Sol: 10, fit_score: -22802000
+Sol: 11, fit_score: -22807000
+Sol: 12, fit_score: -22806500
+Sol: 13, fit_score: -22938000
+Sol: 14, fit_score: -22849500
+Sol: 15, fit_score: -22747500
+Sol: 16, fit_score: -22736500
+Sol: 17, fit_score: -22844500
+Sol: 18, fit_score: -22832500
+Sol: 19, fit_score: -23063000
+Sol: 20, fit_score: -22718000
+Sol: 21, fit_score: -22819000
+Sol: 22, fit_score: -22688000
+Sol: 23, fit_score: -22762500
+Sol: 24, fit_score: -22878500
+Sol: 25, fit_score: -22661000
+Sol: 26, fit_score: -22907500
+Sol: 27, fit_score: -22713500
+Sol: 28, fit_score: -22859500
+Sol: 29, fit_score: -22775000
+Sol: 30, fit_score: -22094000
+Sol: 31, fit_score: -22148000
+Sol: 32, fit_score: -21766000
+Sol: 33, fit_score: -22837000
+Sol: 34, fit_score: -22689000
+Sol: 35, fit_score: -22763500
+Sol: 36, fit_score: -22949000
+Sol: 37, fit_score: -22474000
+Sol: 38, fit_score: -22588500
+Sol: 39, fit_score: -21753000
+Penalties for sol: 0 in iter: 5
+Loc: 2253, Rest: 996, Canc: 0 Prop. alloc: 147
+Penalties for sol: 1 in iter: 5
+Loc: 2221, Rest: 1047, Canc: 0 Prop. alloc: 179
+Penalties for sol: 2 in iter: 5
+Loc: 2137, Rest: 1029, Canc: 0 Prop. alloc: 263
+Penalties for sol: 3 in iter: 5
+Loc: 2239, Rest: 1020, Canc: 0 Prop. alloc: 161
+Penalties for sol: 4 in iter: 5
+Loc: 2228, Rest: 1015, Canc: 0 Prop. alloc: 172
+Penalties for sol: 5 in iter: 5
+Loc: 2219, Rest: 1032, Canc: 0 Prop. alloc: 181
+Penalties for sol: 6 in iter: 5
+Loc: 2228, Rest: 1029, Canc: 0 Prop. alloc: 172
+Penalties for sol: 7 in iter: 5
+Loc: 2225, Rest: 1043, Canc: 0 Prop. alloc: 175
+Penalties for sol: 8 in iter: 5
+Loc: 2203, Rest: 1023, Canc: 0 Prop. alloc: 197
+Penalties for sol: 9 in iter: 5
+Loc: 2243, Rest: 1004, Canc: 0 Prop. alloc: 157
+Penalties for sol: 10 in iter: 5
+Loc: 2231, Rest: 984, Canc: 0 Prop. alloc: 169
+Penalties for sol: 11 in iter: 5
+Loc: 2231, Rest: 994, Canc: 0 Prop. alloc: 169
+Penalties for sol: 12 in iter: 5
+Loc: 2227, Rest: 1073, Canc: 0 Prop. alloc: 173
+Penalties for sol: 13 in iter: 5
+Loc: 2244, Rest: 996, Canc: 0 Prop. alloc: 156
+Penalties for sol: 14 in iter: 5
+Loc: 2233, Rest: 1039, Canc: 0 Prop. alloc: 167
+Penalties for sol: 15 in iter: 5
+Loc: 2221, Rest: 1075, Canc: 0 Prop. alloc: 179
+Penalties for sol: 16 in iter: 5
+Loc: 2219, Rest: 1093, Canc: 0 Prop. alloc: 181
+Penalties for sol: 17 in iter: 5
+Loc: 2232, Rest: 1049, Canc: 0 Prop. alloc: 168
+Penalties for sol: 18 in iter: 5
+Loc: 2230, Rest: 1065, Canc: 0 Prop. alloc: 170
+Penalties for sol: 19 in iter: 5
+Loc: 2255, Rest: 1026, Canc: 0 Prop. alloc: 145
+Penalties for sol: 20 in iter: 5
+Loc: 2221, Rest: 1016, Canc: 0 Prop. alloc: 179
+Penalties for sol: 21 in iter: 5
+Loc: 2229, Rest: 1058, Canc: 0 Prop. alloc: 171
+Penalties for sol: 22 in iter: 5
+Loc: 2216, Rest: 1056, Canc: 0 Prop. alloc: 184
+Penalties for sol: 23 in iter: 5
+Loc: 2224, Rest: 1045, Canc: 0 Prop. alloc: 176
+Penalties for sol: 24 in iter: 5
+Loc: 2237, Rest: 1017, Canc: 0 Prop. alloc: 163
+Penalties for sol: 25 in iter: 5
+Loc: 2216, Rest: 1002, Canc: 0 Prop. alloc: 184
+Penalties for sol: 26 in iter: 5
+Loc: 2242, Rest: 975, Canc: 0 Prop. alloc: 158
+Penalties for sol: 27 in iter: 5
+Loc: 2218, Rest: 1067, Canc: 0 Prop. alloc: 182
+Penalties for sol: 28 in iter: 5
+Loc: 2235, Rest: 1019, Canc: 0 Prop. alloc: 165
+Penalties for sol: 29 in iter: 5
+Loc: 2225, Rest: 1050, Canc: 0 Prop. alloc: 175
+Penalties for sol: 30 in iter: 5
+Loc: 2157, Rest: 1048, Canc: 0 Prop. alloc: 243
+Penalties for sol: 31 in iter: 5
+Loc: 2162, Rest: 1056, Canc: 0 Prop. alloc: 238
+Penalties for sol: 32 in iter: 5
+Loc: 2125, Rest: 1032, Canc: 0 Prop. alloc: 275
+Penalties for sol: 33 in iter: 5
+Loc: 2231, Rest: 1054, Canc: 0 Prop. alloc: 169
+Penalties for sol: 34 in iter: 5
+Loc: 2216, Rest: 1058, Canc: 0 Prop. alloc: 184
+Penalties for sol: 35 in iter: 5
+Loc: 2223, Rest: 1067, Canc: 0 Prop. alloc: 177
+Penalties for sol: 36 in iter: 5
+Loc: 2244, Rest: 1018, Canc: 0 Prop. alloc: 156
+Penalties for sol: 37 in iter: 5
+Loc: 2196, Rest: 1028, Canc: 0 Prop. alloc: 204
+Penalties for sol: 38 in iter: 5
+Loc: 2208, Rest: 1017, Canc: 0 Prop. alloc: 192
+Penalties for sol: 39 in iter: 5
+Loc: 2123, Rest: 1046, Canc: 0 Prop. alloc: 277
+Sol: 0, fit_score: -22992000
+Sol: 1, fit_score: -20246000
+Sol: 2, fit_score: -21913000
+Sol: 3, fit_score: -22496500
+Sol: 4, fit_score: -22771000
+Sol: 5, fit_score: -22479500
+Sol: 6, fit_score: -21273000
+Sol: 7, fit_score: -22604500
+Sol: 8, fit_score: -22570000
+Sol: 9, fit_score: -22754500
+Sol: 10, fit_score: -22648000
+Sol: 11, fit_score: -22771000
+Sol: 12, fit_score: -22845500
+Sol: 13, fit_score: -22794500
+Sol: 14, fit_score: -22707000
+Sol: 15, fit_score: -22775500
+Sol: 16, fit_score: -22716000
+Sol: 17, fit_score: -22346000
+Sol: 18, fit_score: -22625500
+Sol: 19, fit_score: -22874000
+Sol: 20, fit_score: -22594500
+Sol: 21, fit_score: -19542500
+Sol: 22, fit_score: -22569000
+Sol: 23, fit_score: -22579000
+Sol: 24, fit_score: -23014000
+Sol: 25, fit_score: -22559500
+Sol: 26, fit_score: -22831500
+Sol: 27, fit_score: -22862000
+Sol: 28, fit_score: -22631000
+Sol: 29, fit_score: -22692000
+Sol: 30, fit_score: -22789500
+Sol: 31, fit_score: -22626500
+Sol: 32, fit_score: -22617000
+Sol: 33, fit_score: -22800000
+Sol: 34, fit_score: -22701000
+Sol: 35, fit_score: -22553000
+Sol: 36, fit_score: -21374500
+Sol: 37, fit_score: -22673500
+Sol: 38, fit_score: -22606000
+Sol: 39, fit_score: -21766500
+Penalties for sol: 0 in iter: 6
+Loc: 2247, Rest: 1044, Canc: 0 Prop. alloc: 153
+Penalties for sol: 1 in iter: 6
+Loc: 1974, Rest: 1012, Canc: 0 Prop. alloc: 426
+Penalties for sol: 2 in iter: 6
+Loc: 2137, Rest: 1086, Canc: 0 Prop. alloc: 263
+Penalties for sol: 3 in iter: 6
+Loc: 2198, Rest: 1033, Canc: 0 Prop. alloc: 202
+Penalties for sol: 4 in iter: 6
+Loc: 2227, Rest: 1002, Canc: 0 Prop. alloc: 173
+Penalties for sol: 5 in iter: 6
+Loc: 2196, Rest: 1039, Canc: 0 Prop. alloc: 204
+Penalties for sol: 6 in iter: 6
+Loc: 2076, Rest: 1026, Canc: 0 Prop. alloc: 324
+Penalties for sol: 7 in iter: 6
+Loc: 2208, Rest: 1049, Canc: 0 Prop. alloc: 192
+Penalties for sol: 8 in iter: 6
+Loc: 2205, Rest: 1040, Canc: 0 Prop. alloc: 195
+Penalties for sol: 9 in iter: 6
+Loc: 2225, Rest: 1009, Canc: 0 Prop. alloc: 175
+Penalties for sol: 10 in iter: 6
+Loc: 2213, Rest: 1036, Canc: 0 Prop. alloc: 187
+Penalties for sol: 11 in iter: 6
+Loc: 2225, Rest: 1042, Canc: 0 Prop. alloc: 175
+Penalties for sol: 12 in iter: 6
+Loc: 2231, Rest: 1071, Canc: 0 Prop. alloc: 169
+Penalties for sol: 13 in iter: 6
+Loc: 2226, Rest: 1069, Canc: 0 Prop. alloc: 174
+Penalties for sol: 14 in iter: 6
+Loc: 2219, Rest: 1034, Canc: 0 Prop. alloc: 181
+Penalties for sol: 15 in iter: 6
+Loc: 2222, Rest: 1111, Canc: 0 Prop. alloc: 178
+Penalties for sol: 16 in iter: 6
+Loc: 2216, Rest: 1112, Canc: 0 Prop. alloc: 184
+Penalties for sol: 17 in iter: 6
+Loc: 2182, Rest: 1052, Canc: 0 Prop. alloc: 218
+Penalties for sol: 18 in iter: 6
+Loc: 2209, Rest: 1071, Canc: 0 Prop. alloc: 191
+Penalties for sol: 19 in iter: 6
+Loc: 2237, Rest: 1008, Canc: 0 Prop. alloc: 163
+Penalties for sol: 20 in iter: 6
+Loc: 2206, Rest: 1069, Canc: 0 Prop. alloc: 194
+Penalties for sol: 21 in iter: 6
+Loc: 1901, Rest: 1065, Canc: 0 Prop. alloc: 499
+Penalties for sol: 22 in iter: 6
+Loc: 2206, Rest: 1018, Canc: 0 Prop. alloc: 194
+Penalties for sol: 23 in iter: 6
+Loc: 2207, Rest: 1018, Canc: 0 Prop. alloc: 193
+Penalties for sol: 24 in iter: 6
+Loc: 2251, Rest: 1008, Canc: 0 Prop. alloc: 149
+Penalties for sol: 25 in iter: 6
+Loc: 2203, Rest: 1059, Canc: 0 Prop. alloc: 197
+Penalties for sol: 26 in iter: 6
+Loc: 2232, Rest: 1023, Canc: 0 Prop. alloc: 168
+Penalties for sol: 27 in iter: 6
+Loc: 2235, Rest: 1024, Canc: 0 Prop. alloc: 165
+Penalties for sol: 28 in iter: 6
+Loc: 2211, Rest: 1042, Canc: 0 Prop. alloc: 189
+Penalties for sol: 29 in iter: 6
+Loc: 2217, Rest: 1044, Canc: 0 Prop. alloc: 183
+Penalties for sol: 30 in iter: 6
+Loc: 2228, Rest: 1019, Canc: 0 Prop. alloc: 172
+Penalties for sol: 31 in iter: 6
+Loc: 2210, Rest: 1053, Canc: 0 Prop. alloc: 190
+Penalties for sol: 32 in iter: 6
+Loc: 2210, Rest: 1034, Canc: 0 Prop. alloc: 190
+Penalties for sol: 33 in iter: 6
+Loc: 2230, Rest: 1000, Canc: 0 Prop. alloc: 170
+Penalties for sol: 34 in iter: 6
+Loc: 2218, Rest: 1042, Canc: 0 Prop. alloc: 182
+Penalties for sol: 35 in iter: 6
+Loc: 2204, Rest: 1026, Canc: 0 Prop. alloc: 196
+Penalties for sol: 36 in iter: 6
+Loc: 2086, Rest: 1029, Canc: 0 Prop. alloc: 314
+Penalties for sol: 37 in iter: 6
+Loc: 2215, Rest: 1047, Canc: 0 Prop. alloc: 185
+Penalties for sol: 38 in iter: 6
+Loc: 2210, Rest: 1012, Canc: 0 Prop. alloc: 190
+Penalties for sol: 39 in iter: 6
+Loc: 2124, Rest: 1053, Canc: 0 Prop. alloc: 276
+Sol: 0, fit_score: -22745500
+Sol: 1, fit_score: -20284000
+Sol: 2, fit_score: -22690500
+Sol: 3, fit_score: -22807500
+Sol: 4, fit_score: -22871500
+Sol: 5, fit_score: -22831000
+Sol: 6, fit_score: -21004000
+Sol: 7, fit_score: -22490500
+Sol: 8, fit_score: -22653500
+Sol: 9, fit_score: -22446000
+Sol: 10, fit_score: -22415500
+Sol: 11, fit_score: -22732500
+Sol: 12, fit_score: -22624000
+Sol: 13, fit_score: -22634500
+Sol: 14, fit_score: -22535000
+Sol: 15, fit_score: -22658500
+Sol: 16, fit_score: -22823500
+Sol: 17, fit_score: -22300000
+Sol: 18, fit_score: -22644000
+Sol: 19, fit_score: -22689000
+Sol: 20, fit_score: -22899000
+Sol: 21, fit_score: -22026000
+Sol: 22, fit_score: -22613500
+Sol: 23, fit_score: -22738500
+Sol: 24, fit_score: -22821000
+Sol: 25, fit_score: -22571000
+Sol: 26, fit_score: -22754500
+Sol: 27, fit_score: -22840500
+Sol: 28, fit_score: -22715500
+Sol: 29, fit_score: -22555500
+Sol: 30, fit_score: -22693000
+Sol: 31, fit_score: -22671500
+Sol: 32, fit_score: -22583500
+Sol: 33, fit_score: -22560000
+Sol: 34, fit_score: -22576500
+Sol: 35, fit_score: -22809500
+Sol: 36, fit_score: -22400500
+Sol: 37, fit_score: -22442000
+Sol: 38, fit_score: -22730000
+Sol: 39, fit_score: -21847000
+Penalties for sol: 0 in iter: 7
+Loc: 2222, Rest: 1051, Canc: 0 Prop. alloc: 178
+Penalties for sol: 1 in iter: 7
+Loc: 1974, Rest: 1088, Canc: 0 Prop. alloc: 426
+Penalties for sol: 2 in iter: 7
+Loc: 2218, Rest: 1021, Canc: 0 Prop. alloc: 182
+Penalties for sol: 3 in iter: 7
+Loc: 2229, Rest: 1035, Canc: 0 Prop. alloc: 171
+Penalties for sol: 4 in iter: 7
+Loc: 2235, Rest: 1043, Canc: 0 Prop. alloc: 165
+Penalties for sol: 5 in iter: 7
+Loc: 2230, Rest: 1062, Canc: 0 Prop. alloc: 170
+Penalties for sol: 6 in iter: 7
+Loc: 2049, Rest: 1028, Canc: 0 Prop. alloc: 351
+Penalties for sol: 7 in iter: 7
+Loc: 2198, Rest: 1021, Canc: 0 Prop. alloc: 202
+Penalties for sol: 8 in iter: 7
+Loc: 2214, Rest: 1027, Canc: 0 Prop. alloc: 186
+Penalties for sol: 9 in iter: 7
+Loc: 2192, Rest: 1052, Canc: 0 Prop. alloc: 208
+Penalties for sol: 10 in iter: 7
+Loc: 2190, Rest: 1031, Canc: 0 Prop. alloc: 210
+Penalties for sol: 11 in iter: 7
+Loc: 2219, Rest: 1085, Canc: 0 Prop. alloc: 181
+Penalties for sol: 12 in iter: 7
+Loc: 2212, Rest: 1008, Canc: 0 Prop. alloc: 188
+Penalties for sol: 13 in iter: 7
+Loc: 2213, Rest: 1009, Canc: 0 Prop. alloc: 187
+Penalties for sol: 14 in iter: 7
+Loc: 2202, Rest: 1030, Canc: 0 Prop. alloc: 198
+Penalties for sol: 15 in iter: 7
+Loc: 2215, Rest: 1017, Canc: 0 Prop. alloc: 185
+Penalties for sol: 16 in iter: 7
+Loc: 2231, Rest: 1027, Canc: 0 Prop. alloc: 169
+Penalties for sol: 17 in iter: 7
+Loc: 2176, Rest: 1080, Canc: 0 Prop. alloc: 224
+Penalties for sol: 18 in iter: 7
+Loc: 2209, Rest: 1108, Canc: 0 Prop. alloc: 191
+Penalties for sol: 19 in iter: 7
+Loc: 2216, Rest: 1058, Canc: 0 Prop. alloc: 184
+Penalties for sol: 20 in iter: 7
+Loc: 2239, Rest: 1018, Canc: 0 Prop. alloc: 161
+Penalties for sol: 21 in iter: 7
+Loc: 2151, Rest: 1032, Canc: 0 Prop. alloc: 249
+Penalties for sol: 22 in iter: 7
+Loc: 2210, Rest: 1027, Canc: 0 Prop. alloc: 190
+Penalties for sol: 23 in iter: 7
+Loc: 2221, Rest: 1057, Canc: 0 Prop. alloc: 179
+Penalties for sol: 24 in iter: 7
+Loc: 2230, Rest: 1042, Canc: 0 Prop. alloc: 170
+Penalties for sol: 25 in iter: 7
+Loc: 2206, Rest: 1022, Canc: 0 Prop. alloc: 194
+Penalties for sol: 26 in iter: 7
+Loc: 2224, Rest: 1029, Canc: 0 Prop. alloc: 176
+Penalties for sol: 27 in iter: 7
+Loc: 2231, Rest: 1061, Canc: 0 Prop. alloc: 169
+Penalties for sol: 28 in iter: 7
+Loc: 2218, Rest: 1071, Canc: 0 Prop. alloc: 182
+Penalties for sol: 29 in iter: 7
+Loc: 2203, Rest: 1051, Canc: 0 Prop. alloc: 197
+Penalties for sol: 30 in iter: 7
+Loc: 2215, Rest: 1086, Canc: 0 Prop. alloc: 185
+Penalties for sol: 31 in iter: 7
+Loc: 2216, Rest: 1023, Canc: 0 Prop. alloc: 184
+Penalties for sol: 32 in iter: 7
+Loc: 2208, Rest: 1007, Canc: 0 Prop. alloc: 192
+Penalties for sol: 33 in iter: 7
+Loc: 2203, Rest: 1060, Canc: 0 Prop. alloc: 197
+Penalties for sol: 34 in iter: 7
+Loc: 2206, Rest: 1033, Canc: 0 Prop. alloc: 194
+Penalties for sol: 35 in iter: 7
+Loc: 2229, Rest: 1039, Canc: 0 Prop. alloc: 171
+Penalties for sol: 36 in iter: 7
+Loc: 2188, Rest: 1041, Canc: 0 Prop. alloc: 212
+Penalties for sol: 37 in iter: 7
+Loc: 2193, Rest: 1024, Canc: 0 Prop. alloc: 207
+Penalties for sol: 38 in iter: 7
+Loc: 2219, Rest: 1080, Canc: 0 Prop. alloc: 181
+Penalties for sol: 39 in iter: 7
+Loc: 2133, Rest: 1034, Canc: 0 Prop. alloc: 267
+Sol: 0, fit_score: -22842500
+Sol: 1, fit_score: -22604000
+Sol: 2, fit_score: -22286000
+Sol: 3, fit_score: -22452500
+Sol: 4, fit_score: -22756500
+Sol: 5, fit_score: -22542000
+Sol: 6, fit_score: -22244000
+Sol: 7, fit_score: -22683500
+Sol: 8, fit_score: -22260500
+Sol: 9, fit_score: -22444500
+Sol: 10, fit_score: -22532000
+Sol: 11, fit_score: -21858000
+Sol: 12, fit_score: -22606500
+Sol: 13, fit_score: -22622500
+Sol: 14, fit_score: -22654000
+Sol: 15, fit_score: -22583500
+Sol: 16, fit_score: -22685000
+Sol: 17, fit_score: -22396000
+Sol: 18, fit_score: -22619500
+Sol: 19, fit_score: -22595500
+Sol: 20, fit_score: -22554000
+Sol: 21, fit_score: -18614000
+Sol: 22, fit_score: -22765000
+Sol: 23, fit_score: -22516000
+Sol: 24, fit_score: -22518500
+Sol: 25, fit_score: -22770500
+Sol: 26, fit_score: -22656500
+Sol: 27, fit_score: -22634000
+Sol: 28, fit_score: -22561500
+Sol: 29, fit_score: -23051500
+Sol: 30, fit_score: -22635000
+Sol: 31, fit_score: -22433500
+Sol: 32, fit_score: -22680000
+Sol: 33, fit_score: -22568500
+Sol: 34, fit_score: -22536500
+Sol: 35, fit_score: -22510500
+Sol: 36, fit_score: -22795000
+Sol: 37, fit_score: -22507000
+Sol: 38, fit_score: -22494000
+Sol: 39, fit_score: -21942500
+Penalties for sol: 0 in iter: 8
+Loc: 2233, Rest: 1025, Canc: 0 Prop. alloc: 167
+Penalties for sol: 1 in iter: 8
+Loc: 2209, Rest: 1028, Canc: 0 Prop. alloc: 191
+Penalties for sol: 2 in iter: 8
+Loc: 2178, Rest: 1012, Canc: 0 Prop. alloc: 222
+Penalties for sol: 3 in iter: 8
+Loc: 2193, Rest: 1045, Canc: 0 Prop. alloc: 207
+Penalties for sol: 4 in iter: 8
+Loc: 2224, Rest: 1033, Canc: 0 Prop. alloc: 176
+Penalties for sol: 5 in iter: 8
+Loc: 2203, Rest: 1024, Canc: 0 Prop. alloc: 197
+Penalties for sol: 6 in iter: 8
+Loc: 2173, Rest: 1028, Canc: 0 Prop. alloc: 227
+Penalties for sol: 7 in iter: 8
+Loc: 2217, Rest: 1027, Canc: 0 Prop. alloc: 183
+Penalties for sol: 8 in iter: 8
+Loc: 2175, Rest: 1021, Canc: 0 Prop. alloc: 225
+Penalties for sol: 9 in iter: 8
+Loc: 2191, Rest: 1069, Canc: 0 Prop. alloc: 209
+Penalties for sol: 10 in iter: 8
+Loc: 2202, Rest: 1024, Canc: 0 Prop. alloc: 198
+Penalties for sol: 11 in iter: 8
+Loc: 2133, Rest: 1056, Canc: 0 Prop. alloc: 267
+Penalties for sol: 12 in iter: 8
+Loc: 2207, Rest: 1073, Canc: 0 Prop. alloc: 193
+Penalties for sol: 13 in iter: 8
+Loc: 2210, Rest: 1045, Canc: 0 Prop. alloc: 190
+Penalties for sol: 14 in iter: 8
+Loc: 2214, Rest: 1028, Canc: 0 Prop. alloc: 186
+Penalties for sol: 15 in iter: 8
+Loc: 2209, Rest: 987, Canc: 0 Prop. alloc: 191
+Penalties for sol: 16 in iter: 8
+Loc: 2216, Rest: 1050, Canc: 0 Prop. alloc: 184
+Penalties for sol: 17 in iter: 8
+Loc: 2189, Rest: 1012, Canc: 0 Prop. alloc: 211
+Penalties for sol: 18 in iter: 8
+Loc: 2211, Rest: 1019, Canc: 0 Prop. alloc: 189
+Penalties for sol: 19 in iter: 8
+Loc: 2205, Rest: 1091, Canc: 0 Prop. alloc: 195
+Penalties for sol: 20 in iter: 8
+Loc: 2202, Rest: 1068, Canc: 0 Prop. alloc: 198
+Penalties for sol: 21 in iter: 8
+Loc: 1809, Rest: 1048, Canc: 0 Prop. alloc: 591
+Penalties for sol: 22 in iter: 8
+Loc: 2223, Rest: 1070, Canc: 0 Prop. alloc: 177
+Penalties for sol: 23 in iter: 8
+Loc: 2199, Rest: 1052, Canc: 0 Prop. alloc: 201
+Penalties for sol: 24 in iter: 8
+Loc: 2199, Rest: 1057, Canc: 0 Prop. alloc: 201
+Penalties for sol: 25 in iter: 8
+Loc: 2228, Rest: 981, Canc: 0 Prop. alloc: 172
+Penalties for sol: 26 in iter: 8
+Loc: 2215, Rest: 1013, Canc: 0 Prop. alloc: 185
+Penalties for sol: 27 in iter: 8
+Loc: 2212, Rest: 1028, Canc: 0 Prop. alloc: 188
+Penalties for sol: 28 in iter: 8
+Loc: 2205, Rest: 1023, Canc: 0 Prop. alloc: 195
+Penalties for sol: 29 in iter: 8
+Loc: 2255, Rest: 1003, Canc: 0 Prop. alloc: 145
+Penalties for sol: 30 in iter: 8
+Loc: 2212, Rest: 1030, Canc: 0 Prop. alloc: 188
+Penalties for sol: 31 in iter: 8
+Loc: 2192, Rest: 1027, Canc: 0 Prop. alloc: 208
+Penalties for sol: 32 in iter: 8
+Loc: 2215, Rest: 1060, Canc: 0 Prop. alloc: 185
+Penalties for sol: 33 in iter: 8
+Loc: 2204, Rest: 1057, Canc: 0 Prop. alloc: 196
+Penalties for sol: 34 in iter: 8
+Loc: 2202, Rest: 1033, Canc: 0 Prop. alloc: 198
+Penalties for sol: 35 in iter: 8
+Loc: 2200, Rest: 1021, Canc: 0 Prop. alloc: 200
+Penalties for sol: 36 in iter: 8
+Loc: 2228, Rest: 1030, Canc: 0 Prop. alloc: 172
+Penalties for sol: 37 in iter: 8
+Loc: 2197, Rest: 1074, Canc: 0 Prop. alloc: 203
+Penalties for sol: 38 in iter: 8
+Loc: 2198, Rest: 1028, Canc: 0 Prop. alloc: 202
+Penalties for sol: 39 in iter: 8
+Loc: 2141, Rest: 1065, Canc: 0 Prop. alloc: 259
+Sol: 0, fit_score: -22812500
+Sol: 1, fit_score: -22452000
+Sol: 2, fit_score: -22562500
+Sol: 3, fit_score: -22555000
+Sol: 4, fit_score: -22469000
+Sol: 5, fit_score: -22596500
+Sol: 6, fit_score: -22493500
+Sol: 7, fit_score: -22308000
+Sol: 8, fit_score: -22274500
+Sol: 9, fit_score: -22450500
+Sol: 10, fit_score: -22368500
+Sol: 11, fit_score: -22568500
+Sol: 12, fit_score: -22400000
+Sol: 13, fit_score: -22540000
+Sol: 14, fit_score: -22552500
+Sol: 15, fit_score: -22531000
+Sol: 16, fit_score: -22581500
+Sol: 17, fit_score: -22275500
+Sol: 18, fit_score: -22503000
+Sol: 19, fit_score: -22596500
+Sol: 20, fit_score: -22683500
+Sol: 21, fit_score: -22311000
+Sol: 22, fit_score: -22510500
+Sol: 23, fit_score: -22629500
+Sol: 24, fit_score: -22749000
+Sol: 25, fit_score: -22511500
+Sol: 26, fit_score: -22775000
+Sol: 27, fit_score: -22400500
+Sol: 28, fit_score: -22469000
+Sol: 29, fit_score: -22647500
+Sol: 30, fit_score: -22580000
+Sol: 31, fit_score: -22354000
+Sol: 32, fit_score: -20920500
+Sol: 33, fit_score: -22460500
+Sol: 34, fit_score: -22549500
+Sol: 35, fit_score: -22528000
+Sol: 36, fit_score: -22368000
+Sol: 37, fit_score: -22699000
+Sol: 38, fit_score: -22498000
+Sol: 39, fit_score: -22527000
+Penalties for sol: 0 in iter: 9
+Loc: 2230, Rest: 1025, Canc: 0 Prop. alloc: 170
+Penalties for sol: 1 in iter: 9
+Loc: 2192, Rest: 1064, Canc: 0 Prop. alloc: 208
+Penalties for sol: 2 in iter: 9
+Loc: 2203, Rest: 1065, Canc: 0 Prop. alloc: 197
+Penalties for sol: 3 in iter: 9
+Loc: 2204, Rest: 1030, Canc: 0 Prop. alloc: 196
+Penalties for sol: 4 in iter: 9
+Loc: 2195, Rest: 1038, Canc: 0 Prop. alloc: 205
+Penalties for sol: 5 in iter: 9
+Loc: 2208, Rest: 1033, Canc: 0 Prop. alloc: 192
+Penalties for sol: 6 in iter: 9
+Loc: 2198, Rest: 1027, Canc: 0 Prop. alloc: 202
+Penalties for sol: 7 in iter: 9
+Loc: 2178, Rest: 1056, Canc: 0 Prop. alloc: 222
+Penalties for sol: 8 in iter: 9
+Loc: 2174, Rest: 1069, Canc: 0 Prop. alloc: 226
+Penalties for sol: 9 in iter: 9
+Loc: 2192, Rest: 1061, Canc: 0 Prop. alloc: 208
+Penalties for sol: 10 in iter: 9
+Loc: 2185, Rest: 1037, Canc: 0 Prop. alloc: 215
+Penalties for sol: 11 in iter: 9
+Loc: 2203, Rest: 1077, Canc: 0 Prop. alloc: 197
+Penalties for sol: 12 in iter: 9
+Loc: 2189, Rest: 1020, Canc: 0 Prop. alloc: 211
+Penalties for sol: 13 in iter: 9
+Loc: 2202, Rest: 1040, Canc: 0 Prop. alloc: 198
+Penalties for sol: 14 in iter: 9
+Loc: 2203, Rest: 1045, Canc: 0 Prop. alloc: 197
+Penalties for sol: 15 in iter: 9
+Loc: 2200, Rest: 1062, Canc: 0 Prop. alloc: 200
+Penalties for sol: 16 in iter: 9
+Loc: 2206, Rest: 1043, Canc: 0 Prop. alloc: 194
+Penalties for sol: 17 in iter: 9
+Loc: 2175, Rest: 1051, Canc: 0 Prop. alloc: 225
+Penalties for sol: 18 in iter: 9
+Loc: 2197, Rest: 1066, Canc: 0 Prop. alloc: 203
+Penalties for sol: 19 in iter: 9
+Loc: 2207, Rest: 1053, Canc: 0 Prop. alloc: 193
+Penalties for sol: 20 in iter: 9
+Loc: 2217, Rest: 1027, Canc: 0 Prop. alloc: 183
+Penalties for sol: 21 in iter: 9
+Loc: 2179, Rest: 1042, Canc: 0 Prop. alloc: 221
+Penalties for sol: 22 in iter: 9
+Loc: 2199, Rest: 1041, Canc: 0 Prop. alloc: 201
+Penalties for sol: 23 in iter: 9
+Loc: 2210, Rest: 1059, Canc: 0 Prop. alloc: 190
+Penalties for sol: 24 in iter: 9
+Loc: 2222, Rest: 1058, Canc: 0 Prop. alloc: 178
+Penalties for sol: 25 in iter: 9
+Loc: 2201, Rest: 1003, Canc: 0 Prop. alloc: 199
+Penalties for sol: 26 in iter: 9
+Loc: 2227, Rest: 1010, Canc: 0 Prop. alloc: 173
+Penalties for sol: 27 in iter: 9
+Loc: 2190, Rest: 1001, Canc: 0 Prop. alloc: 210
+Penalties for sol: 28 in iter: 9
+Loc: 2196, Rest: 1018, Canc: 0 Prop. alloc: 204
+Penalties for sol: 29 in iter: 9
+Loc: 2212, Rest: 1055, Canc: 0 Prop. alloc: 188
+Penalties for sol: 30 in iter: 9
+Loc: 2208, Rest: 1000, Canc: 0 Prop. alloc: 192
+Penalties for sol: 31 in iter: 9
+Loc: 2180, Rest: 1108, Canc: 0 Prop. alloc: 220
+Penalties for sol: 32 in iter: 9
+Loc: 2040, Rest: 1041, Canc: 0 Prop. alloc: 360
+Penalties for sol: 33 in iter: 9
+Loc: 2193, Rest: 1061, Canc: 0 Prop. alloc: 207
+Penalties for sol: 34 in iter: 9
+Loc: 2202, Rest: 1059, Canc: 0 Prop. alloc: 198
+Penalties for sol: 35 in iter: 9
+Loc: 2201, Rest: 1036, Canc: 0 Prop. alloc: 199
+Penalties for sol: 36 in iter: 9
+Loc: 2185, Rest: 1036, Canc: 0 Prop. alloc: 215
+Penalties for sol: 37 in iter: 9
+Loc: 2219, Rest: 1018, Canc: 0 Prop. alloc: 181
+Penalties for sol: 38 in iter: 9
+Loc: 2200, Rest: 996, Canc: 0 Prop. alloc: 200
+Penalties for sol: 39 in iter: 9
+Loc: 2199, Rest: 1074, Canc: 0 Prop. alloc: 201
