@@ -24,9 +24,6 @@ class ImpossibleEvolutionaryAlgorithm:
 
         self.distance_matrix = [[None for _ in range(self.n_airports)] for _ in range(self.n_airports)]
         self.population = [None for _ in range(self.pop_size)]
-        self.status_pop = [{crew_member_id: {'location': None, 'time': 0} 
-                            for crew_member_id in range(self.pilots_per_sol + self.attend_per_sol)} 
-                            for _ in range(len(self.population))]
         self.pilots_status_pop = [[{'location': None, 'time': 0} 
                                 for _ in range(self.pilots_per_sol)]
                                 for _ in range(self.pop_size)]
@@ -89,6 +86,7 @@ class ImpossibleEvolutionaryAlgorithm:
 
             for idx, crew_member_idx in enumerate(crew_members):
                 if crew_member_idx is not None:
+                    print(f"Debug: crew_member_idx={crew_member_idx}, len(pilot_status)={len(pilot_status)} len(pilot_status[0])={len(pilot_status[0])}")
                     # Determine if the crew member is a pilot or an attendant
                     if idx < config['structs']['PILOTS_PER_PLANE']:
                         crew_member_status = pilot_status[crew_member_idx - 1]  # Adjust the index if necessary
@@ -172,13 +170,73 @@ class ImpossibleEvolutionaryAlgorithm:
         return selected_solutions
 
     def crossover_solutions(self, selected_solutions):
-        pass
+        new_solutions = []
+
+        # Ensure we have an even number of solutions to pair up for crossover
+        if len(selected_solutions) % 2 != 0:
+            selected_solutions.pop()
+        while selected_solutions:
+                # Randomly pair up solutions
+                parent1 = selected_solutions.pop(random.randrange(len(selected_solutions)))
+                parent2 = selected_solutions.pop(random.randrange(len(selected_solutions)))
+
+                if random.random() < 1:
+                    # Perform crossover
+                    crossover_point = random.randint(1, len(parent1) - 2)  # Choose a random crossover point, but not at the ends
+
+                    # Create children by swapping flights from crossover point
+                    child1 = parent1[:crossover_point] + parent2[crossover_point:]
+                    child2 = parent2[:crossover_point] + parent1[crossover_point:]
+
+                    new_solutions.extend([child1, child2])
+                else:
+                    # If crossover doesn't occur, keep parents in the new population
+                    new_solutions.extend([parent1, parent2])
+
+        return new_solutions
+
+    def combine_populations(self, new_solutions):
+        # Combine and sort the entire population (old + new) based on fitness
+        combined_population = self.population + new_solutions
+        for i, sol in enumerate(combined_population):
+            fitness_score = self.calculate_fitness(sol, self.pilots_status_pop[i], self.attend_status_pop[i])
+            # sort the population by fitness score but don't update the self.fitness_score just yet
+            
+        # combined_population.sort(key=lambda sol: self.calculate_fitness(sol, self.pilots_status_pop, self.attend_status_pop))
+        
+        # Select the top solutions to form the new population
+        return combined_population[:self.pop_size]
+
+    def mutate_solution(self, solution):
+        # Randomly select two distinct flights
+        if len(solution) > 1:
+            flight_indexes = random.sample(range(len(solution)), 2)
+            flight1_idx, flight2_idx = flight_indexes[0], flight_indexes[1]
+            print(f"Chosen flights before mutation:")
+            print(solution[flight1_idx])
+            print(solution[flight2_idx])
+
+            # Swap crew assignments between the two flights
+            # Assuming crew assignments are from index 2 to the second last index
+            solution[flight1_idx][2:-1], solution[flight2_idx][2:-1] = solution[flight2_idx][2:-1], solution[flight1_idx][2:-1]
+
+            # Print the flights after mutation for verification 
+            print(f"Mutated Flights:")
+            print(solution[flight1_idx])
+            print(solution[flight2_idx])
+
+        return solution
 
     def mutate_solutions(self, solutions):
-        pass
+        mutated_solutions = []
+        for sol in solutions:
+            if random.random() < self.mutation_rate:
+                mutated_sol = self.mutate_solution(sol)
+                mutated_solutions.append(mutated_sol)
+            else:
+                mutated_solutions.append(sol)
+        return mutated_solutions
 
-    def replace_old_population(self, combined_population):
-        pass
 
     def evolutionary_algorithm_loop(self, n_iterations):
         '''
@@ -191,15 +249,9 @@ class ImpossibleEvolutionaryAlgorithm:
             selected_solutions = self.select_solutions()
             # crossover
             new_solutions = self.crossover_solutions(selected_solutions)
-
-            # mutation
-            self.mutate_solutions(new_solutions)
-
-            # # combine new and old solutions
-            # combined_population = self.population + new_solutions
-            self.population = new_solutions
-
-            self.update_fitness_for_all_sols()
+            mutated_new_solutions = self.mutate_solutions(new_solutions)
+            self.population = self.combine_populations(mutated_new_solutions) 
+            # self.update_fitness_for_all_sols()
 
 
 def test_main():
@@ -213,10 +265,16 @@ def test_main():
     imp_evol_algo.create_initial_generation()
     imp_evol_algo.print_population()
     imp_evol_algo.update_fitness_for_all_sols()
+
+    # imp_evol_algo.evolutionary_algorithm_loop(100)
+
     solutions = imp_evol_algo.select_solutions()
-    print(solutions)
+    new_solutions = imp_evol_algo.crossover_solutions(solutions)
+    mutated_new_solutions = imp_evol_algo.mutate_solutions(new_solutions)
 
-    # print(imp_evol_algo.fitness_scores)
-
+    imp_evol_algo.population = imp_evol_algo.combine_populations(mutated_new_solutions)
+    print("Population after crossover and mutation: ")
+    imp_evol_algo.print_population()
+    imp_evol_algo.update_fitness_for_all_sols()
     
 test_main()
