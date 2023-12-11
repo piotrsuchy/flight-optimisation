@@ -334,6 +334,7 @@ def test_main():
         print(f"START of first gen----")
         imp_evol_algo.print_penalties_for_sols(0, i)
         print(f"END of first gen----")
+    imp_evol_algo.print_average_fit_score("A")
     imp_evol_algo.print_fitness_scores()
 
     imp_evol_algo.evolutionary_algorithm_loop(config['algo']['N_ITERATIONS'])
