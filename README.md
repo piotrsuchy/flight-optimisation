@@ -2,6 +2,8 @@
 
 This repository contains code for an engineering thesis which implements an evolutionary algorithm that optimizes crew assignment for an immutable flight schedule. The objective of this optimization is to minimize the operational costs and the penalties associated with wrong assignments, overtime work etc.
 
+Lines of Code: ~1500
+
 ## Two Approaches
 
 I have implemented two approaches to solve this optimization problem. The basis of the first one is an event-based simulation which utilizes object oriented programming. The second uses a matrix like solutions and most of the computation is done in the calculate_fitness function which takes care of tracking the location and availability of the crew members. 
