@@ -1,10 +1,29 @@
-# Flight Optimisation
+# Flight Optimisation - Crew assignment optimization using approximate algorithms
 
-## After a review by my thesis supervisor I have decided to focus on mostly one topic
+This repository contains code for an engineering thesis which implements an evolutionary algorithm that optimizes crew assignment for an immutable flight schedule. The objective of this optimization is to minimize the operational costs and the penalties associated with wrong assignments, overtime work etc.
 
-Crew management, crew assignment, taking into account a strict schedule that should not be changed.
+## Two Approaches
 
-## Crew Assignment Problem
+I have implemented two approaches to solve this optimization problem. The basis of the first one is an event-based simulation which utilizes object oriented programming. The second uses a matrix like solutions and most of the computation is done in the calculate_fitness function which takes care of tracking the location and availability of the crew members. 
+
+The first approach has more code, which can be found in the src/ directory, while the second approach is a bit simpler and demanded less lines of code. The location of the second approach - also called unallowed_approach is the src/unallowed_approach directory. 
+
+To run the programs locally, clone / download the repository, create a venv, source it and download the dependencies using pip and requirements.txt. Afterwards to run the optimization using the first approach run:
+```bash
+python main.py --log
+```
+
+Or skip --log flag if you don't want print statements in your terminal.
+
+To run the second approach use the command:
+```bash
+python src/unallowed_approach/imp_evol_algo.py 
+```
+
+Or chmod one of the two already created bash scripts and use it: ./run_with_logs.sh or ./src/unallowed_approach/scripts/run_with_penalty_logs.sh
+
+
+## Crew Assignment Problem - Theory
 
 Often divided into two subproblems (description taken from [Modeling and solving a Crew Assignment Problem in air transportation](https://www.sciencedirect.com/science/article/abs/pii/S0377221705003760#:~:text=Introduction%20For%20airline%20companies%2C%20the,costs%20and%20fuel%20consumption%20costs)):
 
@@ -28,13 +47,6 @@ The drawback of such a formulation is that in a standard model and formulation o
 First mutation that is being implemented is a choice of a different available pilot or attendant of a random flight in a solution. This happens with a given probability of course.
 The trick with mutations in my implementation of the algorithm and simulation is the need for resimulation of the events after the mutation. Each event with a property simulation_time of the mutated flight should be resimulated - because the assignment of pilots and crew members (and planes as well) impacts the possibility of assignment in the future.
 
-## Crossovers
-
-TBA
-
-## Creation of a new population
-
-TBA
 
 ## Notes
 
