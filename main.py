@@ -1,7 +1,7 @@
 import time
 import json
-from src.structures import Structures
-from src.evol_algo import EvolutionaryAlgorithm
+from src.allowed_approach.structures import Structures
+from src.allowed_approach.evol_algo import EvolutionaryAlgorithm
 from src.decorators import timing_decorator
 from debug.test_availability import test_availability
 from config.logs_and_args import get_args, setup_logging

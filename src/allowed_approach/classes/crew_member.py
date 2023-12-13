@@ -5,7 +5,7 @@ rest periods,
 flight duty period - pre-flight, post-flight etc.
 on-duty, on-call - how to calculate this work hours
 '''
-from src.solution import Solution
+from src.allowed_approach.solution import Solution
 
 MAX_DAILY_HOURS = 14
 MAX_WEEKLY_HOURS = 60

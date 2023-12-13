@@ -1,5 +1,5 @@
 import random
-from src.solution import Solution
+from src.allowed_approach.solution import Solution
 from .availability import AvailabilityLog
 
 MAINTENANCE_TIME = 0
