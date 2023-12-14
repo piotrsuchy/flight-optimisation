@@ -1,6 +1,5 @@
 import math
 import random
-import logging
 
 DAY_LENGTH = 24
 DELAY_IF_AIRPORT_BUSY = 0
@@ -95,7 +94,7 @@ class Flight:
         - calling flight_start from POV of crew
         '''
         if self.pilots is None or self.attendants is None:
-            possible_assignment = self.assign_crew()
+            possible_assignment = self.assign_random_crew()
             if not possible_assignment:
                 return
 
@@ -132,17 +131,6 @@ class Flight:
 
     def cancel_flight(self, sol, reason):
         self.status.append("cancelled")
-
-        # DEBUG LOGS
-        # if reason == "pilots":
-        #     print(
-        #         f"Flight {self.id}: Not enough available pilots at airport {self.base_airport.id}, flight cancelled.")
-        # elif reason == "attendants":
-        #     print(
-        #         f"Flight {self.id}: Not enough available attendants at airport {self.base_airport.id}, flight cancelled.")
-        # else:
-        #     print(
-        #         f"Flights {self.id}: Flight cancelled, reason unspecified.")
 
     def reset_state_after_mutation(self, sol):
         if self.status[-1] == "completed":
