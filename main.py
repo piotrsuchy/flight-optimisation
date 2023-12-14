@@ -34,7 +34,7 @@ def main():
     evol_algo.print_fitness_scores(0)
 
     # mutation
-    evol_algo.evol_algo_loop(config['algo']['N_ITERATIONS'])
+    evol_algo.evol_algo_loop_two_pop(config['algo']['N_ITERATIONS'])
 
     # test_availability(evol_algo)
 

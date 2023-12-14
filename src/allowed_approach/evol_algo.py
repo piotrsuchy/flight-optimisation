@@ -284,11 +284,6 @@ class EvolutionaryAlgorithm:
         random_flight.pilots = new_pilots
         random_flight.attendants = new_attendants
 
-        # print(f"Old pilots: {old_pilots}")
-        # print(f"New pilots: {new_pilots}")
-        # print(f"Old attendatns: {old_attendants}")
-        # print(f"New attendants: {new_attendants}")
-
         if old_pilots:
             for pilot in old_pilots:
                 availability.pilots.add(pilot)
@@ -334,7 +329,13 @@ class EvolutionaryAlgorithm:
         self.population = sorted(
             self.population, key=lambda sol: sol[0].fitness_score, reverse=False)
 
-    def evol_algo_loop(self, iterations_n):
+    def evol_algo_loop_with_init(self, iterations_n):
+        '''
+        This evolutionary algorithm loop takes the 50% best solutions from the
+        population and mutates them in-place. Afterwards to fill the rest of the 
+        population we call add_new_solutions(), which initializes the remaining
+        solutions adding them to self.population
+        '''
         for i in range(iterations_n):
             self.population = self.population[:len(self.population)//2]
             for sol_list in self.population:
@@ -360,6 +361,88 @@ class EvolutionaryAlgorithm:
             self.update_all_fitness_scores()
             self.tournament_sort()
             self.print_fitness_scores(i)
+
+    def evol_algo_loop_two_pop(self, iterations_n):
+        '''
+        This evolutionary algorithm loop copies the current population
+        and mutates the copy 
+        '''
+        for i in range(iterations_n):
+            parent_pop = copy.deepcopy(self.population)
+            for sol_list in parent_pop:
+                sol = sol_list[0]
+                sol.scheduler.set_time(0)
+                mutation_successful = False
+                while not mutation_successful:
+                    try:
+                        time = self.mutation_whole_crew(sol)
+                        mutation_successful = True
+                    except ValueError:
+                        print("Error during mutation. Retrying with a different flight.")
+                sol.initialized = "Mutated"
+
+                for airport in sol.structures.airports:
+                    airport.check_consistency()
+
+                self.reschedule_flights_in_pop(sol, time, parent_pop)
+
+            for sol_list in parent_pop:
+                sol_list[0].run_events()
+
+
+            final_population = self.population + parent_pop
+            print(f"Final population: {final_population}, size: {len(final_population)}")
+
+            # Update fitness scores of the combined population
+            self.update_all_fitness_scores_in_pop(final_population)
+
+            print(f"Final population after updating fitness score")
+            for sol in final_population:
+                print(f"Fitness score of {sol[0]}: {sol[0].fitness_score}")
+
+            # Sort and select the best solutions
+            final_population.sort(key=lambda sol: sol[0].fitness_score)
+            self.population = final_population[:self.population_size]
+
+            # Print fitness scores for logging/debugging
+            print(f"Final print in evol_algo_loop_pop_two")
+            for sol in self.population:
+                print(f"Fitness score of {sol[0]}: {sol[0].fitness_score}")
+
+
+    def reschedule_flights_in_pop(self, sol, mutation_time, population):
+        # reschedule flights only after the mutation_time
+        for sol_list in population:
+            sol_list[0].scheduler.set_time(0)
+        flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time]
+
+        for airport in sol.structures.airports:
+            airport.check_consistency()
+
+        # remove the affected flights from the original schedule
+        for flight in flights_to_reschedule[::-1]:
+            flight.reset_state_after_mutation(sol)
+
+        # Add back the flights to the schedule, which will now use the updated availablitity
+        for flight in flights_to_reschedule:
+            scheduled_time = flight.simulation_time
+            sol.scheduler.schedule_event(scheduled_time, flight.start_flight)
+
+        self.reset_logs(sol, mutation_time)
+
+
+    def update_all_fitness_scores_in_pop(self, population):
+        '''
+        This function uses the fitness_function() method to calculate the fitness score
+        of all solutions in the population
+        '''
+        for sol in population:
+            operation_costs, penalties, delay_penalty = self.fitness_function(
+                sol[0])
+            sol[1] = [
+                operation_costs, penalties, delay_penalty]
+            sol[0].fitness_score = operation_costs + penalties + delay_penalty
+
 
     def add_new_solutions(self):
         '''This function '''

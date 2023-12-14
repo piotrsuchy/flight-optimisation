@@ -30,6 +30,7 @@ class Schedule:
             flight.day = int(simulation_time / 24)
             self.flight_schedule.append(flight)
             self.sort_schedule_by_timestamp()
+        random.seed(None)
 
     def assign_sols_to_flights(self, sol):
         for flight in self.flight_schedule:
