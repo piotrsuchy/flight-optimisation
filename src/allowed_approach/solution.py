@@ -8,12 +8,11 @@ from .event_scheduler import EventScheduler
 class Solution:
     schedulers = {}
 
-    def __init__(self, solution_id, passenger_demand,
+    def __init__(self, solution_id,
                  initial_structures, simulation_hs):
         self.id = solution_id
         self.initialized = "Initialized"
         self.scheduler = EventScheduler()
-        self.passenger_demand = passenger_demand
         Solution.schedulers[self.id] = self.scheduler
         self.scheduler.set_time(0)
         self.structures = initial_structures

@@ -2,7 +2,6 @@ import math
 import random
 
 DAY_LENGTH = 24
-DELAY_IF_AIRPORT_BUSY = 0
 
 
 class Flight:
@@ -21,7 +20,6 @@ class Flight:
         self.duration = None
         self.status = ["started"]
         self.day_of_flight = None
-        self.delay = 0
         self.sol = sol
 
     def __repr__(self):
@@ -98,10 +96,6 @@ class Flight:
             if not possible_assignment:
                 return
 
-        # if the airport is not available - add a delay to the flight
-        if self.base_airport.occupied:
-            self.delay += DELAY_IF_AIRPORT_BUSY
-
         self.day_of_flight = int(self.simulation_time // DAY_LENGTH)
 
         if self.distance is None or self.duration is None:
@@ -142,4 +136,3 @@ class Flight:
             self.pilots = None
             self.attendants = None
         self.status.append("started")
-        self.delay = 0

@@ -5,7 +5,6 @@ import json
 
 from .schedule import Schedule
 from .solution import Solution
-from .passenger_demand import generate_demand_array# , visualize_demand
 
 # from .decorators import timing_decorator
 with open('parameters.json') as parameters_file:
@@ -18,23 +17,7 @@ class EvolutionaryAlgorithm:
         self.population_size = population_size
         self.population = []
         self.initial_structures = initial_structures
-        self.passenger_demand = generate_demand_array(
-            self.initial_structures.airports, config['sim']['SIM_LEN']//24)
 
-    # @timing_decorator
-    def initialize_population(self):
-        for sol_id in range(len(self.population), self.population_size):
-            initial_structures = copy.deepcopy(self.initial_structures)
-            sol = Solution(
-                sol_id + 1,
-                self.passenger_demand,
-                initial_structures,
-                config['sim']['SIM_LEN'])
-            sol.set_sol_ids(sol_id + 1)
-            # population is a list of [sol, [op_costs, penalties]]
-            self.population.append([sol, -1])
-
-    # @timing_decorator
     def print_population(self):
         print(f"---Printing the population---")
         for sol_list in self.population:
@@ -48,12 +31,27 @@ class EvolutionaryAlgorithm:
             sol = sol_list[0]
             print(f"Sol ID: {sol.id} Fitness score {sol.fitness_score} Status: {sol.initialized} cancelled flights: {sol.get_cancelled_flights_num()}")
 
-    # @timing_decorator
     def print_schedules(self):
         print(f"---Printing the schedules---")
         for sol_list in self.population:
             print(f"Schedule for solution {sol_list[0].id}")
             print(sol_list[0].schedule)
+
+    def print_costs(self, iteration):
+        for sol_list in self.population:
+            print(
+                f"Iter: {iteration}, {sol_list[0]} fit. score: {sol_list[0].fitness_score}")
+
+    def initialize_population(self):
+        for sol_id in range(len(self.population), self.population_size):
+            initial_structures = copy.deepcopy(self.initial_structures)
+            sol = Solution(
+                sol_id + 1,
+                initial_structures,
+                config['sim']['SIM_LEN'])
+            sol.set_sol_ids(sol_id + 1)
+            # population is a list of [sol, [op_costs, penalties]]
+            self.population.append([sol, -1])
 
     # @timing_decorator
     def assign_schedules_for_initialized_sols(self):
@@ -101,7 +99,6 @@ class EvolutionaryAlgorithm:
         # Initializing metrics
         operational_costs = 0
         penalties = 0
-        delay_penalty = 0
 
         # 2. Calculate Operational Costs
         for flight in sol.flights:
@@ -115,19 +112,8 @@ class EvolutionaryAlgorithm:
 
         # 3. Calculate Penalties
         for flight in sol.flights:
-            if flight.delay != 0:
-                delay_penalty = flight.delay * 2 * config['sim']['PLANE_OPERATIONAL_COST_PER_HOUR']
-                penalties += delay_penalty
-
             if flight.status[-1] == "cancelled":
-                from_airport_idx = flight.base_airport.id - 1
-                to_airport_idx = flight.destination_airport.id - 1
-                day_of_flight = flight.day  # Assuming the Flight class has a day attribute
-                demand = self.passenger_demand[from_airport_idx][to_airport_idx][day_of_flight]
-
-                filled_seats = min(demand, config['sim']['DEFAULT_PLANE_CAPACITY'])
-
-                penalties += config['sim']['FLIGHT_CANCELLATION_COST_PER_PERSON'] * filled_seats
+                penalties += config['sim']['FLIGHT_CANCELLATION_COST_PER_PERSON'] * config['sim']['DEFAULT_PLANE_CAPACITY']
                 continue
 
             try:
@@ -144,7 +130,7 @@ class EvolutionaryAlgorithm:
                 print(
                     f"In sol: {sol.id} in flight: {flight.id} pilots or attendants are None")
 
-        return [operational_costs, penalties, delay_penalty]
+        return [operational_costs, penalties]
 
     def roulette_selection(self):
         '''This function selects a solution using roulette wheel selection'''
@@ -214,17 +200,12 @@ class EvolutionaryAlgorithm:
         of all solutions in the population
         '''
         for sol_id, sol in enumerate(self.population):
-            operation_costs, penalties, delay_penalty = self.fitness_function(
+            operation_costs, penalties = self.fitness_function(
                 sol[0])
             self.population[sol_id][1] = [
-                operation_costs, penalties, delay_penalty]
-            self.population[sol_id][0].fitness_score = operation_costs + penalties + delay_penalty
+                operation_costs, penalties]
+            self.population[sol_id][0].fitness_score = operation_costs + penalties
 
-    # @timing_decorator
-    def print_costs(self, iteration):
-        for sol_list in self.population:
-            print(
-                f"Iter: {iteration}, {sol_list[0]} fit. score: {sol_list[0].fitness_score}")
 
     def mutation_attendants(self, sol):
         '''Make a random flight change the attendants'''
@@ -437,11 +418,11 @@ class EvolutionaryAlgorithm:
         of all solutions in the population
         '''
         for sol in population:
-            operation_costs, penalties, delay_penalty = self.fitness_function(
+            operation_costs, penalties = self.fitness_function(
                 sol[0])
             sol[1] = [
-                operation_costs, penalties, delay_penalty]
-            sol[0].fitness_score = operation_costs + penalties + delay_penalty
+                operation_costs, penalties]
+            sol[0].fitness_score = operation_costs + penalties
 
 
     def add_new_solutions(self):
