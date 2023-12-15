@@ -2,7 +2,6 @@ import math
 import random
 
 DAY_LENGTH = 24
-DELAY_IF_AIRPORT_BUSY = 0
 
 
 class Flight:
@@ -21,7 +20,6 @@ class Flight:
         self.duration = None
         self.status = ["started"]
         self.day_of_flight = None
-        self.delay = 0
         self.sol = sol
 
     def __repr__(self):
@@ -96,11 +94,8 @@ class Flight:
         if self.pilots is None or self.attendants is None:
             possible_assignment = self.assign_random_crew()
             if not possible_assignment:
+                print(f"cancelled flight nr: {self.id}")
                 return
-
-        # if the airport is not available - add a delay to the flight
-        if self.base_airport.occupied:
-            self.delay += DELAY_IF_AIRPORT_BUSY
 
         self.day_of_flight = int(self.simulation_time // DAY_LENGTH)
 
@@ -122,19 +117,25 @@ class Flight:
         scheduler_instance.schedule_event(self.duration, self.end_flight)
 
     def end_flight(self):
+        # if self.status == "started":
+        print(f"Ending the flight: {self.id} with status: {self.status}")
         self.status.append("completed")
         self.destination_airport.airport_maintenance()
         for pilot in self.pilots:
-            pilot.start_rest(min(12, self.duration))
+            pilot.start_rest(min(8, self.duration))
         for attendant in self.attendants:
-            attendant.start_rest(min(12, self.duration))
+            attendant.start_rest(min(8, self.duration))
 
     def cancel_flight(self, sol, reason):
+        if reason == "pilots":
+            sol.pilot_cancel += 1
+        elif reason == "attendants":
+            sol.atten_cancel += 1
         self.status.append("cancelled")
 
     def reset_state_after_mutation(self, sol):
         if self.status[-1] == "completed":
-            # print(f"Resetting the state for flight: {self}")
+            print(f"Resetting the state for flight: {self}")
             for pilot in self.pilots:
                 pilot.reset_state_after_mutation(self)
             for attendant in self.attendants:
@@ -142,4 +143,3 @@ class Flight:
             self.pilots = None
             self.attendants = None
         self.status.append("started")
-        self.delay = 0

@@ -35,6 +35,7 @@ def main():
 
     # mutation
     evol_algo.evol_algo_loop_two_pop(config['algo']['N_ITERATIONS'])
+    evol_algo.print_cancellation_reason()
 
     # test_availability(evol_algo)
 

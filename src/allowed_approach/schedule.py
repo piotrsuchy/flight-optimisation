@@ -38,33 +38,3 @@ class Schedule:
 
     def sort_schedule_by_timestamp(self):
         self.flight_schedule.sort(key=lambda x: x.simulation_time)
-
-    def clear_assignments_from_timestamp(self, simulation_time):
-        # Perform a binary search to find the index of the flight at the given
-        # simulation time
-        low, high = 0, len(self.flight_schedule) - 1
-        index = -1  # Default to -1 if no flight is found at the exact simulation time
-
-        while low <= high:
-            mid = (low + high) // 2
-            mid_flight_time = self.flight_schedule[mid].simulation_time
-
-            if mid_flight_time < simulation_time:
-                low = mid + 1
-            elif mid_flight_time > simulation_time:
-                high = mid - 1
-            else:  # exact match found
-                index = mid
-                break
-
-        # If not found, find the next flight in the schedule after the
-        # simulation time
-        if index == -1 and low < len(self.flight_schedule):
-            index = low
-
-        # Clear assignments for all flights from the found index onwards
-        for flight in self.flight_schedule[index:]:
-            if flight.simulation_time >= simulation_time:  # Proceed if the condition matches
-                flight.pilots = None
-                flight.attendant = None
-                flight.status.append("started")

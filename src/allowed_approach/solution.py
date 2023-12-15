@@ -8,12 +8,11 @@ from .event_scheduler import EventScheduler
 class Solution:
     schedulers = {}
 
-    def __init__(self, solution_id, passenger_demand,
+    def __init__(self, solution_id,
                  initial_structures, simulation_hs):
         self.id = solution_id
         self.initialized = "Initialized"
         self.scheduler = EventScheduler()
-        self.passenger_demand = passenger_demand
         Solution.schedulers[self.id] = self.scheduler
         self.scheduler.set_time(0)
         self.structures = initial_structures
@@ -22,6 +21,8 @@ class Solution:
         self.fitness_score = None
         self.events = None
         self.schedule = None
+        self.pilot_cancel = 0
+        self.atten_cancel = 0
 
     def __str__(self):
         return f"Sol ID: {self.id}, fitness score: {self.fitness_score}, status: {self.initialized}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}"
