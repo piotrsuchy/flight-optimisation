@@ -21,6 +21,8 @@ class Solution:
         self.fitness_score = None
         self.events = None
         self.schedule = None
+        self.pilot_cancel = 0
+        self.atten_cancel = 0
 
     def __str__(self):
         return f"Sol ID: {self.id}, fitness score: {self.fitness_score}, status: {self.initialized}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}"

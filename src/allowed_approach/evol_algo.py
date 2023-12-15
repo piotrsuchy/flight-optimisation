@@ -42,6 +42,11 @@ class EvolutionaryAlgorithm:
             print(
                 f"Iter: {iteration}, {sol_list[0]} fit. score: {sol_list[0].fitness_score}")
 
+    def print_cancellation_reason(self):
+        for sol_list in self.population:
+            print(
+                f"Sol: {sol_list[0]}, pilot cancel: {sol_list[0].pilot_cancel}, att cancel: {sol_list[0].atten_cancel}")
+
     def initialize_population(self):
         for sol_id in range(len(self.population), self.population_size):
             initial_structures = copy.deepcopy(self.initial_structures)
@@ -93,24 +98,22 @@ class EvolutionaryAlgorithm:
     def fitness_function(self, sol):
         '''
         This function calculates operational costs and penalties of a single solution
-        If the flight is cancelled it
+        If the flight is cancelled it applies a penalty
         It returns a list of [op_costs, penalties]
         '''
-        # Initializing metrics
         operational_costs = 0
         penalties = 0
 
-        # 2. Calculate Operational Costs
+        # Operational Costs
         for flight in sol.flights:
             if flight.status[-1] != "completed":
                 continue
             flight_duration = flight.duration
             pilot_cost = config['sim']['PILOT_COST_PER_HOUR'] * flight_duration
             attendant_cost = config['sim']['ATTENDANT_COST_PER_HOUR'] * flight_duration
-            operational_costs += 2 * pilot_cost + 4 * \
-                attendant_cost  # Assuming 2 pilots and 4 attendants
+            operational_costs += 2 * pilot_cost + 4 * attendant_cost  # Assuming 2 pilots and 4 attendants
 
-        # 3. Calculate Penalties
+        # Penalties 
         for flight in sol.flights:
             if flight.status[-1] == "cancelled":
                 penalties += config['sim']['FLIGHT_CANCELLATION_COST_PER_PERSON'] * config['sim']['DEFAULT_PLANE_CAPACITY']
@@ -127,10 +130,9 @@ class EvolutionaryAlgorithm:
                         penalties += config['sim']['OVERWORK_PENALTY_PER_HOUR'] * \
                             (attendant.week_worked_hs - config['sim']['MAX_WEEKLY_HOURS'])
             except TypeError:
-                print(
-                    f"In sol: {sol.id} in flight: {flight.id} pilots or attendants are None")
+                print(f"Status of the flight is: {flight.status}, but crew has None: pil: {flight.pilots} att: {flight.attendants}")
 
-        return [operational_costs, penalties]
+        return [int(operational_costs), int(penalties)]
 
     def roulette_selection(self):
         '''This function selects a solution using roulette wheel selection'''
@@ -379,7 +381,7 @@ class EvolutionaryAlgorithm:
 
             print(f"Final population after updating fitness score")
             for sol in final_population:
-                print(f"Fitness score of {sol[0]}: {sol[0].fitness_score}")
+                print(f"Fitness score of {sol[0]}")
 
             # Sort and select the best solutions
             final_population.sort(key=lambda sol: sol[0].fitness_score)
