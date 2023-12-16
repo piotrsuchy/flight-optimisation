@@ -114,6 +114,9 @@ class Flight:
             self, self.simulation_time)
         
         scheduler_instance = self.sol.get_scheduler_by_id(self.sol.id)
+        if any(pilot is None for pilot in self.pilots) or any(attendant is None for attendant in self.attendants):
+            print(f'There is a None in an uncancelled flight: {self.id}, crew: {self.pilots}, att: {self.attendants}')
+            raise ValueError(f'There is a None in an uncancelled flight: {self.id}, crew: {self.pilots}, att: {self.attendants}')
         scheduler_instance.schedule_event(self.duration, self.end_flight)
 
     def end_flight(self):
