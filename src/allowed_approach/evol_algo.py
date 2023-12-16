@@ -116,7 +116,7 @@ class EvolutionaryAlgorithm:
         # Penalties 
         for flight in sol.flights:
             if flight.status[-1] == "cancelled":
-                penalties += config['sim']['FLIGHT_CANCELLATION_COST_PER_PERSON'] * config['sim']['DEFAULT_PLANE_CAPACITY']
+                penalties += config['pen']['CANCEL_PENALTY']
                 continue
 
             try:
@@ -374,14 +374,14 @@ class EvolutionaryAlgorithm:
 
 
             final_population = self.population + parent_pop
-            print(f"Final population: {final_population}, size: {len(final_population)}")
+            # print(f"Final population: {final_population}, size: {len(final_population)}")
 
             # Update fitness scores of the combined population
             self.update_all_fitness_scores_in_pop(final_population)
 
-            print(f"Final population after updating fitness score")
-            for sol in final_population:
-                print(f"Fitness score of {sol[0]}")
+            # print(f"Final population after updating fitness score")
+            # for sol in final_population:
+            #     print(f"Fitness score of {sol[0]}")
 
             # Sort and select the best solutions
             final_population.sort(key=lambda sol: sol[0].fitness_score)
