@@ -145,4 +145,5 @@ class Flight:
                 attendant.reset_state_after_mutation(self)
             self.pilots = None
             self.attendants = None
+        print(f"Resetting the state for flight: {self}")
         self.status.append("started")
