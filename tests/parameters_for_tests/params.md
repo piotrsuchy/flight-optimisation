@@ -1,5 +1,8 @@
-// for allowed_approach - from 8-9 cancelled to
-// 5 - 6 cancelled
+---
+17.12.2023
+last_commit_hash = commit 01294ef4ceeaead5eb766fe56a51228be2307cf7 
+---
+
 {
     "algo": {
         "POPULATION_SIZE": 10,
@@ -33,3 +36,6 @@
         "PLANE_SPEED": 700
     }
 }
+
+// for allowed_approach - from 8-9 cancelled to
+// 5 - 6 cancelled
