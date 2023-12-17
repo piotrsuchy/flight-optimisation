@@ -1,5 +1,4 @@
-from src.solution import Solution
-from src.passenger_demand import generate_demand_array, visualize_demand, visualize_demand_for_day
+from src.allowed_approach.solution import Solution
 import time
 
 BASELINE_PARAMS = {
@@ -24,7 +23,6 @@ def simulation_main(**params):
     sim.run_simulation()
     end_time = time.time()
     # print(f"Duration of the whole program: {end_time - start_time}")
-    # demand_matrix = generate_demand_array(sim.airports)
     return end_time - start_time
 
 
