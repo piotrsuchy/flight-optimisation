@@ -29,7 +29,7 @@ class EvolutionaryAlgorithm:
         print(f"---ITER: {iter} ---Printing fitness scores---")
         for sol_list in self.population:
             sol = sol_list[0]
-            print(f"Sol ID: {sol.id} Fitness score {sol.fitness_score} Status: {sol.initialized} cancelled flights: {sol.get_cancelled_flights_num()}")
+            print(f"Sol ID: {sol.id} Fit: {sol.fitness_score} Status: {sol.initialized} Canc: {sol.get_cancelled_flights_num()}, training_pen: {sol.get_training_penal_num()}")
 
     def print_schedules(self):
         print(f"---Printing the schedules---")
@@ -42,10 +42,10 @@ class EvolutionaryAlgorithm:
             print(
                 f"Iter: {iteration}, {sol_list[0]} fit. score: {sol_list[0].fitness_score}")
 
-    def print_cancellation_reason(self):
+    def print_all_info(self):
         for sol_list in self.population:
             print(
-                f"Sol: {sol_list[0]}, pilot cancel: {sol_list[0].pilot_cancel}, att cancel: {sol_list[0].atten_cancel}")
+                f"{sol_list[0]}, pil: {sol_list[0].pilot_cancel}, att: {sol_list[0].atten_cancel}, train_pen: {sol_list[0].get_training_penal_num()}")
 
     def initialize_population(self):
         for sol_id in range(len(self.population), self.population_size):
@@ -103,15 +103,16 @@ class EvolutionaryAlgorithm:
         '''
         operational_costs = 0
         penalties = 0
+        training_penalties = 0
 
         # Operational Costs
-        for flight in sol.flights:
-            if flight.status[-1] != "completed":
-                continue
-            flight_duration = flight.duration
-            pilot_cost = config['sim']['PILOT_COST_PER_HOUR'] * flight_duration
-            attendant_cost = config['sim']['ATTENDANT_COST_PER_HOUR'] * flight_duration
-            operational_costs += 2 * pilot_cost + 4 * attendant_cost  # Assuming 2 pilots and 4 attendants
+        # for flight in sol.flights:
+        #     if flight.status[-1] != "completed":
+        #         continue
+        #     flight_duration = flight.duration
+        #     pilot_cost = config['sim']['PILOT_COST_PER_HOUR'] * flight_duration
+        #     attendant_cost = config['sim']['ATTENDANT_COST_PER_HOUR'] * flight_duration
+        #     operational_costs += 2 * pilot_cost + 4 * attendant_cost  # Assuming 2 pilots and 4 attendants
 
         # Penalties 
         for flight in sol.flights:
@@ -124,15 +125,22 @@ class EvolutionaryAlgorithm:
                     if pilot.week_worked_hs > config['sim']['MAX_WEEKLY_HOURS']:
                         penalties += config['sim']['OVERWORK_PENALTY_PER_HOUR'] * \
                             (pilot.week_worked_hs - config['sim']['MAX_WEEKLY_HOURS'])
+                    # check for flight and training overlap
+                    if flight.simulation_time <= pilot.training_hours[1] and flight.simulation_time + flight.duration >= pilot.training_hours[0]:
+                        training_penalties += config['pen']['TRAINING_OVERLAP_PENALTY']
 
                 for attendant in flight.attendants:
                     if attendant.week_worked_hs > config['sim']['MAX_WEEKLY_HOURS']:
                         penalties += config['sim']['OVERWORK_PENALTY_PER_HOUR'] * \
                             (attendant.week_worked_hs - config['sim']['MAX_WEEKLY_HOURS'])
+                    # check for flight and training overlap
+                    if flight.simulation_time <= attendant.training_hours[1] and flight.simulation_time + flight.duration >= attendant.training_hours[0]:
+                        training_penalties += config['pen']['TRAINING_OVERLAP_PENALTY']
+
             except TypeError:
                 print(f"Status of the flight is: {flight.status}, but crew has None: pil: {flight.pilots} att: {flight.attendants}")
 
-        return [int(operational_costs), int(penalties)]
+        return [int(operational_costs), int(penalties), int(training_penalties)]
 
     def roulette_selection(self):
         '''This function selects a solution using roulette wheel selection'''
@@ -202,11 +210,11 @@ class EvolutionaryAlgorithm:
         of all solutions in the population
         '''
         for sol_id, sol in enumerate(self.population):
-            operation_costs, penalties = self.fitness_function(
+            operation_costs, penalties, training_penalties = self.fitness_function(
                 sol[0])
             self.population[sol_id][1] = [
-                operation_costs, penalties]
-            self.population[sol_id][0].fitness_score = operation_costs + penalties
+                operation_costs, penalties, training_penalties]
+            self.population[sol_id][0].fitness_score = operation_costs + penalties + training_penalties
 
 
     def mutation_attendants(self, sol):
@@ -278,7 +286,7 @@ class EvolutionaryAlgorithm:
         for attendant in new_attendants:
             availability.attendants.remove(attendant)
 
-        random_flight.status.append("mutated")
+        random_flight.status.append("Mutated    ")
             
         return simulation_time
 
@@ -333,7 +341,7 @@ class EvolutionaryAlgorithm:
                         mutation_successful = True
                     except ValueError:
                         print("Error during mutation. Retrying with a different flight.")
-                sol.initialized = "Mutated"
+                sol.initialized = "Mutated    "
 
                 for airport in sol.structures.airports:
                     airport.check_consistency()
@@ -364,7 +372,7 @@ class EvolutionaryAlgorithm:
                         mutation_successful = True
                     except ValueError:
                         print("Error during mutation. Retrying with a different flight.")
-                sol.initialized = "Mutated"
+                sol.initialized = "Mutated    "
 
                 for airport in sol.structures.airports:
                     airport.check_consistency()
@@ -381,9 +389,10 @@ class EvolutionaryAlgorithm:
             # Update fitness scores of the combined population
             self.update_all_fitness_scores_in_pop(final_population)
 
-            # print(f"Final population after updating fitness score")
-            # for sol in final_population:
-            #     print(f"Fitness score of {sol[0]}")
+            print(f"Final population after updating fitness score")
+            for sol in final_population:
+                print(f"Fitness score of {sol[0]}")
+
             # Different selection mechanism before and after halfway point
             if i < iterations_n // 2:
                 # Ensure at least one solution for each ID is selected
@@ -394,9 +403,10 @@ class EvolutionaryAlgorithm:
                 self.population = final_population[:self.population_size]
 
             # Print fitness scores for logging/debugging
-            print(f"Final print in evol_algo_loop_pop_two")
-            for sol in self.population:
-                print(f"Fitness score of {sol[0]}: {sol[0].fitness_score}")
+            # print(f"evol_algo_loop_pop_two ITER: {i}")
+            # for sol in self.population:
+            #     print(f"Fitness score of {sol[0]}: {sol[0].fitness_score}")
+            self.print_fitness_scores(i)
 
     def select_diverse_population(self, population):
         unique_ids = set(sol[0].id for sol in population)
@@ -444,11 +454,12 @@ class EvolutionaryAlgorithm:
         of all solutions in the population
         '''
         for sol in population:
-            operation_costs, penalties = self.fitness_function(
+            operation_costs, penalties, training_penalties = self.fitness_function(
                 sol[0])
             sol[1] = [
-                operation_costs, penalties]
-            sol[0].fitness_score = operation_costs + penalties
+                operation_costs, penalties, training_penalties]
+            sol[0].fitness_score = operation_costs + penalties + training_penalties
+            sol[0].n_training_pen = training_penalties
 
 
     def add_new_solutions(self):

@@ -23,6 +23,7 @@ class Solution:
         self.schedule = None
         self.pilot_cancel = 0
         self.atten_cancel = 0
+        self.n_training_pen = 0
 
     def __str__(self):
         return f"Sol ID: {self.id}, fitness score: {self.fitness_score}, status: {self.initialized}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}"
@@ -31,6 +32,17 @@ class Solution:
     def get_scheduler_by_id(sol_id):
         return Solution.schedulers.get(sol_id)
 
+    def get_scheduler_events(self):
+        self.all_events = self.scheduler.get_events()
+        for event in self.all_events:
+            print(f"event: {event}")
+
+    def get_cancelled_flights_num(self):
+        return len([f for f in self.flights if f.status[-1] == "cancelled"])
+
+    def get_training_penal_num(self):
+        return self.n_training_pen / 5000
+
     def print_flight_simulation_times(self):
         for flight in self.flights:
             print(flight.simulation_time)
@@ -38,11 +50,6 @@ class Solution:
     def print_flights(self):
         for flight in self.flights:
             print(flight)
-
-    def get_scheduler_events(self):
-        self.all_events = self.scheduler.get_events()
-        for event in self.all_events:
-            print(f"event: {event}")
 
     def set_sol_ids(self, sol_id):
         for airport in self.structures.airports:
@@ -68,9 +75,6 @@ class Solution:
             self.flights.append(flight)
             logging.info(
                 f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {scheduled_time:.2f} of the simulation.")
-
-    def get_cancelled_flights_num(self):
-        return len([f for f in self.flights if f.status[-1] == "cancelled"])
 
     def run_events(self):
         '''

@@ -5,6 +5,7 @@ rest periods,
 flight duty period - pre-flight, post-flight etc.
 on-duty, on-call - how to calculate this work hours
 '''
+import random
 from src.allowed_approach.solution import Solution
 
 MAX_DAILY_HOURS = 14
@@ -18,7 +19,7 @@ class Pilot:
     _weekly_limits = 0
     _monthly_limits = 0
 
-    def __init__(self, base):
+    def __init__(self, base=random.randint(0, 10)):
         self.id = Pilot._next_id
         Pilot._next_id += 1
         self.base = base
@@ -29,10 +30,12 @@ class Pilot:
         self.flights_taken = 0
         self.is_available = True
         self.sol_id = None
+        training_hours = random.randint(0, 720)
+        self.training_hours = [training_hours, training_hours + 24]
+
 
     def __repr__(self):
         return f"Pilot ID: {self.id}"
-        return f"Pilot ID: {self.id}, sol_id: {self.sol_id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.month_worked_hs}, flights taken: {self.flights_taken}"
 
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
@@ -113,7 +116,7 @@ class FlightAttendant:
     _weekly_limits = 0
     _monthly_limits = 0
 
-    def __init__(self, base):
+    def __init__(self, base=random.randint(0, 10)):
         self.id = FlightAttendant._next_id
         FlightAttendant._next_id += 1
         self.base = base
@@ -125,6 +128,8 @@ class FlightAttendant:
         self.flights_taken = 0
         self.is_available = True
         self.sol_id = None
+        training_hours = random.randint(0, 720)
+        self.training_hours = [training_hours, training_hours + 24]
 
     def __repr__(self):
         return f"Attendant ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.month_worked_hs}, flights taken: {self.flights_taken}, status: {self.is_available}"
