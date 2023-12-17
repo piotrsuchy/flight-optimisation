@@ -11,6 +11,13 @@ class Schedule:
         for flight in self.flight_schedule:
             res += f"{flight} \n"
         return res
+    
+    def __eq__(self, other):
+        if not isinstance(other, Schedule):
+            return False
+        if len(self.flight_schedule) != len(other.flight_schedule):
+            return False
+        return all(self_flight == other_flight for self_flight, other_flight in zip(self.flight_schedule, other.flight_schedule))
 
     def create_random_schedule(
             self, sol, flights_q, simulation_length, seed=None):
