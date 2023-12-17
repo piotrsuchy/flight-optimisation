@@ -10,13 +10,11 @@
     },
     "sim": {
         "SIM_LEN": 720,
-        "TICKET_PRICE": 1000,
         "PLANE_OPERATIONAL_COST_PER_HOUR": 2000,
         "PILOT_COST_PER_HOUR": 120,
         "ATTENDANT_COST_PER_HOUR": 80,
         "MAX_WEEKLY_HOURS": 60,
         "OVERWORK_PENALTY_PER_HOUR": 240,
-        "DEFAULT_PLANE_CAPACITY": 500,
         "N_FLIGHTS": 100
     },
     "pen": {
