@@ -36,18 +36,50 @@ class ImpossibleEvolutionaryAlgorithm:
         self.loc_penalty_count = 0
         self.canc_penalty_count = 0
         self.rest_penalty_count = 0
+        self.overlap_penalty_count = 0
         self.loc_proper_allocation = 0
         self.all_sols_penalty_count = []
+
+    def print_distance_matrix(self):
+        for row in self.distance_matrix:
+            print(row)
+
+    def print_population(self):
+        print(f"--- PRINTING THE POPULATION ---")
+        for id, sol in enumerate(self.population):
+            print(f"Sol: {id}: ")
+            for flight in sol:
+                print(flight)
+
+    def print_fitness_scores(self, iter):
+        print(f"--- PRINTING FITNESS SCORES FOR ITER: {iter} ---")
+        for sol_id, fit_score in enumerate(self.fitness_scores):
+            print(f"Sol: {sol_id}, fit_score: {fit_score}")
+
+    def print_average_fit_score(self, iter):
+        avg_fit_score = np.average(self.fitness_scores)
+        print(f"Iteration: {iter}", avg_fit_score)
+
+    def print_penalty_counts(self):
+        print("Printing penalty counts:")
+        print("Location pen.: ", self.loc_penalty_count)
+        print("Cancellation pen.: ", self.canc_penalty_count)
+        print("Rest pen.: ", self.rest_penalty_count)
+        print("Training overlap pen.: ", self.overlap_penalty_count)
+
+    def print_penalties_for_sols(self, iter, sol_id):
+        print(f"Penalties for sol: {sol_id} in iter: {iter}")
+        print(f"Loc: {self.all_sols_penalty_count[sol_id][0]}, Rest: {self.all_sols_penalty_count[sol_id][1]}, Canc: {self.all_sols_penalty_count[sol_id][2]}, training overlap: {self.all_sols_penalty_count[sol_id][3]}, Prop. alloc: {self.all_sols_penalty_count[sol_id][4]}")
 
     def generate_training_hours(self):
         for sol in range(self.pop_size):
             random.seed(config['structs']['SEED_1'])
             for pilot in range(self.pilots_per_sol):
                 training_start_time = random.randint(0, 720)
-                self.pilots_status_pop[sol][pilot]['train_hs'] = random.randint(training_start_time, training_start_time + 24)
+                self.pilots_status_pop[sol][pilot]['train_hs'] = [training_start_time, training_start_time + 24]
             for attendant in range(self.attend_per_sol):
                 training_start_time = random.randint(0, 720)
-                self.attend_status_pop[sol][attendant]['train_hs'] = random.randint(training_start_time, training_start_time + 24)
+                self.attend_status_pop[sol][attendant]['train_hs'] = [training_start_time, training_start_time + 24]
             random.seed(None)
         
     def create_initial_sols(self):
@@ -71,41 +103,11 @@ class ImpossibleEvolutionaryAlgorithm:
                 self.distance_matrix[i][j] = distance
                 self.distance_matrix[j][i] = distance
 
-    def print_distance_matrix(self):
-        for row in self.distance_matrix:
-            print(row)
-
-    def print_population(self):
-        print(f"--- PRINTING THE POPULATION ---")
-        for id, sol in enumerate(self.population):
-            print(f"Sol: {id}: ")
-            for flight in sol:
-                print(flight)
-
-    def print_fitness_scores(self, iter):
-        print(f"--- PRINTING FITNESS SCORES FOR ITER: {iter} ---")
-        for sol_id, fit_score in enumerate(self.fitness_scores):
-            print(f"Sol: {sol_id}, fit_score: {fit_score}")
-
     def get_fitness_scores(self):
         fitness_score = []
         for fit_score in self.fitness_scores:
             fitness_score.append(fit_score)
         return fitness_score
-
-    def print_average_fit_score(self, iter):
-        avg_fit_score = np.average(self.fitness_scores)
-        print(f"Iteration: {iter}", avg_fit_score)
-
-    def print_penalty_counts(self):
-        print("Printing penalty counts:")
-        print("Location pen.: ", self.loc_penalty_count)
-        print("Cancellation pen.: ", self.canc_penalty_count)
-        print("Rest pen.: ", self.rest_penalty_count)
-
-    def print_penalties_for_sols(self, iter, sol_id):
-        print(f"Penalties for sol: {sol_id} in iter: {iter}")
-        print(f"Loc: {self.all_sols_penalty_count[sol_id][0]}, Rest: {self.all_sols_penalty_count[sol_id][1]}, Canc: {self.all_sols_penalty_count[sol_id][2]} Prop. alloc: {self.all_sols_penalty_count[sol_id][3]}")
 
     def check_consistency(self):
         key_params = [[flight[0], flight[1], flight[-1]] for flight in self.population[0]]
@@ -120,6 +122,7 @@ class ImpossibleEvolutionaryAlgorithm:
         self.loc_penalty_count = 0
         self.rest_penalty_count = 0
         self.loc_proper_allocation = 0
+        self.overlap_penalty_count = 0
         fitness_score = 0
 
         for flight in solution:
@@ -129,31 +132,26 @@ class ImpossibleEvolutionaryAlgorithm:
                 self.canc_penalty_count += 1
                 fitness_score += cancellation_penalty
                 # continue  # Skip the rest of the checks for this flight
+
             flight_duration = self.distance_matrix[src_id - 1][dst_id - 1] // plane_speed
             required_rest_time = min(8, flight_duration)
 
             for idx, crew_member_idx in enumerate(crew_members):
                 if crew_member_idx is not None:
-                    # print(f"Crew member idx: {crew_member_idx}, len(pilot_status): {len(pilot_status)}, len(attend_status): {len(attendant_status)}")
+
                     # Determine if the crew member is a pilot or an attendant
                     if idx < config['structs']['PILOTS_PER_PLANE']:
                         crew_member_status = pilot_status[crew_member_idx - 1]  # Adjust the index if necessary
                     else:
                         crew_member_status = attendant_status[crew_member_idx - 1]  # Adjust the index if necessary
-                    # print(f"Crew member {crew_member_idx} location: {crew_member_status['location']} :::: should be: {src_id}")
-                    # print(f"Crew member rest_time: {timestamp - crew_member_status['time']}")
 
                     if crew_member_status['location'] != src_id:
-                        # print(f"Location penalty applied for flight from {flight[0]} to {flight[1]} - crew_member: {crew_member_idx}")
-                        # print(f"Crew member location: {crew_member_status['location']}")
                         self.loc_penalty_count += 1
                         fitness_score += location_penalty
                     else:
                         self.loc_proper_allocation += 1
 
                     if timestamp - crew_member_status['time'] < required_rest_time:
-                        # print(f"Rest penalty applied for flight from {flight[0]} to {flight[1]} - crew_member: {crew_member_idx}")
-                        # print(f"Crew member rest_time: {timestamp - crew_member_status['time']}")
                         self.rest_penalty_count += 1
                         fitness_score += rest_penalty
 
@@ -164,8 +162,17 @@ class ImpossibleEvolutionaryAlgorithm:
                         self.attend_status_pop[sol_id][crew_member_idx - 1]['location'] = dst_id
                         self.attend_status_pop[sol_id][crew_member_idx - 1]['time'] = timestamp + flight_duration
 
+                    # calculate penalty for overlap 
+                    if timestamp > crew_member_status['train_hs'][0] and timestamp < crew_member_status['train_hs'][1] or \
+                    timestamp + flight_duration > crew_member_status['train_hs'][0] and timestamp + flight_duration <= crew_member_status['train_hs'][1]:
+                        # print(f"Flight in between training time: {crew_member_status['train_hs'][0]} and {crew_member_status['train_hs'][1]}")
+                        # print(f"Penalty for overlap of training and flight applied")
+                        self.overlap_penalty_count += 1
+                        fitness_score += config['pen']['TRAINING_OVERLAP_PENALTY']
+                        
+
         # print(f"Print in calc. fit.: loc: {self.loc_penalty_count}, rest: {self.rest_penalty_count}, canc: {self.canc_penalty_count}, proper_alloc: {self.loc_proper_allocation}")
-        self.all_sols_penalty_count.append((self.loc_penalty_count, self.rest_penalty_count, self.canc_penalty_count, self.loc_proper_allocation))
+        self.all_sols_penalty_count.append((self.loc_penalty_count, self.rest_penalty_count, self.canc_penalty_count, self.overlap_penalty_count, self.loc_proper_allocation))
         return fitness_score
     
     def update_fitness_for_all_sols(self):
@@ -273,15 +280,10 @@ class ImpossibleEvolutionaryAlgorithm:
         # select a random flight and change the crew member from one 
         # change the assigned crew members to random unassigned crew_member
         flight_indexes = random.sample(range(len(solution)), n_flights)
-        print("Flight indexes: ", flight_indexes)
         for idx in flight_indexes:
-            print(f"Flight index: {idx} - solution[idx]")
-            # either 2 or 3
             pilot_slot = random.choice([2, 3])
-            print(f"Pilot slot: {pilot_slot}")
             solution[idx][pilot_slot] = random.randint(1, self.pilots_per_sol)
             attendant_slot = random.choice([4, 5, 6, 7])
-            print(f"Att slot: {attendant_slot}")
             solution[idx][attendant_slot] = random.randint(1, self.attend_per_sol)
 
         return solution
@@ -332,7 +334,7 @@ class ImpossibleEvolutionaryAlgorithm:
             self.update_fitness_for_all_sols()
             # self.print_average_fit_score(i)
             self.print_fitness_scores(i)
-            for j in range(len(self.population)):
-                self.print_penalties_for_sols(i, j)
+            # for j in range(len(self.population)):
+            #     self.print_penalties_for_sols(i, j)
             self.reset_state_of_status_pops()
             
