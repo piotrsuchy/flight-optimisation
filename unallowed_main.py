@@ -12,6 +12,7 @@ def main():
     imp_evol_algo.fill_in_distance_matrix()
     imp_evol_algo.assign_airports_to_crew_members()
     imp_evol_algo.create_initial_sols()
+    imp_evol_algo.generate_training_hours()
 
     imp_evol_algo.create_initial_generation()
     # imp_evol_algo.print_population()
