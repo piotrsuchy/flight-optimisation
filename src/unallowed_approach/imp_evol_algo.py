@@ -2,9 +2,8 @@ import json
 import random
 import numpy as np
 import copy
-from imp_solution import ImpossibleSolution
+from src.unallowed_approach.imp_solution import ImpossibleSolution
 
-# from .decorators import timing_decorator
 with open('parameters.json') as parameters_file:
     config = json.load(parameters_file)
 
@@ -14,6 +13,7 @@ cancellation_penalty = config['pen']['CANCEL_PENALTY']
 plane_speed = config['structs']['PLANE_SPEED']
     
 class ImpossibleEvolutionaryAlgorithm:
+
     def __init__(self):
         self.pop_size = config['algo']['POPULATION_SIZE']
         self.pilots_per_sol = config['structs']['N_PILOTS_F_A'] * config['structs']['N_AIRPORTS'] 
@@ -25,10 +25,10 @@ class ImpossibleEvolutionaryAlgorithm:
 
         self.distance_matrix = [[None for _ in range(self.n_airports)] for _ in range(self.n_airports)]
         self.population = [None for _ in range(self.pop_size)]
-        self.pilots_status_pop = [[{'location': None, 'time': 0} 
+        self.pilots_status_pop = [[{'location': None, 'time': 0, 'train_hs': []} 
                                 for _ in range(self.pilots_per_sol)]
                                 for _ in range(self.pop_size)]
-        self.attend_status_pop = [[{'location': None, 'time': 0} 
+        self.attend_status_pop = [[{'location': None, 'time': 0, 'train_hs': []} 
                                 for _ in range(self.attend_per_sol)]
                                 for _ in range(self.pop_size)]
         self.fitness_scores = [None for _ in range(self.pop_size)]
@@ -39,6 +39,17 @@ class ImpossibleEvolutionaryAlgorithm:
         self.loc_proper_allocation = 0
         self.all_sols_penalty_count = []
 
+    def generate_training_hours(self):
+        for sol in range(self.pop_size):
+            random.seed(config['structs']['SEED_1'])
+            for pilot in range(self.pilots_per_sol):
+                training_start_time = random.randint(0, 720)
+                self.pilots_status_pop[sol][pilot]['train_hs'] = random.randint(training_start_time, training_start_time + 24)
+            for attendant in range(self.attend_per_sol):
+                training_start_time = random.randint(0, 720)
+                self.attend_status_pop[sol][attendant]['train_hs'] = random.randint(training_start_time, training_start_time + 24)
+            random.seed(None)
+        
     def create_initial_sols(self):
         sol = ImpossibleSolution()
         initial_sol_schedule = sol.get_initial_schedule()
@@ -71,10 +82,16 @@ class ImpossibleEvolutionaryAlgorithm:
             for flight in sol:
                 print(flight)
 
-    def print_fitness_scores(self):
-        print(f"--- PRINTING FITNESS SCORES ---")
+    def print_fitness_scores(self, iter):
+        print(f"--- PRINTING FITNESS SCORES FOR ITER: {iter} ---")
         for sol_id, fit_score in enumerate(self.fitness_scores):
             print(f"Sol: {sol_id}, fit_score: {fit_score}")
+
+    def get_fitness_scores(self):
+        fitness_score = []
+        for fit_score in self.fitness_scores:
+            fitness_score.append(fit_score)
+        return fitness_score
 
     def print_average_fit_score(self, iter):
         avg_fit_score = np.average(self.fitness_scores)
@@ -110,7 +127,7 @@ class ImpossibleEvolutionaryAlgorithm:
 
             if None in crew_members:
                 self.canc_penalty_count += 1
-                fitness_score -= cancellation_penalty
+                fitness_score += cancellation_penalty
                 # continue  # Skip the rest of the checks for this flight
             flight_duration = self.distance_matrix[src_id - 1][dst_id - 1] // plane_speed
             required_rest_time = min(8, flight_duration)
@@ -130,7 +147,7 @@ class ImpossibleEvolutionaryAlgorithm:
                         # print(f"Location penalty applied for flight from {flight[0]} to {flight[1]} - crew_member: {crew_member_idx}")
                         # print(f"Crew member location: {crew_member_status['location']}")
                         self.loc_penalty_count += 1
-                        fitness_score -= location_penalty
+                        fitness_score += location_penalty
                     else:
                         self.loc_proper_allocation += 1
 
@@ -138,7 +155,7 @@ class ImpossibleEvolutionaryAlgorithm:
                         # print(f"Rest penalty applied for flight from {flight[0]} to {flight[1]} - crew_member: {crew_member_idx}")
                         # print(f"Crew member rest_time: {timestamp - crew_member_status['time']}")
                         self.rest_penalty_count += 1
-                        fitness_score -= rest_penalty
+                        fitness_score += rest_penalty
 
                     if idx < config['structs']['PILOTS_PER_PLANE']:
                         self.pilots_status_pop[sol_id][crew_member_idx - 1]['location'] = dst_id
@@ -210,7 +227,7 @@ class ImpossibleEvolutionaryAlgorithm:
         num_to_select = int(self.pop_size * self.selection_rate)
         solutions_with_scores = list(zip(self.population, self.fitness_scores))
 
-        solutions_with_scores.sort(key=lambda x: x[1], reverse=True)
+        solutions_with_scores.sort(key=lambda x: x[1], reverse=False)
         selected_solutions = [solution for solution, _ in solutions_with_scores[:num_to_select]]
         return selected_solutions
 
@@ -225,7 +242,7 @@ class ImpossibleEvolutionaryAlgorithm:
                 parent1 = selected_solutions.pop(random.randrange(len(selected_solutions)))
                 parent2 = selected_solutions.pop(random.randrange(len(selected_solutions)))
 
-                if random.random() < 1:
+                if random.random() < self.crossover_rate:
                     # Perform crossover
                     crossover_point = random.randint(1, len(parent1) - 2)  # Choose a random crossover point, but not at the ends
 
@@ -258,7 +275,7 @@ class ImpossibleEvolutionaryAlgorithm:
         flight_indexes = random.sample(range(len(solution)), n_flights)
         print("Flight indexes: ", flight_indexes)
         for idx in flight_indexes:
-            print(f"Flight index: {idx} - solutino[idx]")
+            print(f"Flight index: {idx} - solution[idx]")
             # either 2 or 3
             pilot_slot = random.choice([2, 3])
             print(f"Pilot slot: {pilot_slot}")
@@ -302,6 +319,7 @@ class ImpossibleEvolutionaryAlgorithm:
 
             # Perform crossover and mutation on copies of these top solutions
             new_solutions = self.crossover_solutions(to_crossover)
+            # 50 / 50 mutation rate for two types of mutation operators
             if random.random() < 0.5:
                 mutated_new_solutions = self.mutate_solutions(new_solutions)
             else:
@@ -312,37 +330,9 @@ class ImpossibleEvolutionaryAlgorithm:
 
             # Update fitness scores for the entire population
             self.update_fitness_for_all_sols()
-            self.print_average_fit_score(i)
-            self.print_fitness_scores()
+            # self.print_average_fit_score(i)
+            self.print_fitness_scores(i)
             for j in range(len(self.population)):
                 self.print_penalties_for_sols(i, j)
             self.reset_state_of_status_pops()
-
-
-def test_main():
-    imp_evol_algo = ImpossibleEvolutionaryAlgorithm()
-
-    # initial assignments - made only once
-    imp_evol_algo.fill_in_distance_matrix()
-    imp_evol_algo.assign_airports_to_crew_members()
-    imp_evol_algo.create_initial_sols()
-
-    imp_evol_algo.create_initial_generation()
-    # imp_evol_algo.print_population()
-    imp_evol_algo.update_fitness_for_all_sols()
-    for i in range(len(imp_evol_algo.population)):
-        print(f"START of first gen----")
-        imp_evol_algo.print_penalties_for_sols(0, i)
-        print(f"END of first gen----")
-    imp_evol_algo.print_average_fit_score("A")
-    imp_evol_algo.print_fitness_scores()
-
-    imp_evol_algo.evolutionary_algorithm_loop(config['algo']['N_ITERATIONS'])
-
-    # print("Population after crossover and mutation: ")
-    # imp_evol_algo.print_population()
-    # imp_evol_algo.update_fitness_for_all_sols()
-    # imp_evol_algo.print_fitness_scores()
-    # imp_evol_algo.print_penalty_counts()
-    
-test_main()
+            
