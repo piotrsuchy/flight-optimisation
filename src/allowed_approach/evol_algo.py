@@ -277,6 +277,8 @@ class EvolutionaryAlgorithm:
             availability.pilots.remove(pilot)
         for attendant in new_attendants:
             availability.attendants.remove(attendant)
+
+        random_flight.status.append("mutated")
             
         return simulation_time
 
@@ -382,16 +384,38 @@ class EvolutionaryAlgorithm:
             # print(f"Final population after updating fitness score")
             # for sol in final_population:
             #     print(f"Fitness score of {sol[0]}")
-
-            # Sort and select the best solutions
-            final_population.sort(key=lambda sol: sol[0].fitness_score)
-            self.population = final_population[:self.population_size]
+            # Different selection mechanism before and after halfway point
+            if i < iterations_n // 2:
+                # Ensure at least one solution for each ID is selected
+                self.population = self.select_diverse_population(final_population)
+            else:
+                # Select based on fitness score
+                final_population.sort(key=lambda sol: sol[0].fitness_score)
+                self.population = final_population[:self.population_size]
 
             # Print fitness scores for logging/debugging
             print(f"Final print in evol_algo_loop_pop_two")
             for sol in self.population:
                 print(f"Fitness score of {sol[0]}: {sol[0].fitness_score}")
 
+    def select_diverse_population(self, population):
+        unique_ids = set(sol[0].id for sol in population)
+        selected_population = []
+
+        for unique_id in unique_ids:
+            # Find the best solution for each ID
+            best_sol_for_id = min(
+                (sol for sol in population if sol[0].id == unique_id),
+                key=lambda sol: sol[0].fitness_score
+            )
+            selected_population.append(best_sol_for_id)
+
+        # Fill the rest of the population based on fitness score
+        remaining_slots = self.population_size - len(selected_population)
+        population.sort(key=lambda sol: sol[0].fitness_score)
+        selected_population.extend(population[:remaining_slots])
+
+        return selected_population[:self.population_size]
 
     def reschedule_flights_in_pop(self, sol, mutation_time, population):
         # reschedule flights only after the mutation_time
