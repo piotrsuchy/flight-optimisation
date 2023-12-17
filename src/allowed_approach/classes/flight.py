@@ -25,6 +25,14 @@ class Flight:
     def __repr__(self):
         return f"ID: {self.id}, from airport {self.base_airport.id} to airport {self.destination_airport.id}, time of the flight: {self.simulation_time:.2f}, status: {self.status}"
 
+    def __eq__(self, other):
+        if not isinstance(other, Flight):
+            return False
+        return (self.base_airport.id == other.base_airport.id and 
+                self.destination_airport.id  == other.destination_airport.id and 
+                self.simulation_time == other.simulation_time and 
+                self.status == other.status)
+
     def calculate_distance(self):
         return math.sqrt((self.base_airport.x - self.destination_airport.x)**2 +
                          (self.base_airport.y - self.destination_airport.y)**2)
