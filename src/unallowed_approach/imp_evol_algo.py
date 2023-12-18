@@ -188,27 +188,24 @@ class ImpossibleEvolutionaryAlgorithm:
         for sol_idx, sol in enumerate(self.population):
             for flight in sol:
                 src_id = flight[0]
+                dest_id = flight[1]
 
                 # Assign pilots
                 available_pilots = [idx for idx, status in enumerate(self.pilots_status_pop[sol_idx]) if status['location'] == src_id]
-                # print(f"For flight from {flight[0]} to {flight[1]} available pilots: {available_pilots}")
-                # for idx in available_pilots:
-                #     print(f"Current location of pilot with id: {idx} -- {self.pilots_status_pop[sol_idx][idx]['location']}")
                 for slot in range(config['structs']['PILOTS_PER_PLANE']):
                     if available_pilots:
                         chosen_idx = random.choice(available_pilots)
-                        flight[2 + slot] = chosen_idx + 1  # +1 if pilot IDs start from 1
+                        flight[2 + slot] = chosen_idx + 1  
+                        # self.pilots_status_pop[sol_idx][chosen_idx]['location'] = dest_id
                         available_pilots.remove(chosen_idx)
 
                 # Assign attendants
                 available_attendants = [idx for idx, status in enumerate(self.attend_status_pop[sol_idx]) if status['location'] == src_id]
-                # print(f"For flight from {flight[0]} to {flight[1]} available attendants: {available_attendants}")
-                # for idx in available_attendants:
-                #     print(f"Current location of attendant with id: {idx} -- {self.attend_status_pop[sol_idx][idx]['location']}")
                 for slot in range(config['structs']['PILOTS_PER_PLANE'], config['structs']['PILOTS_PER_PLANE'] + config['structs']['ATTEND_PER_PLANE']):
                     if available_attendants:
                         chosen_idx = random.choice(available_attendants)
-                        flight[2 + slot] = chosen_idx + 1  # +1 if attendant IDs start from 1
+                        flight[2 + slot] = chosen_idx + 1  
+                        # self.attend_status_pop[sol_idx][chosen_idx]['location'] = dest_id
                         available_attendants.remove(chosen_idx)
 
     def assign_airports_to_crew_members(self):
