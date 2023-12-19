@@ -105,15 +105,6 @@ class EvolutionaryAlgorithm:
         penalties = 0
         training_penalties = 0
 
-        # Operational Costs
-        # for flight in sol.flights:
-        #     if flight.status[-1] != "completed":
-        #         continue
-        #     flight_duration = flight.duration
-        #     pilot_cost = config['sim']['PILOT_COST_PER_HOUR'] * flight_duration
-        #     attendant_cost = config['sim']['ATTENDANT_COST_PER_HOUR'] * flight_duration
-        #     operational_costs += 2 * pilot_cost + 4 * attendant_cost  # Assuming 2 pilots and 4 attendants
-
         # Penalties 
         for flight in sol.flights:
             if flight.status[-1] == "cancelled":
@@ -123,7 +114,7 @@ class EvolutionaryAlgorithm:
             try:
                 for pilot in flight.pilots:
                     if pilot.week_worked_hs > config['sim']['MAX_WEEKLY_HOURS']:
-                        penalties += config['sim']['OVERWORK_PENALTY_PER_HOUR'] * \
+                        penalties += 240 * \
                             (pilot.week_worked_hs - config['sim']['MAX_WEEKLY_HOURS'])
                     # check for flight and training overlap
                     if flight.simulation_time <= pilot.training_hours[1] and flight.simulation_time + flight.duration >= pilot.training_hours[0]:
@@ -131,7 +122,7 @@ class EvolutionaryAlgorithm:
 
                 for attendant in flight.attendants:
                     if attendant.week_worked_hs > config['sim']['MAX_WEEKLY_HOURS']:
-                        penalties += config['sim']['OVERWORK_PENALTY_PER_HOUR'] * \
+                        penalties += 240 * \
                             (attendant.week_worked_hs - config['sim']['MAX_WEEKLY_HOURS'])
                     # check for flight and training overlap
                     if flight.simulation_time <= attendant.training_hours[1] and flight.simulation_time + flight.duration >= attendant.training_hours[0]:
