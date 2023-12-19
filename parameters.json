@@ -1,18 +1,14 @@
 {
     "algo": {
-        "POPULATION_SIZE": 20,
-        "N_ITERATIONS": 2,
-        "CROSSOVER_RATE": 0.3,
+        "POPULATION_SIZE": 4,
+        "N_ITERATIONS": 20,
+        "CROSSOVER_RATE": 0,
         "MUTATION_RATE": 1,
         "SELECTION_RATE": 0.5
     },
     "sim": {
         "SIM_LEN": 720,
-        "PLANE_OPERATIONAL_COST_PER_HOUR": 2000,
-        "PILOT_COST_PER_HOUR": 120,
-        "ATTENDANT_COST_PER_HOUR": 80,
         "MAX_WEEKLY_HOURS": 60,
-        "OVERWORK_PENALTY_PER_HOUR": 240,
         "N_FLIGHTS": 600
     },
     "pen": {
@@ -27,9 +23,9 @@
         "SEED_2": 20,
         "PILOTS_PER_PLANE": 2,
         "ATTEND_PER_PLANE": 4,
-        "N_AIRPORTS": 10,
-        "N_ATTENDANTS_F_A": 30,
-        "N_PILOTS_F_A": 15,
+        "N_AIRPORTS": 5,
+        "N_ATTENDANTS_F_A": 5,
+        "N_PILOTS_F_A": 2,
         "PLANE_SPEED": 700
     }
 }
