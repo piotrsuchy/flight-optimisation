@@ -1,10 +1,11 @@
 {
     "algo": {
-        "POPULATION_SIZE": 4,
-        "N_ITERATIONS": 20,
+        "POPULATION_SIZE": 30,
+        "N_ITERATIONS": 500,
         "CROSSOVER_RATE": 0,
         "MUTATION_RATE": 1,
-        "SELECTION_RATE": 0.5
+        "SELECTION_RATE": 0.5,
+        "N_FLIGHTS_TO_MUT": 5
     },
     "sim": {
         "SIM_LEN": 720,
@@ -16,16 +17,15 @@
         "CANCEL_PENALTY": 100000,
         "REST_PENALTY": 1000,
         "TRAINING_OVERLAP_PENALTY": 5000
-
     },
     "structs": {
         "SEED_1": 43,
         "SEED_2": 20,
         "PILOTS_PER_PLANE": 2,
         "ATTEND_PER_PLANE": 4,
-        "N_AIRPORTS": 5,
-        "N_ATTENDANTS_F_A": 5,
-        "N_PILOTS_F_A": 2,
+        "N_AIRPORTS": 20,
+        "N_ATTENDANTS_F_A": 8,
+        "N_PILOTS_F_A": 4,
         "PLANE_SPEED": 700
     }
 }

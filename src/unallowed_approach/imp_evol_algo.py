@@ -78,6 +78,12 @@ class ImpossibleEvolutionaryAlgorithm:
     def print_penalties_for_sols(self, iter, sol_id):
         print(f"Sol: {sol_id}, Fit: {self.fitness_scores[sol_id]} Loc: {self.all_sols_penalty_count[sol_id][0]}, Rest: {self.all_sols_penalty_count[sol_id][1]}, Canc: {self.all_sols_penalty_count[sol_id][2]}, training overlap: {self.all_sols_penalty_count[sol_id][3]}, Prop. alloc: {self.all_sols_penalty_count[sol_id][4]}")
 
+    def get_fitness_scores(self):
+        fitness_score = []
+        for fit_score in self.fitness_scores:
+            fitness_score.append(fit_score)
+        return fitness_score
+
     def get_penalties_for_sols(self):
         return self.all_sols_penalty_count
 
@@ -113,12 +119,6 @@ class ImpossibleEvolutionaryAlgorithm:
                 self.distance_matrix[i][j] = distance
                 self.distance_matrix[j][i] = distance
 
-    def get_fitness_scores(self):
-        fitness_score = []
-        for fit_score in self.fitness_scores:
-            fitness_score.append(fit_score)
-        return fitness_score
-
     def check_consistency(self):
         key_params = [[flight[0], flight[1], flight[-1]] for flight in self.population[0]]
         for sol in self.population:
@@ -126,7 +126,14 @@ class ImpossibleEvolutionaryAlgorithm:
                 reference_params = [flight[0], flight[1], flight[-1]]
                 if key_params[id] != reference_params:
                     raise ValueError(f"Inconsistent flight data at solution index: {id}. Expected: {key_params[id]}, found: {reference_params}")
-    
+
+    def reset_crew_member_times_for_sol(self, sol_id):
+        # Reset time for all pilots and attendants in given solution
+        for pilot in self.pilots_status_pop[sol_id]:
+            pilot['time'] = 0
+        for attendant in self.attend_status_pop[sol_id]:
+            attendant['time'] = 0
+   
     def calculate_fitness(self, solution, sol_id, pilot_status, attendant_status):
         self.canc_penalty_count = 0
         self.loc_penalty_count = 0
@@ -134,6 +141,8 @@ class ImpossibleEvolutionaryAlgorithm:
         self.loc_proper_allocation = 0
         self.overlap_penalty_count = 0
         fitness_score = 0
+
+        self.reset_crew_member_times_for_sol(sol_id)
 
         for flight in solution:
             src_id, dst_id, *crew_members, timestamp = flight
@@ -149,18 +158,20 @@ class ImpossibleEvolutionaryAlgorithm:
             for idx, crew_member_idx in enumerate(crew_members):
                 if crew_member_idx is not None:
 
-                    # Determine if the crew member is a pilot or an attendant
+                    # determine if the crew member is a pilot or an attendant
                     if idx < config['structs']['PILOTS_PER_PLANE']:
                         crew_member_status = pilot_status[crew_member_idx - 1]  # Adjust the index if necessary
                     else:
                         crew_member_status = attendant_status[crew_member_idx - 1]  # Adjust the index if necessary
 
+                    # calculate penalty for wrong location
                     if crew_member_status['location'] != src_id:
                         self.loc_penalty_count += 1
                         fitness_score += location_penalty
                     else:
                         self.loc_proper_allocation += 1
 
+                    # calculate penalty for lack of rest time
                     if timestamp - crew_member_status['time'] < required_rest_time:
                         self.rest_penalty_count += 1
                         fitness_score += rest_penalty
@@ -172,15 +183,12 @@ class ImpossibleEvolutionaryAlgorithm:
                         self.attend_status_pop[sol_id][crew_member_idx - 1]['location'] = dst_id
                         self.attend_status_pop[sol_id][crew_member_idx - 1]['time'] = timestamp + flight_duration
 
-                    # calculate penalty for overlap 
+                    # calculate penalty for training overlap 
                     if timestamp > crew_member_status['train_hs'][0] and timestamp < crew_member_status['train_hs'][1] or \
                     timestamp + flight_duration > crew_member_status['train_hs'][0] and timestamp + flight_duration <= crew_member_status['train_hs'][1]:
-                        # print(f"Flight in between training time: {crew_member_status['train_hs'][0]} and {crew_member_status['train_hs'][1]}")
-                        # print(f"Penalty for overlap of training and flight applied")
                         self.overlap_penalty_count += 1
                         fitness_score += training_overlap_penalty
                         
-        # print(f"Print in calc. fit.: loc: {self.loc_penalty_count}, rest: {self.rest_penalty_count}, canc: {self.canc_penalty_count}, proper_alloc: {self.loc_proper_allocation}")
         self.all_sols_penalty_count.append((self.loc_penalty_count, self.rest_penalty_count, self.canc_penalty_count, self.overlap_penalty_count, self.loc_proper_allocation))
         return fitness_score
     
@@ -304,14 +312,45 @@ class ImpossibleEvolutionaryAlgorithm:
 
         return new_solutions
 
+    def informed_mutate_solution(self, solution):
+        '''select two distinct flights but in an informed manner
+        to minimize the location penalties - that means, select flights
+        that have the same source and destination for example or something like this'''
+        pass
+    
+    def informed_mutate_solutions(self, solutions):
+        '''Use informed mutate_solution'''
+        mutated_solutions = []
+        for sol in solutions:
+            if random.random() < self.mutation_rate:
+                mutated_sol = self.informed_mutate_solution(sol)
+                mutated_solutions.append(mutated_sol)
+            else:
+                mutated_solutions.append(sol)
+        return mutated_solutions
+
+    def informed_mutate_solution_from_all(self, solution, n_flights):
+        '''select some random flights (number selected equal to n_flights)
+        and mutate the solutions in an informed manner - so not totally random
+        but instead '''
+        pass
+        
+    def informed_mutate_solutions_from_all(self, solutions, n_flights):
+        mutated_solutions = []
+        for sol in solutions:
+            if random.random() < self.mutation_rate:
+                mutated_sol = self.informed_mutate_solution_from_all(sol, n_flights)
+                mutated_solutions.append(mutated_sol)
+            else:
+                mutated_solutions.append(sol)
+        return mutated_solutions
+
     def mutate_solution(self, solution):
-        # Randomly select two distinct flights
+        '''Randomly select two distinct flights and swap their crew assignment'''
         if len(solution) > 1:
             flight_indexes = random.sample(range(len(solution)), 2)
             flight1_idx, flight2_idx = flight_indexes[0], flight_indexes[1]
 
-            # Swap crew assignments between the two flights
-            # Assuming crew assignments are from index 2 to the second last index
             solution[flight1_idx][2:-1], solution[flight2_idx][2:-1] = solution[flight2_idx][2:-1], solution[flight1_idx][2:-1]
 
         return solution
@@ -327,8 +366,8 @@ class ImpossibleEvolutionaryAlgorithm:
         return mutated_solutions
 
     def mutate_solution_from_all(self, solution, n_flights):
-        # select a random flight and change the crew member from one 
-        # change the assigned crew members to random unassigned crew_member
+        '''select a random flight and change the crew member from one 
+        change the assigned crew members to random unassigned crew_member'''
         flight_indexes = random.sample(range(len(solution)), n_flights)
         for idx in flight_indexes:
             pilot_slot = random.choice([2, 3])
@@ -338,17 +377,17 @@ class ImpossibleEvolutionaryAlgorithm:
 
         return solution
         
-    def mutate_solutions_from_all(self, solutions):
+    def mutate_solutions_from_all(self, solutions, n_flights):
         mutated_solutions = []
         for sol in solutions:
             if random.random() < self.mutation_rate:
-                mutated_sol = self.mutate_solution_from_all(sol, 5)
+                mutated_sol = self.mutate_solution_from_all(sol, n_flights)
                 mutated_solutions.append(mutated_sol)
             else:
                 mutated_solutions.append(sol)
         return mutated_solutions
 
-    def evolutionary_algorithm_loop(self, n_iterations, print_flag):
+    def evolutionary_algorithm_loop(self, n_iterations, print_flag, initial=None):
         '''
         selection based on the fitness function
         from the chosen solutions mutate the solution with some probability
@@ -364,7 +403,7 @@ class ImpossibleEvolutionaryAlgorithm:
             if random.random() < 0.5:
                 mutated_new_solutions = self.mutate_solutions(new_solutions)
             else:
-                mutated_new_solutions = self.mutate_solutions_from_all(new_solutions)
+                mutated_new_solutions = self.mutate_solutions_from_all(new_solutions, config['algo']['N_FLIGHTS_TO_MUT'])
 
             # Combine the top 50% of the original population with the new solutions
             self.population = top_solutions + mutated_new_solutions
@@ -375,6 +414,7 @@ class ImpossibleEvolutionaryAlgorithm:
             if print_flag:
                 self.print_fitness_scores(i)
                 self.print_best_score()
+                print(f"Initial sols: {initial}")
             # for j in range(len(self.population)):
             #     self.print_penalties_for_sols(i, j)
             self.reset_state_of_status_pops()

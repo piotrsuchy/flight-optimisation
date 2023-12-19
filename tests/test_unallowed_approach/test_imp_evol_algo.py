@@ -1,11 +1,15 @@
 import unittest
 import random
 import copy
+import json
 from src.unallowed_approach.imp_evol_algo import ImpossibleEvolutionaryAlgorithm
 
 class TestImpossibleEvolutionaryAlgorithm(unittest.TestCase):
 
     def test_training_hours_consistency(self):
+        with open('parameters.json') as parameters_file:
+            config = json.load(parameters_file)
+
         algo = ImpossibleEvolutionaryAlgorithm()
         algo.generate_training_hours()
 
@@ -30,7 +34,7 @@ class TestImpossibleEvolutionaryAlgorithm(unittest.TestCase):
         if random.random() < 0.5:
             mutated_new_solutions = algo.mutate_solutions(new_solutions)
         else:
-            mutated_new_solutions = algo.mutate_solutions_from_all(new_solutions)
+            mutated_new_solutions = algo.mutate_solutions_from_all(new_solutions, config['algo']['N_FLIGHTS_TO_MUT'])
 
         # Combine the top 50% of the original population with the new solutions
         algo.population = top_solutions + mutated_new_solutions
