@@ -2,6 +2,7 @@ import json
 import random
 import numpy as np
 import copy
+import math
 from src.unallowed_approach.imp_solution import ImpossibleSolution
 
 with open('parameters.json') as parameters_file:
@@ -10,6 +11,7 @@ with open('parameters.json') as parameters_file:
 location_penalty = config['pen']['LOCATION_PENALTY']
 rest_penalty = config['pen']['REST_PENALTY']
 cancellation_penalty = config['pen']['CANCEL_PENALTY']
+training_overlap_penalty = config['pen']['TRAINING_OVERLAP_PENALTY']
 plane_speed = config['structs']['PLANE_SPEED']
     
 class ImpossibleEvolutionaryAlgorithm:
@@ -56,6 +58,12 @@ class ImpossibleEvolutionaryAlgorithm:
         for sol_id, fit_score in enumerate(self.fitness_scores):
             print(f"Sol: {sol_id}, fit_score: {fit_score}")
 
+    def print_best_score(self):
+        max_fit_score = math.inf
+        for fit_score in self.fitness_scores:
+            max_fit_score = min(fit_score, max_fit_score)
+        print(f"---PRINTING BEST FITNESS SCORE: {max_fit_score}")
+
     def print_average_fit_score(self, iter):
         avg_fit_score = np.average(self.fitness_scores)
         print(f"Iteration: {iter}", avg_fit_score)
@@ -68,8 +76,10 @@ class ImpossibleEvolutionaryAlgorithm:
         print("Training overlap pen.: ", self.overlap_penalty_count)
 
     def print_penalties_for_sols(self, iter, sol_id):
-        print(f"Penalties for sol: {sol_id} in iter: {iter}")
-        print(f"Loc: {self.all_sols_penalty_count[sol_id][0]}, Rest: {self.all_sols_penalty_count[sol_id][1]}, Canc: {self.all_sols_penalty_count[sol_id][2]}, training overlap: {self.all_sols_penalty_count[sol_id][3]}, Prop. alloc: {self.all_sols_penalty_count[sol_id][4]}")
+        print(f"Sol: {sol_id}, Fit: {self.fitness_scores[sol_id]} Loc: {self.all_sols_penalty_count[sol_id][0]}, Rest: {self.all_sols_penalty_count[sol_id][1]}, Canc: {self.all_sols_penalty_count[sol_id][2]}, training overlap: {self.all_sols_penalty_count[sol_id][3]}, Prop. alloc: {self.all_sols_penalty_count[sol_id][4]}")
+
+    def get_penalties_for_sols(self):
+        return self.all_sols_penalty_count
 
     def generate_training_hours(self):
         for sol in range(self.pop_size):
@@ -131,7 +141,7 @@ class ImpossibleEvolutionaryAlgorithm:
             if None in crew_members:
                 self.canc_penalty_count += 1
                 fitness_score += cancellation_penalty
-                # continue  # Skip the rest of the checks for this flight
+                continue  # Skip the rest of the checks for this flight
 
             flight_duration = self.distance_matrix[src_id - 1][dst_id - 1] // plane_speed
             required_rest_time = min(8, flight_duration)
@@ -168,9 +178,8 @@ class ImpossibleEvolutionaryAlgorithm:
                         # print(f"Flight in between training time: {crew_member_status['train_hs'][0]} and {crew_member_status['train_hs'][1]}")
                         # print(f"Penalty for overlap of training and flight applied")
                         self.overlap_penalty_count += 1
-                        fitness_score += config['pen']['TRAINING_OVERLAP_PENALTY']
+                        fitness_score += training_overlap_penalty
                         
-
         # print(f"Print in calc. fit.: loc: {self.loc_penalty_count}, rest: {self.rest_penalty_count}, canc: {self.canc_penalty_count}, proper_alloc: {self.loc_proper_allocation}")
         self.all_sols_penalty_count.append((self.loc_penalty_count, self.rest_penalty_count, self.canc_penalty_count, self.overlap_penalty_count, self.loc_proper_allocation))
         return fitness_score
@@ -188,7 +197,6 @@ class ImpossibleEvolutionaryAlgorithm:
         for sol_idx, sol in enumerate(self.population):
             for flight in sol:
                 src_id = flight[0]
-                dest_id = flight[1]
 
                 # Assign pilots
                 available_pilots = [idx for idx, status in enumerate(self.pilots_status_pop[sol_idx]) if status['location'] == src_id]
@@ -196,7 +204,6 @@ class ImpossibleEvolutionaryAlgorithm:
                     if available_pilots:
                         chosen_idx = random.choice(available_pilots)
                         flight[2 + slot] = chosen_idx + 1  
-                        # self.pilots_status_pop[sol_idx][chosen_idx]['location'] = dest_id
                         available_pilots.remove(chosen_idx)
 
                 # Assign attendants
@@ -205,24 +212,60 @@ class ImpossibleEvolutionaryAlgorithm:
                     if available_attendants:
                         chosen_idx = random.choice(available_attendants)
                         flight[2 + slot] = chosen_idx + 1  
-                        # self.attend_status_pop[sol_idx][chosen_idx]['location'] = dest_id
                         available_attendants.remove(chosen_idx)
+
+    def create_initial_generation_with_update(self):
+        '''
+        Assigns pilots and attendants to flights in a random but allowed fashion
+        '''
+        for sol_idx, sol in enumerate(self.population):
+            initial_pilots_status_pop = copy.deepcopy(self.pilots_status_pop)
+            initial_attend_status_pop = copy.deepcopy(self.attend_status_pop)
+            for flight in sol:
+                src_id = flight[0]
+                dest_id = flight[1]
+
+                # Assign pilots
+                available_pilots = [idx for idx, status in enumerate(self.pilots_status_pop[sol_idx]) if status['location'] == src_id]
+                for slot in range(config['structs']['PILOTS_PER_PLANE']):
+                    if available_pilots:
+                        chosen_idx = random.choice(available_pilots)
+                        flight[2 + slot] = chosen_idx + 1  
+                        self.pilots_status_pop[sol_idx][chosen_idx]['location'] = dest_id
+                        available_pilots.remove(chosen_idx)
+
+                # Assign attendants
+                available_attendants = [idx for idx, status in enumerate(self.attend_status_pop[sol_idx]) if status['location'] == src_id]
+                for slot in range(config['structs']['PILOTS_PER_PLANE'], config['structs']['PILOTS_PER_PLANE'] + config['structs']['ATTEND_PER_PLANE']):
+                    if available_attendants:
+                        chosen_idx = random.choice(available_attendants)
+                        flight[2 + slot] = chosen_idx + 1  
+                        self.attend_status_pop[sol_idx][chosen_idx]['location'] = dest_id
+                        available_attendants.remove(chosen_idx)
+            self.pilots_status_pop = initial_pilots_status_pop
+            self.attend_status_pop = initial_attend_status_pop
 
     def assign_airports_to_crew_members(self):
         '''
-        Assigns the airports to pilots and attendants in self.pilots_status_pop
-        and self.attend_status_pop
+        Assigns the same airports to pilots and attendants in self.pilots_status_pop
+        and self.attend_status_pop for each solution
         '''
         random.seed(config['structs']['SEED_1'])
 
-        for status_pilots, status_attendants in zip(self.pilots_status_pop, self.attend_status_pop):
-            for pilot_status in status_pilots:
-                pilot_status['location'] = random.randint(1, config['structs']['N_AIRPORTS'])
+        # Generate a fixed set of locations for all pilots and attendants
+        pilot_locations = [random.randint(1, config['structs']['N_AIRPORTS']) for _ in range(self.pilots_per_sol)]
+        attendant_locations = [random.randint(1, config['structs']['N_AIRPORTS']) for _ in range(self.attend_per_sol)]
 
-            for attendant_status in status_attendants:
-                attendant_status['location'] = random.randint(1, config['structs']['N_AIRPORTS'])
+        # Assign these locations to each pilot and attendant in every solution
+        for status_pilots, status_attendants in zip(self.pilots_status_pop, self.attend_status_pop):
+            for pilot_status, location in zip(status_pilots, pilot_locations):
+                pilot_status['location'] = location
+
+            for attendant_status, location in zip(status_attendants, attendant_locations):
+                attendant_status['location'] = location
 
         random.seed(None)
+
 
     def reset_state_of_status_pops(self):
         self.assign_airports_to_crew_members()
@@ -273,6 +316,16 @@ class ImpossibleEvolutionaryAlgorithm:
 
         return solution
 
+    def mutate_solutions(self, solutions):
+        mutated_solutions = []
+        for sol in solutions:
+            if random.random() < self.mutation_rate:
+                mutated_sol = self.mutate_solution(sol)
+                mutated_solutions.append(mutated_sol)
+            else:
+                mutated_solutions.append(sol)
+        return mutated_solutions
+
     def mutate_solution_from_all(self, solution, n_flights):
         # select a random flight and change the crew member from one 
         # change the assigned crew members to random unassigned crew_member
@@ -295,22 +348,11 @@ class ImpossibleEvolutionaryAlgorithm:
                 mutated_solutions.append(sol)
         return mutated_solutions
 
-    def mutate_solutions(self, solutions):
-        mutated_solutions = []
-        for sol in solutions:
-            if random.random() < self.mutation_rate:
-                mutated_sol = self.mutate_solution(sol)
-                mutated_solutions.append(mutated_sol)
-            else:
-                mutated_solutions.append(sol)
-        return mutated_solutions
-
-
-    def evolutionary_algorithm_loop(self, n_iterations):
+    def evolutionary_algorithm_loop(self, n_iterations, print_flag):
         '''
         selection based on the fitness function
         from the chosen solutions mutate the solution with some probability
-        from the chosen solutiosn crossover the solutions with some probability
+        from the chosen solutions crossover the solutions with some probability
         '''
         for i in range(n_iterations):
             top_solutions = self.select_solutions()
@@ -330,7 +372,9 @@ class ImpossibleEvolutionaryAlgorithm:
             # Update fitness scores for the entire population
             self.update_fitness_for_all_sols()
             # self.print_average_fit_score(i)
-            self.print_fitness_scores(i)
+            if print_flag:
+                self.print_fitness_scores(i)
+                self.print_best_score()
             # for j in range(len(self.population)):
             #     self.print_penalties_for_sols(i, j)
             self.reset_state_of_status_pops()
