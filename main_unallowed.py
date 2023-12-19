@@ -30,7 +30,7 @@ def main():
     imp_evol_algo.print_fitness_scores(0)
     fit_scores = imp_evol_algo.get_fitness_scores()
 
-    imp_evol_algo.evolutionary_algorithm_loop(config['algo']['N_ITERATIONS'],print_flag=0)
+    imp_evol_algo.evolutionary_algorithm_loop(config['algo']['N_ITERATIONS'], print_flag=1, initial=fit_scores)
     print(f"Initial fitness values: {fit_scores}")
 
     print(f"---Final penalties applied---")
