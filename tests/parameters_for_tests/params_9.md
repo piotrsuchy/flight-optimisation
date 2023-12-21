@@ -1,3 +1,19 @@
+# Description
+allowed approach
+
+branch: allowed_fix_branch
+commit fc2688ab393b6d4370d5991f2d86ed715129950b (HEAD -> allowed_fix_branch, origin/allowed_fix_branch)
+Author: Piotr Suchy <piotrsuchy6@tlen.pl>
+Date:   Fri Dec 22 00:35:58 2023 +0100
+
+    Fixes and improvements for allowed method - two pop and with_init loops
+
+commit c0acdb87f06376d32f68339a223591dd0283c699 (origin/main, main)
+Author: Piotr Suchy <piotrsuchy6@tlen.pl>
+Date:   Thu Dec 21 23:56:50 2023 +0100
+
+    Added assignment to flights by worked hours heuristic
+
 
 {
     "algo": {
