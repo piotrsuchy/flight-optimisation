@@ -56,7 +56,6 @@ class Flight:
             return False
 
         return available_pilots, available_attendants
-        
 
     def assign_random_crew(self) -> bool:
         res = self.get_available_crew()
@@ -71,6 +70,22 @@ class Flight:
         self.attendants = random.sample(available_attendants, 4)
         return True
 
+    def assign_lowest_hour_crew(self) -> bool:
+        res = self.get_available_crew()
+        if not res:
+            return False
+        else:
+            available_pilots = res[0]
+            available_attendants = res[1]
+        
+        # lowest hours heuristic
+        # sort the crew by hours worked
+        available_pilots.sort(key=lambda pilot: pilot.week_worked_hs)
+        available_attendants.sort(key=lambda attendant: attendant.week_worked_hs)
+        self.pilots = available_pilots[:2]
+        self.attendants = available_attendants[:4]
+        return True
+        
     def assign_crew(self) -> bool:
         res = self.get_available_crew()
         if not res:
@@ -100,6 +115,7 @@ class Flight:
         - calling flight_start from POV of crew
         '''
         if self.pilots is None or self.attendants is None:
+            # possible_assignment = self.assign_random_crew()
             possible_assignment = self.assign_random_crew()
             if not possible_assignment:
                 print(f"cancelled flight nr: {self.id}")
