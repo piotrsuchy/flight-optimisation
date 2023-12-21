@@ -3,8 +3,6 @@
 unallowed_approach
 last_commits:
 
-
-
 {
     "algo": {
         "POPULATION_SIZE": 30,

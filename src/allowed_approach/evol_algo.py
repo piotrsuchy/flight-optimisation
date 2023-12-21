@@ -2,6 +2,7 @@ import copy
 import random
 import numpy as np
 import json
+import logging
 
 from .schedule import Schedule
 from .solution import Solution
@@ -43,6 +44,8 @@ class EvolutionaryAlgorithm:
                 f"Iter: {iteration}, {sol_list[0]} fit. score: {sol_list[0].fitness_score}")
 
     def print_all_info(self):
+        self.population = sorted(
+            self.population, key=lambda sol: sol[0].fitness_score, reverse=False)
         for sol_list in self.population:
             print(
                 f"{sol_list[0]}, pil: {sol_list[0].pilot_cancel}, att: {sol_list[0].atten_cancel}, train_pen: {sol_list[0].get_training_penal_num()}")
@@ -206,7 +209,7 @@ class EvolutionaryAlgorithm:
             self.population[sol_id][1] = [
                 operation_costs, penalties, training_penalties]
             self.population[sol_id][0].fitness_score = operation_costs + penalties + training_penalties
-
+            self.population[sol_id][0].training_penalty = training_penalties
 
     def mutation_attendants(self, sol):
         '''Make a random flight change the attendants'''
@@ -331,7 +334,7 @@ class EvolutionaryAlgorithm:
                         time = self.mutation_whole_crew(sol)
                         mutation_successful = True
                     except ValueError:
-                        print("Error during mutation. Retrying with a different flight.")
+                        logging.error(f"Error during mutation. Retrying with a different flight.")
                 sol.initialized = "Mutated    "
 
                 for airport in sol.structures.airports:
@@ -343,13 +346,15 @@ class EvolutionaryAlgorithm:
             # add new solutions and run them
             self.add_new_solutions()
             self.update_all_fitness_scores()
-            self.tournament_sort()
+            self.sort_population()
             self.print_fitness_scores(i)
 
     def evol_algo_loop_two_pop(self, iterations_n):
         '''
         This evolutionary algorithm loop copies the current population
-        and mutates the copy 
+        and mutates the copy - so we hold two populations at the same time.
+        From the two populations we choose the best solutions to create
+        new population.
         '''
         for i in range(iterations_n):
             parent_pop = copy.deepcopy(self.population)
@@ -373,16 +378,10 @@ class EvolutionaryAlgorithm:
             for sol_list in parent_pop:
                 sol_list[0].run_events()
 
-
             final_population = self.population + parent_pop
-            # print(f"Final population: {final_population}, size: {len(final_population)}")
 
             # Update fitness scores of the combined population
             self.update_all_fitness_scores_in_pop(final_population)
-
-            print(f"Final population after updating fitness score")
-            for sol in final_population:
-                print(f"Fitness score of {sol[0]}")
 
             # Different selection mechanism before and after halfway point
             if i < iterations_n // 2:
@@ -393,10 +392,6 @@ class EvolutionaryAlgorithm:
                 final_population.sort(key=lambda sol: sol[0].fitness_score)
                 self.population = final_population[:self.population_size]
 
-            # Print fitness scores for logging/debugging
-            # print(f"evol_algo_loop_pop_two ITER: {i}")
-            # for sol in self.population:
-            #     print(f"Fitness score of {sol[0]}: {sol[0].fitness_score}")
             self.print_fitness_scores(i)
 
     def select_diverse_population(self, population):
@@ -438,7 +433,6 @@ class EvolutionaryAlgorithm:
 
         self.reset_logs(sol, mutation_time)
 
-
     def update_all_fitness_scores_in_pop(self, population):
         '''
         This function uses the fitness_function() method to calculate the fitness score
@@ -450,8 +444,7 @@ class EvolutionaryAlgorithm:
             sol[1] = [
                 operation_costs, penalties, training_penalties]
             sol[0].fitness_score = operation_costs + penalties + training_penalties
-            sol[0].n_training_pen = training_penalties
-
+            sol[0].training_penalty = training_penalties
 
     def add_new_solutions(self):
         '''This function '''

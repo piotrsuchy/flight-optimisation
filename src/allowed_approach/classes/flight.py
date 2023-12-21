@@ -118,7 +118,7 @@ class Flight:
             # possible_assignment = self.assign_random_crew()
             possible_assignment = self.assign_random_crew()
             if not possible_assignment:
-                print(f"cancelled flight nr: {self.id}")
+                # print(f"cancelled flight nr: {self.id}")
                 return
 
         self.day_of_flight = int(self.simulation_time // DAY_LENGTH)
@@ -145,7 +145,7 @@ class Flight:
 
     def end_flight(self):
         # if self.status == "started":
-        print(f"Ending the flight: {self.id} with status: {self.status}")
+        # print(f"Ending the flight: {self.id} with status: {self.status}")
         self.status.append("completed")
         self.destination_airport.airport_maintenance()
         for pilot in self.pilots:
@@ -162,12 +162,11 @@ class Flight:
 
     def reset_state_after_mutation(self, sol):
         if self.status[-1] == "completed":
-            print(f"Resetting the state for flight: {self}")
+            # print(f"Resetting the state for flight: {self}")
             for pilot in self.pilots:
                 pilot.reset_state_after_mutation(self)
             for attendant in self.attendants:
                 attendant.reset_state_after_mutation(self)
             self.pilots = None
             self.attendants = None
-        print(f"Resetting the state for flight: {self}")
         self.status.append("started")

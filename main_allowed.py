@@ -24,11 +24,13 @@ def main():
     evol_algo.sort_population()
     evol_algo.print_fitness_scores(0)
 
-    # mutation
+    '''evolutionary algorithm loop with initializing new populations
+    at each loop and mutating the best solutions - doesn't work the best'''
+    # evol_algo.evol_algo_loop_with_init(config['algo']['N_ITERATIONS'])
+    '''Second option - taking the best solutions from '''
     evol_algo.evol_algo_loop_two_pop(config['algo']['N_ITERATIONS'])
+    print(f"----------------------------------------------------------------")
     evol_algo.print_all_info()
-
-    # test_availability(evol_algo)
 
 
 if __name__ == "__main__":

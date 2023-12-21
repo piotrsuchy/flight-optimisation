@@ -1,7 +1,5 @@
-import random
 import logging
 
-from .schedule import Schedule
 from .event_scheduler import EventScheduler
 
 
@@ -23,7 +21,7 @@ class Solution:
         self.schedule = None
         self.pilot_cancel = 0
         self.atten_cancel = 0
-        self.n_training_pen = 0
+        self.training_penalty = 0
 
     def __str__(self):
         return f"Sol ID: {self.id}, fitness score: {self.fitness_score}, status: {self.initialized}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}"
@@ -41,7 +39,7 @@ class Solution:
         return len([f for f in self.flights if f.status[-1] == "cancelled"])
 
     def get_training_penal_num(self):
-        return self.n_training_pen / 5000
+        return self.training_penalty / 5000
 
     def print_flight_simulation_times(self):
         for flight in self.flights:
