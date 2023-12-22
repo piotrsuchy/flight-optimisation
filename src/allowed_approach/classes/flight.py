@@ -1,7 +1,11 @@
 import math
 import random
+import json
 
 DAY_LENGTH = 24
+
+with open('parameters.json') as parameters_file:
+    config = json.load(parameters_file)
 
 
 class Flight:
@@ -21,6 +25,8 @@ class Flight:
         self.status = ["started"]
         self.day_of_flight = None
         self.sol = sol
+        if self.distance is None or self.duration is None:
+            self.set_dist_and_dur()
 
     def __repr__(self):
         return f"ID: {self.id}, from airport {self.base_airport.id} to airport {self.destination_airport.id}, time of the flight: {self.simulation_time:.2f}, status: {self.status}"
@@ -38,7 +44,7 @@ class Flight:
                          (self.base_airport.y - self.destination_airport.y)**2)
 
     def calculate_duration(self):
-        return self.distance / 700
+        return self.distance / config['structs']['PLANE_SPEED'] 
 
     def set_dist_and_dur(self):
         self.distance = self.calculate_distance()
@@ -78,7 +84,6 @@ class Flight:
             available_pilots = res[0]
             available_attendants = res[1]
         
-        # lowest hours heuristic
         # sort the crew by hours worked
         available_pilots.sort(key=lambda pilot: pilot.week_worked_hs)
         available_attendants.sort(key=lambda attendant: attendant.week_worked_hs)
@@ -107,7 +112,7 @@ class Flight:
         return True
         
 
-    def start_flight(self):
+    def start_flight(self, heuristic):
         '''
         This function starts the flight and handles:
         - assigning random crew if it has no pilot or attendant already assigned
@@ -116,7 +121,14 @@ class Flight:
         '''
         if self.pilots is None or self.attendants is None:
             # possible_assignment = self.assign_random_crew()
-            possible_assignment = self.assign_random_crew()
+            if heuristic == 'random':
+                possible_assignment = self.assign_random_crew()
+            elif heuristic == 'smallest_id':
+                possible_assignment = self.assign_crew()
+            elif heuristic == 'work_time':
+                possible_assignment = self.assign_lowest_hour_crew()
+            else:
+                raise ValueError(f"Wrong heuristic name for start_flight")
             if not possible_assignment:
                 # print(f"cancelled flight nr: {self.id}")
                 return

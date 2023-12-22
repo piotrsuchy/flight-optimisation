@@ -79,7 +79,7 @@ class EvolutionaryAlgorithm:
             sol = sol_list[0]
             sol.flights = []
             sol.scheduler.set_time(0)
-            sol._schedule_flights()
+            sol._schedule_flights(config['algo']['HEURISTIC'])
 
     # @timing_decorator
     def save_events_for_all_sols(self):
@@ -131,8 +131,8 @@ class EvolutionaryAlgorithm:
                     if flight.simulation_time <= attendant.training_hours[1] and flight.simulation_time + flight.duration >= attendant.training_hours[0]:
                         training_penalties += config['pen']['TRAINING_OVERLAP_PENALTY']
 
-            except TypeError:
-                print(f"Status of the flight is: {flight.status}, but crew has None: pil: {flight.pilots} att: {flight.attendants}")
+            except TypeError as te:
+                print(f"Status of the flight is: {flight.status}, but crew has None: pil: {flight.pilots} att: {flight.attendants}", te)
 
         return [int(operational_costs), int(penalties), int(training_penalties)]
 
@@ -289,7 +289,7 @@ class EvolutionaryAlgorithm:
         sol1.print_flights()
         sol2.print_flights()
 
-    def reschedule_flights(self, sol, mutation_time, iteration_number):
+    def reschedule_flights(self, sol, mutation_time, iteration_number, heuristic):
         # reschedule flights only after the mutation_time
         self.reset_scheduler(0)
         flights_to_reschedule = [f for f in sol.flights if f.simulation_time > mutation_time]
@@ -304,7 +304,7 @@ class EvolutionaryAlgorithm:
         # Add back the flights to the schedule, which will now use the updated availablitity
         for flight in flights_to_reschedule:
             scheduled_time = flight.simulation_time
-            sol.scheduler.schedule_event(scheduled_time, flight.start_flight)
+            sol.scheduler.schedule_event(scheduled_time, flight.start_flight, heuristic)
 
         self.reset_logs(sol, mutation_time)
 
@@ -324,7 +324,10 @@ class EvolutionaryAlgorithm:
         solutions adding them to self.population
         '''
         for i in range(iterations_n):
+            elite_population = copy.deepcopy(self.population[:len(self.population)//4])
             self.population = self.population[:len(self.population)//2]
+            # add new solutions and run them
+            self.add_new_solutions()
             for sol_list in self.population:
                 sol = sol_list[0]
                 sol.scheduler.set_time(0)
@@ -335,18 +338,19 @@ class EvolutionaryAlgorithm:
                         mutation_successful = True
                     except ValueError:
                         logging.error(f"Error during mutation. Retrying with a different flight.")
+                        print(f"Error during mutation. Retrying with a different flight.")
                 sol.initialized = "Mutated    "
 
                 for airport in sol.structures.airports:
                     airport.check_consistency()
 
-                self.reschedule_flights(sol, time, i)
-            self.run_events()
+                self.reschedule_flights(sol, time, i, config['algo']['HEURISTIC'])
 
-            # add new solutions and run them
-            self.add_new_solutions()
+            self.run_events()
             self.update_all_fitness_scores()
+            self.population += elite_population
             self.sort_population()
+            self.population = self.population[:len(elite_population) * 4]
             self.print_fitness_scores(i)
 
     def evol_algo_loop_two_pop(self, iterations_n):
@@ -367,13 +371,14 @@ class EvolutionaryAlgorithm:
                         time = self.mutation_whole_crew(sol)
                         mutation_successful = True
                     except ValueError:
+                        # logging.erorr
                         print("Error during mutation. Retrying with a different flight.")
                 sol.initialized = "Mutated    "
 
                 for airport in sol.structures.airports:
                     airport.check_consistency()
 
-                self.reschedule_flights_in_pop(sol, time, parent_pop)
+                self.reschedule_flights_in_pop(sol, time, parent_pop, config['algo']['HEURISTIC'])
 
             for sol_list in parent_pop:
                 sol_list[0].run_events()
@@ -413,7 +418,7 @@ class EvolutionaryAlgorithm:
 
         return selected_population[:self.population_size]
 
-    def reschedule_flights_in_pop(self, sol, mutation_time, population):
+    def reschedule_flights_in_pop(self, sol, mutation_time, population, heuristic):
         # reschedule flights only after the mutation_time
         for sol_list in population:
             sol_list[0].scheduler.set_time(0)
@@ -429,7 +434,7 @@ class EvolutionaryAlgorithm:
         # Add back the flights to the schedule, which will now use the updated availablitity
         for flight in flights_to_reschedule:
             scheduled_time = flight.simulation_time
-            sol.scheduler.schedule_event(scheduled_time, flight.start_flight)
+            sol.scheduler.schedule_event(scheduled_time, flight.start_flight, heuristic)
 
         self.reset_logs(sol, mutation_time)
 
