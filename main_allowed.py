@@ -26,7 +26,7 @@ def main():
 
     '''evolutionary algorithm loop with initializing new populations
     at each loop and keeping best 50% of solutions, mutating whole pop
-    and keeping a copy of elite pop - best 25% to save best sols'''
+    and keeping a copy of elite pop - best 25% to save best'''
     evol_algo.evol_algo_loop_with_init(config['algo']['N_ITERATIONS'])
     '''Second option - taking the best solutions from '''
     # evol_algo.evol_algo_loop_two_pop(config['algo']['N_ITERATIONS'])
