@@ -1,11 +1,12 @@
 {
     "algo": {
-        "POPULATION_SIZE": 16,
-        "N_ITERATIONS": 300,
+        "POPULATION_SIZE": 100,
+        "N_ITERATIONS": 3000,
         "CROSSOVER_RATE": 0,
         "MUTATION_RATE": 1,
         "SELECTION_RATE": 0.5,
-        "N_FLIGHTS_TO_MUT": 5
+        "N_FLIGHTS_TO_MUT": 5,
+        "HEURISTIC": "work_time"
     },
     "sim": {
         "SIM_LEN": 720,
