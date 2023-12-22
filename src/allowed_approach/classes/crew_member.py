@@ -1,6 +1,5 @@
 '''
 For consideration:
-days off,
 rest periods,
 flight duty period - pre-flight, post-flight etc.
 on-duty, on-call - how to calculate this work hours
@@ -33,9 +32,16 @@ class Pilot:
         training_hours = random.randint(0, 720)
         self.training_hours = [training_hours, training_hours + 24]
 
-
     def __repr__(self):
         return f"Pilot ID: {self.id}"
+
+    def __eq__(self, other):
+        return (self.id == other.id and self.base == other.base and
+                self.current_base == other.current_base and
+                self.is_available == other.is_available)
+            
+    def __hash__(self):
+        return hash(self.id)
 
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
@@ -133,6 +139,15 @@ class FlightAttendant:
 
     def __repr__(self):
         return f"Attendant ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.month_worked_hs}, flights taken: {self.flights_taken}, status: {self.is_available}"
+
+    def __eq__(self, other):
+        return (self.id == other.id and self.base == other.base and
+                self.current_base == other.current_base and
+                self.is_available == other.is_available and 
+                self.training_hours == other.training_hours)
+
+    def __hash__(self):
+        return hash(self.id)
 
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
