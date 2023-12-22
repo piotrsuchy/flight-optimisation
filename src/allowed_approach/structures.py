@@ -1,5 +1,4 @@
 import logging
-import random
 import json
 
 from .classes.airport import Airport
@@ -16,14 +15,27 @@ class Structures:
         self.n_pilots_f_a = n_pilots_f_a
         self.n_attendants_f_a = n_attendants_f_a
         self.generate_structs()
+    
+    def __eq__(self, other):
+        if not isinstance(other, Structures):
+            return False
+        if self.n_airports != other.n_airports or self.n_pilots_f_a != other.n_pilots_f_a or self.n_attendants_f_a != other.n_attendants_f_a:
+            print(f"The number of airports or pilots or attendants is not the same!")
+            return False
+        else:
+            for self_airport, other_airport in zip(self.airport, other.airports):
+                if self_airport.x != other_airport.x or self_airport.y != other_airport.y:
+                    print(f"The coordinates of airports is not the same!")
+                    return False
+        return True 
 
     def generate_structs(self):
         logging.info(
             f"--------------------STRUCTURE GENERATION BEGAN--------------------")
         self._create_airports(self.n_airports)
         for airport in self.airports:
-            self._create_crew(airport, self.n_pilots_f_a,
-                              self.n_attendants_f_a)
+            # self._create_crew(airport, self.n_pilots_f_a,
+                              # self.n_attendants_f_a)
             airport.availability_log.add_snapshot(0)
         logging.info(
             f"--------------------STRUCTURE GENERATION ENDED--------------------")

@@ -27,6 +27,20 @@ class Airport:
     def __str__(self):
         return self.__repr__()
 
+    def __eq__(self, other):
+        if self.x != other.x or self.y != other.y or self.id != other.id:
+            print(f"Basic parameters of the airport aren't the same!")
+            return False
+        for self_pilot, other_pilot in zip(self.pilots, other.pilots):
+            if self_pilot != other_pilot:
+                print(f"Pilots are not the same in the airport! Self_pilot {self_pilot}, other_pilot: {other_pilot}")
+                return False
+        for self_attendant, other_attendant in zip(self.attendants, other.attendants):
+            if self_attendant != other_attendant:
+                print(f"Attendants are not the same in the airport! Self_att {self_attendant}, other_att: {other_attendant}")
+                return False
+        return True
+
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
 
