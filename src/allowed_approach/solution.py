@@ -36,7 +36,10 @@ class Solution:
             print(f"event: {event}")
 
     def get_cancelled_flights_num(self):
-        return len([f for f in self.flights if f.status[-1] == "cancelled"])
+        cancelled_num = len([f for f in self.flights if f.status[-1] == "cancelled"])
+        # if cancelled_num == 0:
+            # print("WOAH")
+        return cancelled_num
 
     def get_training_penal_num(self):
         return self.training_penalty / 5000
@@ -59,7 +62,7 @@ class Solution:
             for attendant in airport.attendants:
                 attendant.set_sol_id(sol_id)
 
-    def _schedule_flights(self):
+    def _schedule_flights(self, heuristic):
         '''
         This function schedules flights_q flights for a solution by taking two different airports
         and scheduling the start_flight() method of class Flight for them using the existing
@@ -69,7 +72,7 @@ class Solution:
         for flight in self.schedule.flight_schedule:
             # Assign crew to the flight based on AvailabilityLog
             scheduled_time = flight.simulation_time
-            self.scheduler.schedule_event(scheduled_time, flight.start_flight)
+            self.scheduler.schedule_event(scheduled_time, flight.start_flight, heuristic)
             self.flights.append(flight)
             logging.info(
                 f"Sol {self.id}: Scheduled flight: {flight} starting at hour: {scheduled_time:.2f} of the simulation.")
