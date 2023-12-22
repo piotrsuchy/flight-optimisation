@@ -1,5 +1,4 @@
 import json
-import random
 from src.unallowed_approach.imp_evol_algo import ImpossibleEvolutionaryAlgorithm
 
 def main():

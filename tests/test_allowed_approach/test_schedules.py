@@ -1,6 +1,5 @@
 import unittest
 import json
-import copy
 from src.allowed_approach.evol_algo import EvolutionaryAlgorithm
 from src.allowed_approach.structures import Structures
 from src.allowed_approach.schedule import Schedule
