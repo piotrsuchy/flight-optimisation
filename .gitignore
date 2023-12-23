@@ -12,3 +12,4 @@ mprofile*
 src/.DS_Store
 /src/unallowed_approach/logs/
 /parameters.json
+/initial_structs/test_*
