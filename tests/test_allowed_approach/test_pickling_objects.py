@@ -20,26 +20,32 @@ with open('parameters.json') as parameters_file:
 class TestStructuresPickle(unittest.TestCase):
 
     def test_pickle_unpickle_structures(self):
-        # Create original Structures object
+        '''Basic check for the Structures'''
         original_structures = Structures()
 
-        # Save to file
-        save_to_file(original_structures, 'test_structures.pkl')
+        save_to_file(original_structures, 'initial_structs/test_structures.pkl')
 
-        # Load from file
-        unpickled_structures = load_from_file('test_structures.pkl')
+        unpickled_structures = load_from_file('initial_structs/test_structures.pkl')
 
-        self.assertEqual(original_structures.airports, unpickled_structures.airports)
+        for original_airport, unpickled_airport in zip(original_structures.airports, unpickled_structures.airports):
+            self.assertEqual(original_airport, unpickled_airport)
     
     def test_pickle_unpickle_evol_algo(self):
-        initial_structures = Structures()
-
-        # initial population
+        '''Testing if after initializing the algo the pickled object is the same,
+        as described in __eq__ method'''
+        original_structures = Structures()
         evol_algo = EvolutionaryAlgorithm(
-            initial_structures=initial_structures,
+            initial_structures=original_structures,
             population_size=config['algo']['POPULATION_SIZE'])
         evol_algo.initialize_population()
         evol_algo.assign_schedules_for_initialized_sols()
+
+        save_to_file(original_structures, 'initial_structs/test_pickle_unpickle_evol_algo.pkl')
+        unpickled_structures = load_from_file('initial_structs/test_pickle_unpickle_evol_algo.pkl')
+
+        for original_airport, unpickled_airport in zip(original_structures.airports, unpickled_structures.airports):
+            self.assertEqual(original_airport, unpickled_airport)
+            
 
 if __name__ == '__main__':
     unittest.main()

@@ -36,9 +36,10 @@ class Pilot:
         return f"Pilot ID: {self.id}"
 
     def __eq__(self, other):
-        return (self.id == other.id and self.base == other.base and
-                self.current_base == other.current_base and
-                self.is_available == other.is_available)
+        return (self.id == other.id and self.base.id == other.base.id and
+                self.current_base.id == other.current_base.id and
+                self.is_available == other.is_available and 
+                self.training_hours == other.training_hours)
             
     def __hash__(self):
         return hash(self.id)
@@ -141,8 +142,8 @@ class FlightAttendant:
         return f"Attendant ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.month_worked_hs}, flights taken: {self.flights_taken}, status: {self.is_available}"
 
     def __eq__(self, other):
-        return (self.id == other.id and self.base == other.base and
-                self.current_base == other.current_base and
+        return (self.id == other.id and self.base.id == other.base.id and
+                self.current_base.id == other.current_base.id and
                 self.is_available == other.is_available and 
                 self.training_hours == other.training_hours)
 
