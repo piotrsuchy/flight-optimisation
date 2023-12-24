@@ -1,8 +1,8 @@
 import logging
 import json
 
-from .classes.airport import Airport
-from .classes.crew_member import Pilot, FlightAttendant
+from src.allowed_approach.classes.airport import Airport
+from src.allowed_approach.classes.crew_member import Pilot, FlightAttendant
 
 with open('parameters.json') as parameters_file:
     config = json.load(parameters_file)

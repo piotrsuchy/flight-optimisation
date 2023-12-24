@@ -1,7 +1,5 @@
 import logging
-
 from .event_scheduler import EventScheduler
-
 
 class Solution:
     schedulers = {}

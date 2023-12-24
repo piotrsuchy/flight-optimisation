@@ -1,7 +1,8 @@
 import json
 from src.allowed_approach.structures import Structures
+from src.allowed_approach.solution import Solution
 from src.allowed_approach.evol_algo import EvolutionaryAlgorithm
-from config.logs_and_args import get_args, setup_logging
+from config.logs_and_args import get_args, setup_logging, load_from_file
 
 def main():
     with open('parameters.json') as parameters_file:
@@ -10,15 +11,22 @@ def main():
     args = get_args()
     setup_logging(args.log)
 
-    initial_structures = Structures()
+    if args.pickle:
+        print(f"Loading the structures and schedules from file: {args.pickle}")
+        evol_algo = load_from_file(args.pickle)
+        Solution.schedulers = load_from_file('initial_structs/schedulers_dict.pkl')
+    else:
+        print(f"Initializing random structures and schedules based on a seed")
+        initial_structures = Structures()
 
-    # initial population
-    evol_algo = EvolutionaryAlgorithm(
-        initial_structures=initial_structures,
-        population_size=config['algo']['POPULATION_SIZE'])
-    evol_algo.initialize_population()
-    evol_algo.assign_schedules_for_initialized_sols()
-    evol_algo.run_schedules()
+        # initial population
+        evol_algo = EvolutionaryAlgorithm(
+            initial_structures=initial_structures,
+            population_size=config['algo']['POPULATION_SIZE'])
+        evol_algo.initialize_population()
+        evol_algo.assign_schedules_for_initialized_sols()
+        evol_algo.run_schedules()
+
     evol_algo.run_events()
     evol_algo.update_all_fitness_scores()
     evol_algo.sort_population()
