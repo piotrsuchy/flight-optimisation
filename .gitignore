@@ -13,3 +13,4 @@ src/.DS_Store
 /src/unallowed_approach/logs/
 /parameters.json
 /initial_structs/test_*
+/initial_structs/*.pkl
