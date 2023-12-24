@@ -4,8 +4,8 @@ import numpy as np
 import json
 import logging
 
-from .schedule import Schedule
-from .solution import Solution
+from src.allowed_approach.schedule import Schedule
+from src.allowed_approach.solution import Solution
 
 # from .decorators import timing_decorator
 with open('parameters.json') as parameters_file:

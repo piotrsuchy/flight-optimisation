@@ -1,6 +1,6 @@
 import argparse
 import logging
-
+import pickle
 
 def setup_logging(to_file):
     # Set up basic configuration for logging
@@ -18,10 +18,18 @@ def setup_logging(to_file):
         logger = logging.getLogger()
         logger.addHandler(file_handler)
 
-
 def get_args():
     parser = argparse.ArgumentParser(
         description='Run the evolutionary algorithm.'
     )
     parser.add_argument('--log', action='store_true', help='enable logging')
+    parser.add_argument('--pickle', help='Pickle file name', type=str)
     return parser.parse_args()
+
+def save_to_file(obj, filename):
+    with open(filename, 'wb') as file:
+        pickle.dump(obj, file)
+
+def load_from_file(filename):
+    with open(filename, 'rb') as file:
+        return pickle.load(file)
