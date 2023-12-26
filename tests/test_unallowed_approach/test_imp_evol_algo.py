@@ -21,7 +21,7 @@ class TestImpossibleEvolutionaryAlgorithm(unittest.TestCase):
         algo.assign_airports_to_crew_members()
         algo.create_initial_sols()
 
-        algo.create_initial_generation()
+        algo.create_initial_generation_no_update()
         # imp_evol_algo.print_population()
         algo.update_fitness_for_all_sols()
 

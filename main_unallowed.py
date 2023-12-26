@@ -16,8 +16,14 @@ def main():
     imp_evol_algo.create_initial_sols()
     imp_evol_algo.generate_training_hours()
 
-    imp_evol_algo.create_initial_generation_with_update()
-    # imp_evol_algo.print_population()
+    if config['algo']['INITIAL_HEURISTIC'] == "with_update":
+        imp_evol_algo.create_initial_generation_with_update()
+    elif config['algo']['INITIAL_HEURISTIC'] == "random":
+        imp_evol_algo.create_initial_generation_random()
+    elif config['algo']['INITIAL_HEURISTIC'] == "no_update":
+        imp_evol_algo.create_initial_generation_no_update()
+    else:
+        raise ValueError(f"In parameters file the initial_heuristic parameters has incorrect value. Choose one of 'with_update', 'random' or 'no_update'")
 
     imp_evol_algo.update_fitness_for_all_sols()
     initial_penalties = imp_evol_algo.get_penalties_for_sols()

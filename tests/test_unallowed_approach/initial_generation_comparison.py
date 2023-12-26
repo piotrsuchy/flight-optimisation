@@ -15,7 +15,7 @@ def run_experiment(use_update):
     if use_update:
         imp_evol_algo.create_initial_generation_with_update()
     else:
-        imp_evol_algo.create_initial_generation()
+        imp_evol_algo.create_initial_generation_no_update()
 
     imp_evol_algo.update_fitness_for_all_sols()
 
