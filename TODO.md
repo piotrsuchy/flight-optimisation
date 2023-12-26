@@ -1,4 +1,4 @@
-	# TODO
+# TODO
 
 ## Both approaches
 
@@ -9,7 +9,7 @@
 - add informed mutation
 - add location fixing heuristic
 - add time tracking, hours worked counting
-- create a way to create initial structures common 
+- create a way to create initial structures common
 
 ## Allowed approach
 
