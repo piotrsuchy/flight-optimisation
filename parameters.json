@@ -6,7 +6,8 @@
         "MUTATION_RATE": 1,
         "SELECTION_RATE": 0.5,
         "N_FLIGHTS_TO_MUT": 5,
-        "HEURISTIC": "work_time"
+        "HEURISTIC": "work_time",
+        "INITIAL_HEURISTIC": "no_update"
     },
     "sim": {
         "SIM_LEN": 720,

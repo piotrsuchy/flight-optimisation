@@ -198,7 +198,7 @@ class ImpossibleEvolutionaryAlgorithm:
             fitness_score = self.calculate_fitness(sol, sol_id, self.pilots_status_pop[sol_id], self.attend_status_pop[sol_id])
             self.fitness_scores[sol_id] = fitness_score
     
-    def create_initial_generation(self):
+    def create_initial_generation_no_update(self):
         '''
         Assigns pilots and attendants to flights in a random but allowed fashion
         '''
@@ -216,6 +216,30 @@ class ImpossibleEvolutionaryAlgorithm:
 
                 # Assign attendants
                 available_attendants = [idx for idx, status in enumerate(self.attend_status_pop[sol_idx]) if status['location'] == src_id]
+                for slot in range(config['structs']['PILOTS_PER_PLANE'], config['structs']['PILOTS_PER_PLANE'] + config['structs']['ATTEND_PER_PLANE']):
+                    if available_attendants:
+                        chosen_idx = random.choice(available_attendants)
+                        flight[2 + slot] = chosen_idx + 1  
+                        available_attendants.remove(chosen_idx)
+    
+    def create_initial_generation_random(self):
+        '''
+        Assigns pilots and attendants to flights in a completely random fashion
+        '''
+        for sol_idx, sol in enumerate(self.population):
+            for flight in sol:
+                src_id = flight[0]
+
+                # Assign pilots
+                available_pilots = [idx for idx in self.pilots_status_pop[sol_idx]]
+                for slot in range(config['structs']['PILOTS_PER_PLANE']):
+                    if available_pilots:
+                        chosen_idx = random.choice(available_pilots)
+                        flight[2 + slot] = chosen_idx + 1  
+                        available_pilots.remove(chosen_idx)
+
+                # Assign attendants
+                available_attendants = [idx for idx in self.attend_status_pop[sol_idx]]
                 for slot in range(config['structs']['PILOTS_PER_PLANE'], config['structs']['PILOTS_PER_PLANE'] + config['structs']['ATTEND_PER_PLANE']):
                     if available_attendants:
                         chosen_idx = random.choice(available_attendants)
