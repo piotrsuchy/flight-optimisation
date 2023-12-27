@@ -144,13 +144,18 @@ class ImpossibleEvolutionaryAlgorithm:
 
         self.reset_crew_member_times_for_sol(sol_id)
 
-        for flight in solution:
-            src_id, dst_id, *crew_members, timestamp = flight
+        for flight_id, flight in enumerate(solution):
+            src_id, dst_id, *crew_members, penalties, timestamp = flight
+
+            loc_penalties = 0
+            rest_penalties = 0
 
             if None in crew_members:
                 self.canc_penalty_count += 1
                 fitness_score += cancellation_penalty
-                continue  # Skip the rest of the checks for this flight
+                # calculate penalty for training overlap 
+                self.population[sol_id][flight_id][8] = [loc_penalties, rest_penalties]
+                continue
 
             flight_duration = self.distance_matrix[src_id - 1][dst_id - 1] // plane_speed
             required_rest_time = min(8, flight_duration)
@@ -167,12 +172,14 @@ class ImpossibleEvolutionaryAlgorithm:
                     # calculate penalty for wrong location
                     if crew_member_status['location'] != src_id:
                         self.loc_penalty_count += 1
+                        loc_penalties += 1
                         fitness_score += location_penalty
                     else:
                         self.loc_proper_allocation += 1
 
                     # calculate penalty for lack of rest time
                     if timestamp - crew_member_status['time'] < required_rest_time:
+                        rest_penalties += 1
                         self.rest_penalty_count += 1
                         fitness_score += rest_penalty
 
@@ -184,6 +191,8 @@ class ImpossibleEvolutionaryAlgorithm:
                         self.attend_status_pop[sol_id][crew_member_idx - 1]['time'] = timestamp + flight_duration
 
                     # calculate penalty for training overlap 
+                    self.population[sol_id][flight_id][8] = [loc_penalties, rest_penalties]
+
                     if timestamp > crew_member_status['train_hs'][0] and timestamp < crew_member_status['train_hs'][1] or \
                     timestamp + flight_duration > crew_member_status['train_hs'][0] and timestamp + flight_duration <= crew_member_status['train_hs'][1]:
                         self.overlap_penalty_count += 1
@@ -192,6 +201,37 @@ class ImpossibleEvolutionaryAlgorithm:
         self.all_sols_penalty_count.append((self.loc_penalty_count, self.rest_penalty_count, self.canc_penalty_count, self.overlap_penalty_count, self.loc_proper_allocation))
         return fitness_score
     
+    def fix_location_heuristic_for_all(self, solutions):
+        modified_solutions = []
+        for sol_id, sol in enumerate(solutions):
+            modified_sol = self.fix_location_heuristic(sol, sol_id)
+            modified_solutions.append(modified_sol)
+        return modified_solutions
+
+    def fix_location_heuristic(self, solution, sol_id):
+        penalized_flights = sorted(enumerate(solution), key=lambda x: x[1][8][0], reverse=True)
+        # print(f"Penalized flights: {penalized_flights}")
+
+        top_penalized_flights = penalized_flights[:max(1, len(penalized_flights) // 10)]
+        # print(f"Top penalized flights: {top_penalized_flights}")
+
+        for flight_id, flight in top_penalized_flights:
+            # print(f"flight_id: {flight_id}")
+            # print(f"flight: {flight}")
+            src_id, _, *_, penalties, _ = flight
+            if penalties[0] == 0:
+                continue
+            
+            new_flight_id = flight_id - 1
+            # print(f"New flight id: {new_flight_id}")
+            while new_flight_id >= 0 and solution[new_flight_id][1] != src_id:
+                new_flight_id -= 1
+            
+            if new_flight_id >= 0 and solution[new_flight_id][1] == src_id:
+                new_crew = solution[new_flight_id][2:8]
+                solution[flight_id][2:8] = new_crew
+        return solution
+        
     def update_fitness_for_all_sols(self):
         self.all_sols_penalty_count = []
         for sol_id, sol in enumerate(self.population):
@@ -228,10 +268,8 @@ class ImpossibleEvolutionaryAlgorithm:
         '''
         for sol_idx, sol in enumerate(self.population):
             for flight in sol:
-                src_id = flight[0]
-
                 # Assign pilots
-                available_pilots = [idx for idx in self.pilots_status_pop[sol_idx]]
+                available_pilots = [idx for idx in range(len(self.pilots_status_pop[sol_idx]))]
                 for slot in range(config['structs']['PILOTS_PER_PLANE']):
                     if available_pilots:
                         chosen_idx = random.choice(available_pilots)
@@ -239,7 +277,7 @@ class ImpossibleEvolutionaryAlgorithm:
                         available_pilots.remove(chosen_idx)
 
                 # Assign attendants
-                available_attendants = [idx for idx in self.attend_status_pop[sol_idx]]
+                available_attendants = [idx for idx in range(len(self.attend_status_pop[sol_idx]))]
                 for slot in range(config['structs']['PILOTS_PER_PLANE'], config['structs']['PILOTS_PER_PLANE'] + config['structs']['ATTEND_PER_PLANE']):
                     if available_attendants:
                         chosen_idx = random.choice(available_attendants)
@@ -428,9 +466,10 @@ class ImpossibleEvolutionaryAlgorithm:
                 mutated_new_solutions = self.mutate_solutions(new_solutions)
             else:
                 mutated_new_solutions = self.mutate_solutions_from_all(new_solutions, config['algo']['N_FLIGHTS_TO_MUT'])
-
+            
+            location_fixed_solutions = self.fix_location_heuristic_for_all(mutated_new_solutions)
             # Combine the top 50% of the original population with the new solutions
-            self.population = top_solutions + mutated_new_solutions
+            self.population = top_solutions + location_fixed_solutions 
 
             # Update fitness scores for the entire population
             self.update_fitness_for_all_sols()

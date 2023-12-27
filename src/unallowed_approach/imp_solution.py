@@ -11,7 +11,7 @@ class ImpossibleSolution:
         self.n_pilots_pplane = config['structs']['PILOTS_PER_PLANE']
         self.n_attend_pplane = config['structs']['ATTEND_PER_PLANE']
         self.sim_len = config['sim']['SIM_LEN']
-        self.n_flight_fields = self.n_pilots_pplane + self.n_attend_pplane + 3
+        self.n_flight_fields = self.n_pilots_pplane + self.n_attend_pplane + 4
         self.schedule = [[None for _ in range(self.n_flight_fields)] for _ in range(self.n_flights)]
 
     def __str__(self):
@@ -41,11 +41,3 @@ class ImpossibleSolution:
     def print_schedule(self):
         for flight in self.schedule:
             print(flight)
-
-            
-def test_main_1():
-    sol = ImpossibleSolution()
-    sol.assign_source_and_dest_to_flight()
-    sol.assign_timestamp_to_flight()
-    
-test_main_1()
