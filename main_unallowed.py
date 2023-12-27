@@ -11,8 +11,6 @@ def main():
     # initial assignments - made only once
     imp_evol_algo.fill_in_distance_matrix()
     imp_evol_algo.assign_airports_to_crew_members()
-    print(f"Imp_evol_algo.pilots_status_pop: {imp_evol_algo.pilots_status_pop}")
-    print(f"Imp_evol_algo.attend_status_pop: {imp_evol_algo.attend_status_pop}")
     imp_evol_algo.create_initial_sols()
     imp_evol_algo.generate_training_hours()
 
