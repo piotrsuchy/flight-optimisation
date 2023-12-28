@@ -1,16 +1,14 @@
 '''
 For consideration:
-rest periods,
 flight duty period - pre-flight, post-flight etc.
 on-duty, on-call - how to calculate this work hours
 '''
 import random
+import json
 from src.allowed_approach.solution import Solution
 
-MAX_DAILY_HOURS = 14
-MAX_WEEKLY_HOURS = 60
-MAX_MONTHLY_HOURS = 190
-
+with open('parameters.json') as parameters_file:
+    config = json.load(parameters_file)
 
 class Pilot:
     _next_id = 1
@@ -45,16 +43,16 @@ class Pilot:
         self.sol_id = sol_id
 
     def is_eligible(self):
-        if self.day_worked_hs > MAX_DAILY_HOURS:
+        if self.day_worked_hs > config['lim']['MAX_DAILY_HOURS']:
             Pilot._daily_limits += 1
-        if self.week_worked_hs > MAX_WEEKLY_HOURS:
+        if self.week_worked_hs > config['lim']['MAX_WEEKLY_HOURS']:
             Pilot._weekly_limits += 1
-        if self.month_worked_hs > MAX_WEEKLY_HOURS:
+        if self.month_worked_hs > config['lim']['MAX_MONTHLY_HOURS']:
             Pilot._monthly_limits += 1
         return (self.is_available and
-                self.day_worked_hs <= MAX_DAILY_HOURS and
-                self.week_worked_hs <= MAX_WEEKLY_HOURS and
-                self.month_worked_hs <= MAX_MONTHLY_HOURS)
+                self.day_worked_hs <= config['lim']['MAX_DAILY_HOURS'] and
+                self.week_worked_hs <= config['lim']['MAX_WEEKLY_HOURS'] and
+                self.month_worked_hs <= config['lim']['MAX_MONTHLY_HOURS'])
 
     def occupy(self):
         self.is_available = False
@@ -148,16 +146,16 @@ class FlightAttendant:
         self.sol_id = sol_id
 
     def is_eligible(self):
-        if self.day_worked_hs > MAX_DAILY_HOURS:
-            FlightAttendant._daily_limits += 1
-        if self.week_worked_hs > MAX_WEEKLY_HOURS:
-            FlightAttendant._weekly_limits += 1
-        if self.month_worked_hs > MAX_WEEKLY_HOURS:
-            FlightAttendant._monthly_limits += 1
+        if self.day_worked_hs > config['lim']['MAX_DAILY_HOURS']:
+            Pilot._daily_limits += 1
+        if self.week_worked_hs > config['lim']['MAX_WEEKLY_HOURS']:
+            Pilot._weekly_limits += 1
+        if self.month_worked_hs > config['lim']['MAX_MONTHLY_HOURS']:
+            Pilot._monthly_limits += 1
         return (self.is_available and
-                self.day_worked_hs <= MAX_DAILY_HOURS and
-                self.week_worked_hs <= MAX_WEEKLY_HOURS and
-                self.month_worked_hs <= MAX_MONTHLY_HOURS)
+                self.day_worked_hs <= config['lim']['MAX_DAILY_HOURS'] and
+                self.week_worked_hs <= config['lim']['MAX_WEEKLY_HOURS'] and
+                self.month_worked_hs <= config['lim']['MAX_MONTHLY_HOURS'])
 
     def occupy(self):
         self.is_available = False
