@@ -34,6 +34,8 @@ class ImpossibleEvolutionaryAlgorithm:
                                 for _ in range(self.attend_per_sol)]
                                 for _ in range(self.pop_size)]
         self.fitness_scores = [None for _ in range(self.pop_size)]
+        self.pilots_work_time_by_id = [0 for _ in range(self.pilots_per_sol)]
+        self.attend_work_time_by_id = [0 for _ in range(self.attend_per_sol)]
 
         self.loc_penalty_count = 0
         self.canc_penalty_count = 0
@@ -74,9 +76,10 @@ class ImpossibleEvolutionaryAlgorithm:
         print("Cancellation pen.: ", self.canc_penalty_count)
         print("Rest pen.: ", self.rest_penalty_count)
         print("Training overlap pen.: ", self.overlap_penalty_count)
+        print("Overwork pen.: ", self.overwork_penalty_count)
 
     def print_penalties_for_sols(self, iter, sol_id):
-        print(f"Sol: {sol_id}, Fit: {self.fitness_scores[sol_id]} Loc: {self.all_sols_penalty_count[sol_id][0]}, Rest: {self.all_sols_penalty_count[sol_id][1]}, Canc: {self.all_sols_penalty_count[sol_id][2]}, training overlap: {self.all_sols_penalty_count[sol_id][3]}, Prop. alloc: {self.all_sols_penalty_count[sol_id][4]}")
+        print(f"Sol: {sol_id}, Fit: {self.fitness_scores[sol_id]} Loc: {self.all_sols_penalty_count[sol_id][0]}, Rest: {self.all_sols_penalty_count[sol_id][1]}, Canc: {self.all_sols_penalty_count[sol_id][2]}, training overlap: {self.all_sols_penalty_count[sol_id][3]}, overwork: {self.all_sols_penalty_count[sol_id][5]} Prop. alloc: {self.all_sols_penalty_count[sol_id][4]}")
 
     def get_fitness_scores(self):
         fitness_score = []
@@ -115,7 +118,7 @@ class ImpossibleEvolutionaryAlgorithm:
         '''Creation of a triangular matrix of distances to save space'''
         for i in range(config['structs']['N_AIRPORTS']):
             for j in range(0, i):
-                distance = random.randint(1000, 44700)
+                distance = random.randint(1000, 20000)
                 self.distance_matrix[i][j] = distance
                 self.distance_matrix[j][i] = distance
 
@@ -135,9 +138,12 @@ class ImpossibleEvolutionaryAlgorithm:
             attendant['time'] = 0
    
     def calculate_fitness(self, solution, sol_id, pilot_status, attendant_status):
+        self.pilots_work_time_by_id = [0 for _ in range(self.pilots_per_sol)]
+        self.attend_work_time_by_id = [0 for _ in range(self.attend_per_sol)]
         self.canc_penalty_count = 0
         self.loc_penalty_count = 0
         self.rest_penalty_count = 0
+        self.overwork_penalty_count = 0
         self.loc_proper_allocation = 0
         self.overlap_penalty_count = 0
         fitness_score = 0
@@ -184,9 +190,11 @@ class ImpossibleEvolutionaryAlgorithm:
                         fitness_score += rest_penalty
 
                     if idx < config['structs']['PILOTS_PER_PLANE']:
+                        self.pilots_work_time_by_id[crew_member_idx - 1] += flight_duration
                         self.pilots_status_pop[sol_id][crew_member_idx - 1]['location'] = dst_id
                         self.pilots_status_pop[sol_id][crew_member_idx - 1]['time'] = timestamp + flight_duration
                     else:
+                        self.attend_work_time_by_id[crew_member_idx - 1] += flight_duration
                         self.attend_status_pop[sol_id][crew_member_idx - 1]['location'] = dst_id
                         self.attend_status_pop[sol_id][crew_member_idx - 1]['time'] = timestamp + flight_duration
 
@@ -197,9 +205,26 @@ class ImpossibleEvolutionaryAlgorithm:
                     timestamp + flight_duration > crew_member_status['train_hs'][0] and timestamp + flight_duration <= crew_member_status['train_hs'][1]:
                         self.overlap_penalty_count += 1
                         fitness_score += training_overlap_penalty
+
+        overwork_penalty = self.calculate_overwork_penalty()
+        self.overwork_penalty_count = overwork_penalty
+        # print(f"OVERWORK PENALTY FOR THIS SOL {sol_id}, overwork {overwork_penalty}")
+        fitness_score += overwork_penalty * config['pen']['OVERWORK_PENALTY']
                         
-        self.all_sols_penalty_count.append((self.loc_penalty_count, self.rest_penalty_count, self.canc_penalty_count, self.overlap_penalty_count, self.loc_proper_allocation))
+        self.all_sols_penalty_count.append((self.loc_penalty_count, self.rest_penalty_count, self.canc_penalty_count, self.overlap_penalty_count, self.loc_proper_allocation, self.overwork_penalty_count))
         return fitness_score
+
+    def calculate_overwork_penalty(self):
+        overwork_penalty = 0
+        for p_work_hour in range(len(self.pilots_work_time_by_id)):
+            if self.pilots_work_time_by_id[p_work_hour] > config['lim']['MAX_MONTHLY_HOURS']:
+                overwork_penalty += self.pilots_work_time_by_id[p_work_hour] - config['lim']['MAX_MONTHLY_HOURS'] 
+        
+        for a_work_hour in range(len(self.attend_work_time_by_id)):
+            if self.attend_work_time_by_id[a_work_hour] > config['lim']['MAX_MONTHLY_HOURS']:
+                overwork_penalty += self.attend_work_time_by_id[a_work_hour] - config['lim']['MAX_MONTHLY_HOURS']
+        
+        return overwork_penalty
     
     def fix_location_heuristic_for_all(self, solutions):
         modified_solutions = []
