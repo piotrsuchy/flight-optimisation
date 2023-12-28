@@ -42,7 +42,7 @@ def main():
 
     print(f"---Initial penalties applied---")
     for i in range(len(initial_penalties)):
-        print(f"Sol: {i}, Fit: {fit_scores[i]} Loc: {initial_penalties[i][0]}, Rest: {initial_penalties[i][1]}, Canc: {initial_penalties[i][2]}, train_ov: {initial_penalties[i][3]}, Prop. alloc: {initial_penalties[i][4]}")
+        print(f"Sol: {i}, Fit: {fit_scores[i]} Loc: {initial_penalties[i][0]}, Rest: {initial_penalties[i][1]}, Canc: {initial_penalties[i][2]}, train_ov: {initial_penalties[i][3]}, overwork: {initial_penalties[i][5]}, Prop. alloc: {initial_penalties[i][4]}")
 
 if __name__ == "__main__":
     main()
