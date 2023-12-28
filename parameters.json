@@ -7,7 +7,8 @@
         "SELECTION_RATE": 0.5,
         "N_FLIGHTS_TO_MUT": 5,
         "HEURISTIC": "work_time",
-        "INITIAL_HEURISTIC": "with_update"
+        "INITIAL_HEURISTIC": "with_update",
+        "FIX_LOCATION": "yes"
     },
     "sim": {
         "SIM_LEN": 720,
@@ -15,8 +16,8 @@
         "N_FLIGHTS": 240
     },
     "pen": {
-        "LOCATION_PENALTY": 10000,
-        "CANCEL_PENALTY": 100000,
+        "LOCATION_PENALTY": 5000,
+        "CANCEL_PENALTY": 10000,
         "REST_PENALTY": 1000,
         "TRAINING_OVERLAP_PENALTY": 5000
     },

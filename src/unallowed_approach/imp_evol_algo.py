@@ -210,20 +210,15 @@ class ImpossibleEvolutionaryAlgorithm:
 
     def fix_location_heuristic(self, solution, sol_id):
         penalized_flights = sorted(enumerate(solution), key=lambda x: x[1][8][0], reverse=True)
-        # print(f"Penalized flights: {penalized_flights}")
 
         top_penalized_flights = penalized_flights[:max(1, len(penalized_flights) // 10)]
-        # print(f"Top penalized flights: {top_penalized_flights}")
 
         for flight_id, flight in top_penalized_flights:
-            # print(f"flight_id: {flight_id}")
-            # print(f"flight: {flight}")
             src_id, _, *_, penalties, _ = flight
             if penalties[0] == 0:
                 continue
             
             new_flight_id = flight_id - 1
-            # print(f"New flight id: {new_flight_id}")
             while new_flight_id >= 0 and solution[new_flight_id][1] != src_id:
                 new_flight_id -= 1
             
@@ -467,9 +462,10 @@ class ImpossibleEvolutionaryAlgorithm:
             else:
                 mutated_new_solutions = self.mutate_solutions_from_all(new_solutions, config['algo']['N_FLIGHTS_TO_MUT'])
             
-            location_fixed_solutions = self.fix_location_heuristic_for_all(mutated_new_solutions)
+            if config['algo']['FIX_LOCATION'] == "yes":
+                mutated_new_solutions = self.fix_location_heuristic_for_all(mutated_new_solutions)
             # Combine the top 50% of the original population with the new solutions
-            self.population = top_solutions + location_fixed_solutions 
+            self.population = top_solutions + mutated_new_solutions 
 
             # Update fitness scores for the entire population
             self.update_fitness_for_all_sols()
