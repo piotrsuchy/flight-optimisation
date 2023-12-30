@@ -44,8 +44,9 @@ def main():
 
     evol_algo.save_iteration_data_to_file(args.file_name)
 
-    plot_fitness_scores(args.file_name)
 
+    plot_fitness_scores(args.file_name)
+    
 
 if __name__ == "__main__":
     main()
