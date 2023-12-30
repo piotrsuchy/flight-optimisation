@@ -1,10 +1,14 @@
 import json
 from src.unallowed_approach.imp_evol_algo import ImpossibleEvolutionaryAlgorithm
+from src.allowed_approach.visualisation import plot_fitness_scores
+from config.logs_and_args import get_args
 
 def main():
     # from .decorators import timing_decorator
     with open('parameters.json') as parameters_file:
         config = json.load(parameters_file)
+
+    args = get_args()
 
     imp_evol_algo = ImpossibleEvolutionaryAlgorithm()
 
@@ -36,6 +40,8 @@ def main():
     imp_evol_algo.evolutionary_algorithm_loop(config['algo']['N_ITERATIONS'], print_flag=1, initial=fit_scores)
     print(f"Initial fitness values: {fit_scores}")
 
+    imp_evol_algo.save_iteration_data_to_file(args.file_name)
+
     print(f"---Final penalties applied---")
     for i in range(len(imp_evol_algo.population)):
         imp_evol_algo.print_penalties_for_sols(config['algo']['N_ITERATIONS']+1, i)
@@ -43,6 +49,8 @@ def main():
     print(f"---Initial penalties applied---")
     for i in range(len(initial_penalties)):
         print(f"Sol: {i}, Fit: {fit_scores[i]} Loc: {initial_penalties[i][0]}, Rest: {initial_penalties[i][1]}, Canc: {initial_penalties[i][2]}, train_ov: {initial_penalties[i][3]}, overwork: {initial_penalties[i][5]}, Prop. alloc: {initial_penalties[i][4]}")
+
+    plot_fitness_scores(args.file_name)
 
 if __name__ == "__main__":
     main()
