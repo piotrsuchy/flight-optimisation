@@ -10,6 +10,8 @@ def main():
         config = json.load(parameters_file)
 
     args = get_args()
+    if args.file_name is None:
+        args.file_name = input("Enter the file name in which to save the plot: ")
     setup_logging(args.log)
 
     if args.pickle:
@@ -36,16 +38,20 @@ def main():
     '''evolutionary algorithm loop with initializing new populations
     at each loop and keeping best 50% of solutions, mutating whole pop
     and keeping a copy of elite pop - best 25% to save best'''
-    # evol_algo.evol_algo_loop_with_init(config['algo']['N_ITERATIONS'])
-    '''Second option - taking the best solutions from '''
-    evol_algo.evol_algo_loop_two_pop(config['algo']['N_ITERATIONS'])
+    if config['algo']['ALLOWED_GEN_CREATION'] == 'with_init':
+        evol_algo.evol_algo_loop_with_init(config['algo']['N_ITERATIONS'])
+    elif config['algo']['ALLOWED_GEN_CREATION'] == 'two_pop':
+        evol_algo.evol_algo_loop_two_pop(config['algo']['N_ITERATIONS'])
+    else:
+        raise ValueError(f"ALLOWED_GEN_CREATION in parameters.json has to be either 'with_init' or 'two_pop'")
+
     print(f"----------------------------------------------------------------")
     evol_algo.print_all_info()
 
     evol_algo.save_iteration_data_to_file(args.file_name)
 
-
-    plot_fitness_scores(args.file_name)
+    if args.file_name:
+        plot_fitness_scores(args.file_name)
     
 
 if __name__ == "__main__":
