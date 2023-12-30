@@ -9,6 +9,8 @@ def main():
         config = json.load(parameters_file)
 
     args = get_args()
+    if args.file_name is None:
+        args.file_name = input("Enter the file name in which to save the plot: ")
 
     imp_evol_algo = ImpossibleEvolutionaryAlgorithm()
 
@@ -18,11 +20,11 @@ def main():
     imp_evol_algo.create_initial_sols()
     imp_evol_algo.generate_training_hours()
 
-    if config['algo']['INITIAL_HEURISTIC'] == "with_update":
+    if config['algo']['UNALL_INITIAL_HEURISTIC'] == "with_update":
         imp_evol_algo.create_initial_generation_with_update()
-    elif config['algo']['INITIAL_HEURISTIC'] == "random":
+    elif config['algo']['UNALL_INITIAL_HEURISTIC'] == "random":
         imp_evol_algo.create_initial_generation_random()
-    elif config['algo']['INITIAL_HEURISTIC'] == "no_update":
+    elif config['algo']['UNALL_INITIAL_HEURISTIC'] == "no_update":
         imp_evol_algo.create_initial_generation_no_update()
     else:
         raise ValueError(f"In parameters file the initial_heuristic parameters has incorrect value. Choose one of 'with_update', 'random' or 'no_update'")
@@ -50,7 +52,8 @@ def main():
     for i in range(len(initial_penalties)):
         print(f"Sol: {i}, Fit: {fit_scores[i]} Loc: {initial_penalties[i][0]}, Rest: {initial_penalties[i][1]}, Canc: {initial_penalties[i][2]}, train_ov: {initial_penalties[i][3]}, overwork: {initial_penalties[i][5]}, Prop. alloc: {initial_penalties[i][4]}")
 
-    plot_fitness_scores(args.file_name)
+    if args.file_name:
+        plot_fitness_scores(args.file_name)
 
 if __name__ == "__main__":
     main()
