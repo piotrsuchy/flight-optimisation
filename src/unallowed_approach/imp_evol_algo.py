@@ -508,7 +508,7 @@ class ImpossibleEvolutionaryAlgorithm:
             else:
                 mutated_new_solutions = self.mutate_solutions_from_all(new_solutions, config['algo']['N_FLIGHTS_TO_MUT'])
             
-            if config['algo']['FIX_LOCATION'] == "yes":
+            if config['algo']['UNALL_FIX_LOCATION'] == "yes":
                 mutated_new_solutions = self.fix_location_heuristic_for_all(mutated_new_solutions)
             # Combine the top 50% of the original population with the new solutions
             self.population = top_solutions + mutated_new_solutions 

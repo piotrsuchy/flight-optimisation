@@ -81,7 +81,7 @@ class EvolutionaryAlgorithm:
             sol = sol_list[0]
             sol.flights = []
             sol.scheduler.set_time(0)
-            sol._schedule_flights(config['algo']['HEURISTIC'])
+            sol._schedule_flights(config['algo']['ALLOWED_HEURISTIC'])
 
     # @timing_decorator
     def save_events_for_all_sols(self):
@@ -361,7 +361,7 @@ class EvolutionaryAlgorithm:
                 for airport in sol.structures.airports:
                     airport.check_consistency()
 
-                self.reschedule_flights(sol, time, i, config['algo']['HEURISTIC'])
+                self.reschedule_flights(sol, time, i, config['algo']['ALLOWED_HEURISTIC'])
 
             self.run_events()
             self.update_all_fitness_scores()
@@ -396,7 +396,7 @@ class EvolutionaryAlgorithm:
                 for airport in sol.structures.airports:
                     airport.check_consistency()
 
-                self.reschedule_flights_in_pop(sol, time, parent_pop, config['algo']['HEURISTIC'])
+                self.reschedule_flights_in_pop(sol, time, parent_pop, config['algo']['ALLOWED_HEURISTIC'])
 
             for sol_list in parent_pop:
                 sol_list[0].run_events()
