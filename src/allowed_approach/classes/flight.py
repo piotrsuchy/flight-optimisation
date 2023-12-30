@@ -161,9 +161,9 @@ class Flight:
         self.status.append("completed")
         self.destination_airport.airport_maintenance()
         for pilot in self.pilots:
-            pilot.start_rest(min(config['lim']['MIN_REST'], self.duration))
+            pilot.start_rest(min(config['lim']['MIN_REST_HOURS'], self.duration))
         for attendant in self.attendants:
-            attendant.start_rest(min(config['lim']['MIN_REST'], self.duration))
+            attendant.start_rest(min(config['lim']['MIN_REST_HOURS'], self.duration))
 
     def cancel_flight(self, sol, reason):
         if reason == "pilots":
