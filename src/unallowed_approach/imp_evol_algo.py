@@ -3,6 +3,7 @@ import random
 import numpy as np
 import copy
 import math
+import statistics
 from src.unallowed_approach.imp_solution import ImpossibleSolution
 
 with open('parameters.json') as parameters_file:
@@ -24,6 +25,7 @@ class ImpossibleEvolutionaryAlgorithm:
         self.mutation_rate = config['algo']['MUTATION_RATE']
         self.crossover_rate = config['algo']['CROSSOVER_RATE']
         self.selection_rate = config['algo']['SELECTION_RATE']
+        self.n_iterations = config['algo']['N_ITERATIONS']
 
         self.distance_matrix = [[None for _ in range(self.n_airports)] for _ in range(self.n_airports)]
         self.population = [None for _ in range(self.pop_size)]
@@ -36,6 +38,7 @@ class ImpossibleEvolutionaryAlgorithm:
         self.fitness_scores = [None for _ in range(self.pop_size)]
         self.pilots_work_time_by_id = [0 for _ in range(self.pilots_per_sol)]
         self.attend_work_time_by_id = [0 for _ in range(self.attend_per_sol)]
+        self.iteration_scores = []
 
         self.loc_penalty_count = 0
         self.canc_penalty_count = 0
@@ -356,7 +359,6 @@ class ImpossibleEvolutionaryAlgorithm:
 
         random.seed(None)
 
-
     def reset_state_of_status_pops(self):
         self.assign_airports_to_crew_members()
 
@@ -469,6 +471,25 @@ class ImpossibleEvolutionaryAlgorithm:
                 mutated_solutions.append(sol)
         return mutated_solutions
 
+    def store_iteration_scores(self, iteration):
+        best_score = min(self.fitness_scores)
+        median_score = statistics.median(self.fitness_scores)
+        top_half_median = statistics.median(sorted(self.fitness_scores)[:len(self.fitness_scores)//2])
+        bottom_half_median = statistics.median(sorted(self.fitness_scores)[len(self.fitness_scores)//2:])
+
+        self.iteration_scores.append({
+            'iteration': iteration,
+            'best_score': best_score,
+            'median_score': median_score,
+            'top_half_median': top_half_median,
+            'bottom_half_median': bottom_half_median
+        })
+
+    def save_iteration_data_to_file(self, file_name):
+        with open(f'{file_name}.json', 'a') as results_file, open('parameters.json') as params_file:
+            results = {'fitness_scores': self.iteration_scores, 'parameters': json.load(params_file)}
+            json.dump(results, results_file)
+        
     def evolutionary_algorithm_loop(self, n_iterations, print_flag, initial=None):
         '''
         selection based on the fitness function
@@ -499,6 +520,8 @@ class ImpossibleEvolutionaryAlgorithm:
                 self.print_fitness_scores(i)
                 self.print_best_score()
                 print(f"Initial sols: {initial}")
+            
+            self.store_iteration_scores(i)
             # for j in range(len(self.population)):
             #     self.print_penalties_for_sols(i, j)
             self.reset_state_of_status_pops()
