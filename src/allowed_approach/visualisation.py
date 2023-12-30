@@ -3,7 +3,7 @@ import json
 
 def plot_fitness_scores(file_path):
     # Load data from the file
-    with open(file_path, 'r') as file:
+    with open(f'{file_path}.json', 'r') as file:
         data = json.load(file)
 
     # Extract data for plotting
