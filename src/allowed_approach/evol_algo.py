@@ -3,6 +3,7 @@ import random
 import numpy as np
 import json
 import logging
+import statistics
 
 from src.allowed_approach.schedule import Schedule
 from src.allowed_approach.solution import Solution
@@ -18,6 +19,7 @@ class EvolutionaryAlgorithm:
         self.population_size = population_size
         self.population = []
         self.initial_structures = initial_structures
+        self.iteration_scores = []
 
     def print_population(self):
         print(f"---Printing the population---")
@@ -315,6 +317,21 @@ class EvolutionaryAlgorithm:
     def sort_population(self):
         self.population = sorted(
             self.population, key=lambda sol: sol[0].fitness_score, reverse=False)
+        
+    def store_iteration_scores(self, iteration):
+        scores = [sol_list[0].fitness_score for sol_list in self.population]
+        best_score = min(scores)
+        median_score = statistics.median(scores)
+        top_half_median = statistics.median(sorted(scores)[:len(scores)//2])
+        bottom_half_median = statistics.median(sorted(scores)[len(scores)//2:])
+
+        self.iteration_scores.append({
+            'iteration': iteration,
+            'best_score': best_score,
+            'median_score': median_score,
+            'top_half_median': top_half_median,
+            'bottom_half_median': bottom_half_median
+        })
 
     def evol_algo_loop_with_init(self, iterations_n):
         '''
@@ -352,6 +369,7 @@ class EvolutionaryAlgorithm:
             self.sort_population()
             self.population = self.population[:len(elite_population) * 4]
             self.print_fitness_scores(i)
+            self.store_iteration_scores(i)
 
     def evol_algo_loop_two_pop(self, iterations_n):
         '''
@@ -398,6 +416,7 @@ class EvolutionaryAlgorithm:
                 self.population = final_population[:self.population_size]
 
             self.print_fitness_scores(i)
+            self.store_iteration_scores(i)
 
     def select_diverse_population(self, population):
         unique_ids = set(sol[0].id for sol in population)
@@ -457,3 +476,8 @@ class EvolutionaryAlgorithm:
         self.assign_schedules_for_initialized_sols()
         self.run_schedules()
         self.run_events()
+
+    def save_iteration_data_to_file(self, file_name):
+        with open(f'{file_name}.json', 'a') as results_file, open('parameters.json') as params_file:
+            results = {'fitness_scores': self.iteration_scores, 'parameters': json.load(params_file)}
+            json.dump(results, results_file)
