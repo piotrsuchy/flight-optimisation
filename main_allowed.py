@@ -2,6 +2,7 @@ import json
 from src.allowed_approach.structures import Structures
 from src.allowed_approach.solution import Solution
 from src.allowed_approach.evol_algo import EvolutionaryAlgorithm
+from src.allowed_approach.visualisation import plot_fitness_scores
 from config.logs_and_args import get_args, setup_logging, load_from_file
 
 def main():
@@ -40,6 +41,10 @@ def main():
     # evol_algo.evol_algo_loop_two_pop(config['algo']['N_ITERATIONS'])
     print(f"----------------------------------------------------------------")
     evol_algo.print_all_info()
+
+    evol_algo.save_iteration_data_to_file(args.file_name)
+
+    plot_fitness_scores(f'{args.file_name}.json')
 
 
 if __name__ == "__main__":

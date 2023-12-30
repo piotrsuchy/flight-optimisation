@@ -24,6 +24,7 @@ def get_args():
     )
     parser.add_argument('--log', action='store_true', help='enable logging')
     parser.add_argument('--pickle', help='Pickle file name', type=str)
+    parser.add_argument('--file_name', help='Which file to save iteration data to', type=str)
     return parser.parse_args()
 
 def save_to_file(obj, filename):
