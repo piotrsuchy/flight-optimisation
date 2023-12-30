@@ -2,7 +2,6 @@
 
 ## Both approaches
 
-- PREPARE TEST VISUALIZATION
 - use the same fitness function calculation for both approaches
 
 ## Unallowed approach
