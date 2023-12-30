@@ -164,7 +164,7 @@ class ImpossibleEvolutionaryAlgorithm:
                 continue
 
             flight_duration = self.distance_matrix[src_id - 1][dst_id - 1] // plane_speed
-            required_rest_time = min(8, flight_duration)
+            required_rest_time = min(config['lim']['MIN_REST_HOURS'], flight_duration)
 
             for idx, crew_member_idx in enumerate(crew_members):
                 if crew_member_idx is not None:
