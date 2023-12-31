@@ -40,8 +40,7 @@ class Flight:
                 self.status == other.status)
 
     def calculate_distance(self):
-        return math.sqrt((self.base_airport.x - self.destination_airport.x)**2 +
-                         (self.base_airport.y - self.destination_airport.y)**2)
+        return self.base_airport.get_distance_to(self.destination_airport.id)
 
     def calculate_duration(self):
         return self.distance / config['structs']['PLANE_SPEED'] 
@@ -102,12 +101,6 @@ class Flight:
         # Assign the crew
         self.pilots = available_pilots[:2]  # get the first 2 eligible pilots
         self.attendants = available_attendants[:4]  # get the first 4 eligible attendants
-
-        # Log the information about the assignment
-        # logging.info(f"Assigned pilots for flight {self.id}: {[pilot.id for pilot in self.pilots]}")
-        # logging.info(f"Assigned attendants for flight {self.id}: {[attendant.id for attendant in self.attendants]}")
-        # logging.info(f"Available pilots: {[pilot.id for pilot in available_pilots]}")
-        # logging.info(f"Available attendants: {[attendant.id for attendant in available_attendants]}")
 
         return True
         

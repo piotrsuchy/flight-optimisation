@@ -16,7 +16,7 @@ class Pilot:
     _weekly_limits = 0
     _monthly_limits = 0
 
-    def __init__(self, base=random.randint(0, 10)):
+    def __init__(self, base=random.randint(0, 10), training_hours=random.randint(0,720)):
         self.id = Pilot._next_id
         Pilot._next_id += 1
         self.base = base
@@ -27,7 +27,6 @@ class Pilot:
         self.flights_taken = 0
         self.is_available = True
         self.sol_id = None
-        training_hours = random.randint(0, 720)
         self.training_hours = [training_hours, training_hours + 24]
 
     def __repr__(self):
@@ -120,7 +119,7 @@ class FlightAttendant:
     _weekly_limits = 0
     _monthly_limits = 0
 
-    def __init__(self, base=random.randint(0, 10)):
+    def __init__(self, base=random.randint(0, 10), training_hours=random.randint(0,720)):
         self.id = FlightAttendant._next_id
         FlightAttendant._next_id += 1
         self.base = base
@@ -132,7 +131,6 @@ class FlightAttendant:
         self.flights_taken = 0
         self.is_available = True
         self.sol_id = None
-        training_hours = random.randint(0, 720)
         self.training_hours = [training_hours, training_hours + 24]
 
     def __repr__(self):

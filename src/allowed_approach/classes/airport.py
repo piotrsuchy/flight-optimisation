@@ -7,6 +7,7 @@ MAINTENANCE_TIME = 0
 
 class Airport:
     _next_id = 1
+    distance_matrix = []
 
     def __init__(self, x=None, y=None):
         self.x = x if x is not None else random.randint(0, 10000)
@@ -27,6 +28,13 @@ class Airport:
     def __str__(self):
         return self.__repr__()
 
+    @classmethod
+    def set_distance_matrix(cls, matrix):
+        cls.distance_matrix = matrix
+
+    def get_distance_to(self, other_airport_id):
+        return self.distance_matrix[self.id - 1][other_airport_id - 1]
+        
     def test_equal(self, other):
         if self.x != other.x or self.y != other.y or self.id != other.id:
             return False
