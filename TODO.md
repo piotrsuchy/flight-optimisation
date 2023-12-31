@@ -2,8 +2,8 @@
 
 ## Both approaches
 
-- PREPARE TEST VISUALIZATION
-- use the same fitness function calculation for both approaches
+- penalty tracking - initial vs final to add to the fitness scores
+- maybe add days off in the same way as training overlap (?)
 
 ## Unallowed approach
 

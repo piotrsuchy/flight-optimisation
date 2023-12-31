@@ -15,3 +15,5 @@ src/.DS_Store
 /initial_structs/test_*
 /initial_structs/*.pkl
 /results/*.png
+*.json
+*.png

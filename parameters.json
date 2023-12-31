@@ -1,19 +1,19 @@
 {
     "algo": {
         "POPULATION_SIZE": 20,
-        "N_ITERATIONS": 500,
-        "CROSSOVER_RATE": 0,
+        "N_ITERATIONS": 20,
+        "CROSSOVER_RATE": 0.2,
         "MUTATION_RATE": 1,
         "SELECTION_RATE": 0.5,
-        "N_FLIGHTS_TO_MUT": 5,
-        "UNALL_INITIAL_HEURISTIC": "with_update",
+        "N_FLIGHTS_TO_MUT": 40,
+        "UNALL_INITIAL_HEURISTIC": "random",
         "UNALL_FIX_LOCATION": "no",
         "ALLOWED_HEURISTIC": "work_time",
         "ALLOWED_GEN_CREATION": "with_init"
     },
     "sim": {
         "SIM_LEN": 720,
-        "N_FLIGHTS": 300
+        "N_FLIGHTS": 150
     },
     "pen": {
         "LOCATION_PENALTY": 5000,
@@ -27,7 +27,7 @@
         "SEED_2": 38,
         "PILOTS_PER_PLANE": 2,
         "ATTEND_PER_PLANE": 4,
-        "N_AIRPORTS": 8,
+        "N_AIRPORTS": 10,
         "N_ATTENDANTS_F_A": 40,
         "N_PILOTS_F_A": 20,
         "PLANE_SPEED": 700
