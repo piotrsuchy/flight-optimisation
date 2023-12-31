@@ -1,5 +1,7 @@
 import json
+import random
 from src.allowed_approach.structures import Structures
+from src.allowed_approach.classes.airport import Airport
 from src.allowed_approach.solution import Solution
 from src.allowed_approach.evol_algo import EvolutionaryAlgorithm
 from src.allowed_approach.visualisation import plot_fitness_scores
@@ -14,15 +16,24 @@ def main():
         args.file_name = input("Enter the file name in which to save the plot: ")
     setup_logging(args.log)
 
-    if args.pickle:
+    if args.pickle == "json":
+        print(f"Initializing random structures and schedules based on a seed")
+        structs_filename = input("What is the name of the json file you want to load?")
+        initial_structures = Structures(filename='test_1.json')
+        evol_algo = EvolutionaryAlgorithm(
+            initial_structures=initial_structures,
+            population_size=config['algo']['POPULATION_SIZE'])
+        evol_algo.initialize_population()
+        evol_algo.assign_schedules_for_initialized_sols_from_json('test_1.json')
+        evol_algo.run_schedules()
+    elif args.pickle:
         print(f"Loading the structures and schedules from file: {args.pickle}")
         evol_algo = load_from_file(args.pickle)
         Solution.schedulers = load_from_file('initial_structs/schedulers_dict.pkl')
     else:
         print(f"Initializing random structures and schedules based on a seed")
         initial_structures = Structures()
-
-        # initial population
+        initial_structures.fill_in_distance_matrix()
         evol_algo = EvolutionaryAlgorithm(
             initial_structures=initial_structures,
             population_size=config['algo']['POPULATION_SIZE'])

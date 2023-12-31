@@ -25,7 +25,7 @@ def main():
         imp_evol_algo.generate_training_hours()
 
     # Save structures
-    save_from_file = input("Save structures from file? (yes/no): ")
+    save_from_file = input("Save structures to file? (yes/no): ")
     if save_from_file.lower() == 'yes':
         save_filename = input("Enter the filename to save structures: ")
         imp_evol_algo.save_structures(save_filename)

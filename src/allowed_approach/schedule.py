@@ -1,4 +1,5 @@
 import random
+import json
 from .classes.flight import Flight
 
 
@@ -38,6 +39,23 @@ class Schedule:
             self.flight_schedule.append(flight)
             self.sort_schedule_by_timestamp()
         random.seed(None)
+
+    def create_schedule_from_json(self, sol, filename):
+        with open(filename, 'r') as file:
+            data = json.load(file)
+
+        for flight_data in data["population"][sol.id - 1]:
+            flight = self.create_flight_from_json(sol, flight_data)
+            self.flight_schedule.append(flight)
+        
+        self.sort_schedule_by_timestamp()
+        
+    def create_flight_from_json(self, sol, flight_data):
+        source_airport_id, destination_airport_id, _, _, _, _, _, _, _, timestamp = flight_data
+        source_airport = sol.structures.airports[source_airport_id - 1]
+        destination_airport = sol.structures.airports[destination_airport_id - 1]
+
+        return Flight(source_airport, destination_airport, sol, timestamp)
 
     def assign_sols_to_flights(self, sol):
         for flight in self.flight_schedule:

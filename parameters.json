@@ -13,7 +13,7 @@
     },
     "sim": {
         "SIM_LEN": 720,
-        "N_FLIGHTS": 150
+        "N_FLIGHTS": 450
     },
     "pen": {
         "LOCATION_PENALTY": 5000,
@@ -28,8 +28,8 @@
         "PILOTS_PER_PLANE": 2,
         "ATTEND_PER_PLANE": 4,
         "N_AIRPORTS": 10,
-        "N_ATTENDANTS_F_A": 40,
-        "N_PILOTS_F_A": 20,
+        "N_ATTENDANTS_F_A": 30,
+        "N_PILOTS_F_A": 15,
         "PLANE_SPEED": 700
     },
     "lim": {

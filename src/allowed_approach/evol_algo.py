@@ -70,6 +70,12 @@ class EvolutionaryAlgorithm:
                 sol_list[0].schedule = Schedule()
                 sol_list[0].schedule.create_random_schedule(
                     sol_list[0], config['sim']['N_FLIGHTS'], config['sim']['SIM_LEN'], config['structs']['SEED_1'])
+    
+    def assign_schedules_for_initialized_sols_from_json(self, filename):
+        for sol_list in self.population:
+            if sol_list[0].initialized == "Initialized":
+                sol_list[0].schedule = Schedule()
+                sol_list[0].schedule.create_schedule_from_json(sol_list[0], filename)
 
     def reset_scheduler(self, time):
         for sol_list in self.population:

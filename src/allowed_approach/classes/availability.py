@@ -102,6 +102,7 @@ class AvailabilityLog:
         If there is no snapshot at exactly that time, it returns the most recent one before it.
         '''
         if not self.log:
+            print(f"No availability snapshot available!")
             raise ValueError("No availability snapshot available!")
 
         # Sort the log based on simulation time:
