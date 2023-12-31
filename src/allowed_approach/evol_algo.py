@@ -118,18 +118,10 @@ class EvolutionaryAlgorithm:
 
             try:
                 for pilot in flight.pilots:
-                    if pilot.week_worked_hs > config['lim']['MAX_WEEKLY_HOURS']:
-                        penalties += 240 * \
-                            (pilot.week_worked_hs - config['lim']['MAX_WEEKLY_HOURS'])
-                    # check for flight and training overlap
                     if flight.simulation_time <= pilot.training_hours[1] and flight.simulation_time + flight.duration >= pilot.training_hours[0]:
                         training_penalties += config['pen']['TRAINING_OVERLAP_PENALTY']
 
                 for attendant in flight.attendants:
-                    if attendant.week_worked_hs > config['lim']['MAX_WEEKLY_HOURS']:
-                        penalties += 240 * \
-                            (attendant.week_worked_hs - config['lim']['MAX_WEEKLY_HOURS'])
-                    # check for flight and training overlap
                     if flight.simulation_time <= attendant.training_hours[1] and flight.simulation_time + flight.duration >= attendant.training_hours[0]:
                         training_penalties += config['pen']['TRAINING_OVERLAP_PENALTY']
 

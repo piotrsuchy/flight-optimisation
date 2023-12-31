@@ -50,11 +50,11 @@ class Airport:
         for attendant in self.attendants:
             print(attendant)
 
-    def get_eligible_pilots(self):
-        return [pilot for pilot in self.pilots if pilot.is_eligible()]
+    def get_eligible_pilots(self, duration):
+        return [pilot for pilot in self.pilots if pilot.is_eligible(duration)]
 
-    def get_eligible_attendants(self):
-        return [attendant for attendant in self.attendants if attendant.is_eligible()]
+    def get_eligible_attendants(self, duration):
+        return [attendant for attendant in self.attendants if attendant.is_eligible(duration)]
 
     def release(self):
         self.occupied = False
