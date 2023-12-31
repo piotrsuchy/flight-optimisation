@@ -14,11 +14,21 @@ def main():
 
     imp_evol_algo = ImpossibleEvolutionaryAlgorithm()
 
-    # initial assignments - made only once
-    imp_evol_algo.fill_in_distance_matrix()
-    imp_evol_algo.assign_airports_to_crew_members()
-    imp_evol_algo.create_initial_sols()
-    imp_evol_algo.generate_training_hours()
+    load_from_file = input("Load structures from file? (yes/no): ")
+    if load_from_file.lower() == 'yes':
+        filename = input("Enter the filename to load structures: ")
+        imp_evol_algo.load_structures(filename)
+    else:
+        imp_evol_algo.fill_in_distance_matrix()
+        imp_evol_algo.assign_airports_to_crew_members()
+        imp_evol_algo.create_initial_sols()
+        imp_evol_algo.generate_training_hours()
+
+    # Save structures
+    save_from_file = input("Save structures from file? (yes/no): ")
+    if save_from_file.lower() == 'yes':
+        save_filename = input("Enter the filename to save structures: ")
+        imp_evol_algo.save_structures(save_filename)
 
     if config['algo']['UNALL_INITIAL_HEURISTIC'] == "with_update":
         imp_evol_algo.create_initial_generation_with_update()

@@ -93,6 +93,24 @@ class ImpossibleEvolutionaryAlgorithm:
     def get_penalties_for_sols(self):
         return self.all_sols_penalty_count
 
+    def load_structures(self, filename):
+        with open(filename, 'r') as file:
+            data = json.load(file)
+        self.distance_matrix = data['distance_matrix']
+        self.pilots_status_pop = data['pilots_status_pop']
+        self.attend_status_pop = data['attend_status_pop']
+        self.population = data['population']
+
+    def save_structures(self, filename):
+        data = {
+            "distance_matrix": self.distance_matrix,
+            "pilots_status_pop": self.pilots_status_pop,
+            "attend_status_pop": self.attend_status_pop,
+            "population": self.population
+        }
+        with open(filename, 'w') as file:
+            json.dump(data, file)
+
     def generate_training_hours(self):
         for sol in range(self.pop_size):
             random.seed(config['structs']['SEED_1'])
