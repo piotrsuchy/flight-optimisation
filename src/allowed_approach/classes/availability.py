@@ -55,8 +55,8 @@ class AvailabilityLog:
         Adds a new snapshot of availability at the given simulation time by checking
         the availability of pilots, attendants at the airport
         '''
-        available_pilots = self.airport.get_eligible_pilots()
-        available_attendants = self.airport.get_eligible_attendants()
+        available_pilots = self.airport.get_eligible_pilots(0)
+        available_attendants = self.airport.get_eligible_attendants(0)
         availability = Availability(
             self.airport, simulation_time, available_pilots, available_attendants)
         self.log.append(availability)

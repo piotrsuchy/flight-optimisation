@@ -51,12 +51,12 @@ class Flight:
         self.duration = self.calculate_duration()
 
     def get_available_crew(self):
-        available_pilots = self.base_airport.get_eligible_pilots()
+        available_pilots = self.base_airport.get_eligible_pilots(self.duration)
         if len(available_pilots) < 2:
             self.cancel_flight(self.sol, "pilots")
             return False
 
-        available_attendants = self.base_airport.get_eligible_attendants()
+        available_attendants = self.base_airport.get_eligible_attendants(self.duration)
         if len(available_attendants) < 4:
             self.cancel_flight(self.sol, "attendants")
             return False

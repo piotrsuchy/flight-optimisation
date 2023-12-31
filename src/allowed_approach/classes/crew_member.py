@@ -42,17 +42,17 @@ class Pilot:
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
 
-    def is_eligible(self):
-        if self.day_worked_hs > config['lim']['MAX_DAILY_HOURS']:
+    def is_eligible(self, duration):
+        if self.day_worked_hs + duration > config['lim']['MAX_DAILY_HOURS']:
             Pilot._daily_limits += 1
-        if self.week_worked_hs > config['lim']['MAX_WEEKLY_HOURS']:
+        if self.week_worked_hs + duration > config['lim']['MAX_WEEKLY_HOURS']:
             Pilot._weekly_limits += 1
-        if self.month_worked_hs > config['lim']['MAX_MONTHLY_HOURS']:
+        if self.month_worked_hs + duration > config['lim']['MAX_MONTHLY_HOURS']:
             Pilot._monthly_limits += 1
         return (self.is_available and
-                self.day_worked_hs <= config['lim']['MAX_DAILY_HOURS'] and
-                self.week_worked_hs <= config['lim']['MAX_WEEKLY_HOURS'] and
-                self.month_worked_hs <= config['lim']['MAX_MONTHLY_HOURS'])
+                self.day_worked_hs + duration <= config['lim']['MAX_DAILY_HOURS'] and
+                self.week_worked_hs + duration <= config['lim']['MAX_WEEKLY_HOURS'] and
+                self.month_worked_hs + duration <= config['lim']['MAX_MONTHLY_HOURS'])
 
     def occupy(self):
         self.is_available = False
@@ -78,6 +78,8 @@ class Pilot:
             self.month_worked_hs -= duration
 
     def reset_state_after_mutation(self, flight):
+        if flight.status[-1] == "cancelled":
+            return 
         self.current_base.remove_pilot(self)
         flight.base_airport.add_pilot(self)
 
@@ -145,17 +147,17 @@ class FlightAttendant:
     def set_sol_id(self, sol_id):
         self.sol_id = sol_id
 
-    def is_eligible(self):
-        if self.day_worked_hs > config['lim']['MAX_DAILY_HOURS']:
+    def is_eligible(self, duration):
+        if self.day_worked_hs + duration > config['lim']['MAX_DAILY_HOURS']:
             Pilot._daily_limits += 1
-        if self.week_worked_hs > config['lim']['MAX_WEEKLY_HOURS']:
+        if self.week_worked_hs + duration > config['lim']['MAX_WEEKLY_HOURS']:
             Pilot._weekly_limits += 1
-        if self.month_worked_hs > config['lim']['MAX_MONTHLY_HOURS']:
+        if self.month_worked_hs + duration > config['lim']['MAX_MONTHLY_HOURS']:
             Pilot._monthly_limits += 1
         return (self.is_available and
-                self.day_worked_hs <= config['lim']['MAX_DAILY_HOURS'] and
-                self.week_worked_hs <= config['lim']['MAX_WEEKLY_HOURS'] and
-                self.month_worked_hs <= config['lim']['MAX_MONTHLY_HOURS'])
+                self.day_worked_hs + duration <= config['lim']['MAX_DAILY_HOURS'] and
+                self.week_worked_hs + duration <= config['lim']['MAX_WEEKLY_HOURS'] and
+                self.month_worked_hs + duration <= config['lim']['MAX_MONTHLY_HOURS'])
 
     def occupy(self):
         self.is_available = False
@@ -181,6 +183,8 @@ class FlightAttendant:
             self.month_worked_hs -= duration
 
     def reset_state_after_mutation(self, flight):
+        if flight.status[-1] == "cancelled":
+            return 
         self.current_base.remove_attendant(self)
         flight.base_airport.add_attendant(self)
 
