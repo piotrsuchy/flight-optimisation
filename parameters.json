@@ -20,7 +20,8 @@
         "CANCEL_PENALTY": 40000,
         "REST_PENALTY": 1000,
         "TRAINING_OVERLAP_PENALTY": 5000,
-        "OVERWORK_PENALTY": 3
+        "OVERWORK_PENALTY": 3,
+        "DAYOFF_PENALTY": 1000
     },
     "structs": {
         "SEED_1": 32,

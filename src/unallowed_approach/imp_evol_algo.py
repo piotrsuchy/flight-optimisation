@@ -14,6 +14,7 @@ rest_penalty = config['pen']['REST_PENALTY']
 cancellation_penalty = config['pen']['CANCEL_PENALTY']
 training_overlap_penalty = config['pen']['TRAINING_OVERLAP_PENALTY']
 plane_speed = config['structs']['PLANE_SPEED']
+day_off_penalty = config['pen']['DAYOFF_PENALTY']
     
 class ImpossibleEvolutionaryAlgorithm:
 
@@ -29,10 +30,10 @@ class ImpossibleEvolutionaryAlgorithm:
 
         self.distance_matrix = [[None for _ in range(self.n_airports)] for _ in range(self.n_airports)]
         self.population = [None for _ in range(self.pop_size)]
-        self.pilots_status_pop = [[{'location': None, 'time': 0, 'train_hs': []} 
+        self.pilots_status_pop = [[{'location': None, 'time': 0, 'train_hs': [], 'day-off': []} 
                                 for _ in range(self.pilots_per_sol)]
                                 for _ in range(self.pop_size)]
-        self.attend_status_pop = [[{'location': None, 'time': 0, 'train_hs': []} 
+        self.attend_status_pop = [[{'location': None, 'time': 0, 'train_hs': [], 'day-off': []} 
                                 for _ in range(self.attend_per_sol)]
                                 for _ in range(self.pop_size)]
         self.fitness_scores = [None for _ in range(self.pop_size)]
@@ -122,6 +123,17 @@ class ImpossibleEvolutionaryAlgorithm:
                 self.attend_status_pop[sol][attendant]['train_hs'] = [training_start_time, training_start_time + 24]
             random.seed(None)
         
+    def generate_days_off(self):
+        for sol in range(self.pop_size):
+            random.seed(config['structs']['SEED_1'])
+            for pilot in range(self.pilots_per_sol):
+                days_off = random.sample(range(30), 5)
+                self.pilots_status_pop[sol][pilot]['day-off'] = days_off
+            for attendant in range(self.attend_per_sol):
+                days_off = random.sample(range(30), 3)
+                self.attend_status_pop[sol][attendant]['day-off'] = days_off
+            random.seed(None)
+
     def create_initial_sols(self):
         sol = ImpossibleSolution()
         initial_sol_schedule = sol.get_initial_schedule()
@@ -226,6 +238,12 @@ class ImpossibleEvolutionaryAlgorithm:
                     timestamp + flight_duration > crew_member_status['train_hs'][0] and timestamp + flight_duration <= crew_member_status['train_hs'][1]:
                         self.overlap_penalty_count += 1
                         fitness_score += training_overlap_penalty
+
+                    # Check if the day of the flight is a day off for the crew member
+                    day_of_flight = timestamp // 24  # Assuming timestamp is in hours and starts at 0
+                    if day_of_flight in crew_member_status['day-off']:
+                        self.day_off_penalty_count += 1
+                        fitness_score += day_off_penalty
 
         overwork_penalty = self.calculate_overwork_penalty()
         self.overwork_penalty_count = overwork_penalty
