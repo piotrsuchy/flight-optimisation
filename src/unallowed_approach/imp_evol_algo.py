@@ -45,6 +45,7 @@ class ImpossibleEvolutionaryAlgorithm:
         self.canc_penalty_count = 0
         self.rest_penalty_count = 0
         self.overlap_penalty_count = 0
+        self.day_off_penalty_count = 0 
         self.loc_proper_allocation = 0
         self.all_sols_penalty_count = []
 
@@ -80,10 +81,11 @@ class ImpossibleEvolutionaryAlgorithm:
         print("Cancellation pen.: ", self.canc_penalty_count)
         print("Rest pen.: ", self.rest_penalty_count)
         print("Training overlap pen.: ", self.overlap_penalty_count)
+        print("Day-off pen.: ", self.day_off_penalty_count)
         print("Overwork pen.: ", self.overwork_penalty_count)
 
     def print_penalties_for_sols(self, iter, sol_id):
-        print(f"Sol: {sol_id}, Fit: {self.fitness_scores[sol_id]} Loc: {self.all_sols_penalty_count[sol_id][0]}, Rest: {self.all_sols_penalty_count[sol_id][1]}, Canc: {self.all_sols_penalty_count[sol_id][2]}, training overlap: {self.all_sols_penalty_count[sol_id][3]}, overwork: {self.all_sols_penalty_count[sol_id][5]} Prop. alloc: {self.all_sols_penalty_count[sol_id][4]}")
+        print(f"Sol: {sol_id}, Fit: {self.fitness_scores[sol_id]} Loc: {self.all_sols_penalty_count[sol_id][0]}, Rest: {self.all_sols_penalty_count[sol_id][1]}, Canc: {self.all_sols_penalty_count[sol_id][2]}, training overlap: {self.all_sols_penalty_count[sol_id][3]}, overwork: {self.all_sols_penalty_count[sol_id][5]}, day-off: {self.all_sols_penalty_count[sol_id][6]}, Prop. alloc: {self.all_sols_penalty_count[sol_id][4]}")
 
     def get_fitness_scores(self):
         fitness_score = []
@@ -176,6 +178,7 @@ class ImpossibleEvolutionaryAlgorithm:
         self.canc_penalty_count = 0
         self.loc_penalty_count = 0
         self.rest_penalty_count = 0
+        self.day_off_penalty_count = 0
         self.overwork_penalty_count = 0
         self.loc_proper_allocation = 0
         self.overlap_penalty_count = 0
@@ -250,7 +253,7 @@ class ImpossibleEvolutionaryAlgorithm:
         # print(f"OVERWORK PENALTY FOR THIS SOL {sol_id}, overwork {overwork_penalty}")
         fitness_score += overwork_penalty * config['pen']['OVERWORK_PENALTY']
                         
-        self.all_sols_penalty_count.append((self.loc_penalty_count, self.rest_penalty_count, self.canc_penalty_count, self.overlap_penalty_count, self.loc_proper_allocation, self.overwork_penalty_count))
+        self.all_sols_penalty_count.append((self.loc_penalty_count, self.rest_penalty_count, self.canc_penalty_count, self.overlap_penalty_count, self.loc_proper_allocation, self.overwork_penalty_count, self.day_off_penalty_count))
         return fitness_score
 
     def calculate_overwork_penalty(self):
