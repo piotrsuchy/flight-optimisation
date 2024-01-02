@@ -11,7 +11,6 @@
 ## Allowed approach
 
 - getting the solutions form from the simulation
-- maybe add days off in the same way as training overlap (?)
 
 ## How to create common structures - DONE
 

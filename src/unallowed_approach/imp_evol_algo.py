@@ -11,7 +11,7 @@ with open('parameters.json') as parameters_file:
 
 location_penalty = config['pen']['LOCATION_PENALTY']
 rest_penalty = config['pen']['REST_PENALTY']
-cancellation_penalty = config['pen']['CANCEL_PENALTY']
+cancellation_penalty_per_hour = config['pen']['CANCEL_PENALTY']
 training_overlap_penalty = config['pen']['TRAINING_OVERLAP_PENALTY']
 plane_speed = config['structs']['PLANE_SPEED']
 day_off_penalty = config['pen']['DAYOFF_PENALTY']
@@ -191,15 +191,14 @@ class ImpossibleEvolutionaryAlgorithm:
 
             loc_penalties = 0
             rest_penalties = 0
+            flight_duration = self.distance_matrix[src_id - 1][dst_id - 1] // plane_speed
 
             if None in crew_members:
                 self.canc_penalty_count += 1
-                fitness_score += cancellation_penalty
-                # calculate penalty for training overlap 
+                fitness_score += cancellation_penalty_per_hour * flight_duration
                 self.population[sol_id][flight_id][8] = [loc_penalties, rest_penalties]
                 continue
 
-            flight_duration = self.distance_matrix[src_id - 1][dst_id - 1] // plane_speed
             required_rest_time = min(config['lim']['MIN_REST_HOURS'], flight_duration)
 
             for idx, crew_member_idx in enumerate(crew_members):

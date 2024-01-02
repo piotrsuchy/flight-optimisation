@@ -119,7 +119,7 @@ class EvolutionaryAlgorithm:
         # Penalties 
         for flight in sol.flights:
             if flight.status[-1] == "cancelled":
-                penalties += config['pen']['CANCEL_PENALTY']
+                penalties += flight.duration * config['pen']['CANCEL_PENALTY_PER_HOUR']
                 continue
 
             # try:
