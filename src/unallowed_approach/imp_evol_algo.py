@@ -129,10 +129,10 @@ class ImpossibleEvolutionaryAlgorithm:
         for sol in range(self.pop_size):
             random.seed(config['structs']['SEED_1'])
             for pilot in range(self.pilots_per_sol):
-                days_off = random.sample(range(30), 5)
+                days_off = random.sample(range(30), config['structs']['DAYS_OFF'])
                 self.pilots_status_pop[sol][pilot]['day-off'] = days_off
             for attendant in range(self.attend_per_sol):
-                days_off = random.sample(range(30), 3)
+                days_off = random.sample(range(30), config['structs']['DAYS_OFF'] // 2)
                 self.attend_status_pop[sol][attendant]['day-off'] = days_off
             random.seed(None)
 
@@ -319,7 +319,7 @@ class ImpossibleEvolutionaryAlgorithm:
                 # Assign attendants
                 available_attendants = [idx for idx, status in enumerate(self.attend_status_pop[sol_idx]) if status['location'] == src_id]
                 for slot in range(config['structs']['PILOTS_PER_PLANE'], config['structs']['PILOTS_PER_PLANE'] + config['structs']['ATTEND_PER_PLANE']):
-                    if available_attendants:
+                    if len(available_attendants) >= config['structs']['ATTEND_PER_PLANE']:
                         chosen_idx = random.choice(available_attendants)
                         flight[2 + slot] = chosen_idx + 1  
                         available_attendants.remove(chosen_idx)
@@ -348,7 +348,7 @@ class ImpossibleEvolutionaryAlgorithm:
 
     def create_initial_generation_with_update(self):
         '''
-        Assigns pilots and attendants to flights in a random but allowed fashion
+        assigns pilots and attendants to flights in a random but allowed fashion
         '''
         for sol_idx, sol in enumerate(self.population):
             initial_pilots_status_pop = copy.deepcopy(self.pilots_status_pop)
@@ -357,23 +357,29 @@ class ImpossibleEvolutionaryAlgorithm:
                 src_id = flight[0]
                 dest_id = flight[1]
 
-                # Assign pilots
+                # assign pilots
+                cancelled = False
                 available_pilots = [idx for idx, status in enumerate(self.pilots_status_pop[sol_idx]) if status['location'] == src_id]
+                available_attendants = [idx for idx, status in enumerate(self.attend_status_pop[sol_idx]) if status['location'] == src_id]
+
+                if len(available_pilots) < config['structs']['PILOTS_PER_PLANE'] or len(available_attendants) < config['structs']['ATTEND_PER_PLANE']:
+                    cancelled = True
+
                 for slot in range(config['structs']['PILOTS_PER_PLANE']):
                     if available_pilots:
                         chosen_idx = random.choice(available_pilots)
                         flight[2 + slot] = chosen_idx + 1  
-                        self.pilots_status_pop[sol_idx][chosen_idx]['location'] = dest_id
                         available_pilots.remove(chosen_idx)
+                        if not cancelled:
+                            self.pilots_status_pop[sol_idx][chosen_idx]['location'] = dest_id
 
-                # Assign attendants
-                available_attendants = [idx for idx, status in enumerate(self.attend_status_pop[sol_idx]) if status['location'] == src_id]
                 for slot in range(config['structs']['PILOTS_PER_PLANE'], config['structs']['PILOTS_PER_PLANE'] + config['structs']['ATTEND_PER_PLANE']):
                     if available_attendants:
                         chosen_idx = random.choice(available_attendants)
                         flight[2 + slot] = chosen_idx + 1  
-                        self.attend_status_pop[sol_idx][chosen_idx]['location'] = dest_id
                         available_attendants.remove(chosen_idx)
+                        if not cancelled:
+                            self.attend_status_pop[sol_idx][chosen_idx]['location'] = dest_id
             self.pilots_status_pop = initial_pilots_status_pop
             self.attend_status_pop = initial_attend_status_pop
 

@@ -1,12 +1,12 @@
 {
     "algo": {
         "POPULATION_SIZE": 20,
-        "N_ITERATIONS": 20,
-        "CROSSOVER_RATE": 0.2,
+        "N_ITERATIONS": 1000,
+        "CROSSOVER_RATE": 0,
         "MUTATION_RATE": 1,
         "SELECTION_RATE": 0.5,
-        "N_FLIGHTS_TO_MUT": 40,
-        "UNALL_INITIAL_HEURISTIC": "random",
+        "N_FLIGHTS_TO_MUT": 10,
+        "UNALL_INITIAL_HEURISTIC": "with_update",
         "UNALL_FIX_LOCATION": "no",
         "ALLOWED_HEURISTIC": "work_time",
         "ALLOWED_GEN_CREATION": "with_init"
@@ -16,12 +16,12 @@
         "N_FLIGHTS": 450
     },
     "pen": {
-        "LOCATION_PENALTY": 5000,
-        "CANCEL_PENALTY": 40000,
+        "LOCATION_PENALTY": 2500,
+        "CANCEL_PENALTY": 5000,
         "REST_PENALTY": 1000,
         "TRAINING_OVERLAP_PENALTY": 5000,
-        "OVERWORK_PENALTY": 3,
-        "DAYOFF_PENALTY": 1000
+        "OVERWORK_PENALTY": 30,
+        "DAYOFF_PENALTY": 3000
     },
     "structs": {
         "SEED_1": 32,
@@ -29,9 +29,10 @@
         "PILOTS_PER_PLANE": 2,
         "ATTEND_PER_PLANE": 4,
         "N_AIRPORTS": 10,
-        "N_ATTENDANTS_F_A": 30,
-        "N_PILOTS_F_A": 15,
-        "PLANE_SPEED": 700
+        "N_ATTENDANTS_F_A": 20,
+        "N_PILOTS_F_A": 10,
+        "PLANE_SPEED": 700,
+        "DAYS_OFF": 1
     },
     "lim": {
         "MAX_DAILY_HOURS": 14,
