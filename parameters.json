@@ -1,11 +1,11 @@
 {
     "algo": {
         "POPULATION_SIZE": 20,
-        "N_ITERATIONS": 1000,
+        "N_ITERATIONS": 40,
         "CROSSOVER_RATE": 0,
         "MUTATION_RATE": 1,
         "SELECTION_RATE": 0.5,
-        "N_FLIGHTS_TO_MUT": 10,
+        "N_FLIGHTS_TO_MUT": 45,
         "UNALL_INITIAL_HEURISTIC": "with_update",
         "UNALL_FIX_LOCATION": "no",
         "ALLOWED_HEURISTIC": "work_time",
@@ -17,7 +17,7 @@
     },
     "pen": {
         "LOCATION_PENALTY": 2500,
-        "CANCEL_PENALTY": 5000,
+        "CANCEL_PENALTY": 10000,
         "REST_PENALTY": 1000,
         "TRAINING_OVERLAP_PENALTY": 5000,
         "OVERWORK_PENALTY": 30,

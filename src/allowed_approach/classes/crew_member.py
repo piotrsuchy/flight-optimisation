@@ -16,7 +16,7 @@ class Pilot:
     _weekly_limits = 0
     _monthly_limits = 0
 
-    def __init__(self, base=random.randint(0, 10), training_hours=random.randint(0,720)):
+    def __init__(self, base=random.randint(0, 10), training_hours=random.randint(0,720), days_off=random.sample(range(30), config['structs']['DAYS_OFF'])):
         self.id = Pilot._next_id
         Pilot._next_id += 1
         self.base = base
@@ -28,6 +28,7 @@ class Pilot:
         self.is_available = True
         self.sol_id = None
         self.training_hours = [training_hours, training_hours + 24]
+        self.days_off = days_off
 
     def __repr__(self):
         return f"Pilot ID: {self.id}"
@@ -119,7 +120,7 @@ class FlightAttendant:
     _weekly_limits = 0
     _monthly_limits = 0
 
-    def __init__(self, base=random.randint(0, 10), training_hours=random.randint(0,720)):
+    def __init__(self, base=random.randint(0, 10), training_hours=random.randint(0,720), days_off=random.sample(range(30), config['structs']['DAYS_OFF'] // 2)):
         self.id = FlightAttendant._next_id
         FlightAttendant._next_id += 1
         self.base = base
@@ -132,6 +133,7 @@ class FlightAttendant:
         self.is_available = True
         self.sol_id = None
         self.training_hours = [training_hours, training_hours + 24]
+        self.days_off = days_off
 
     def __repr__(self):
         return f"Attendant ID: {self.id}, BASE: {self.current_base.id} from BASE: {self.base.id}, worked hs: {self.month_worked_hs}, flights taken: {self.flights_taken}, status: {self.is_available}"

@@ -1,6 +1,10 @@
 import logging
+import json
 from .event_scheduler import EventScheduler
 
+with open('parameters.json') as parameters_file:
+    config = json.load(parameters_file)
+    
 class Solution:
     schedulers = {}
 
@@ -20,6 +24,7 @@ class Solution:
         self.pilot_cancel = 0
         self.atten_cancel = 0
         self.training_penalty = 0
+        self.dayoff_penalty = 0
 
     def __str__(self):
         return f"Sol ID: {self.id}, fitness score: {self.fitness_score}, status: {self.initialized}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}"
@@ -40,7 +45,10 @@ class Solution:
         return cancelled_num
 
     def get_training_penal_num(self):
-        return self.training_penalty / 5000
+        return self.training_penalty / config['pen']['TRAINING_OVERLAP_PENALTY']
+
+    def get_dayoff_penal_num(self):
+        return self.dayoff_penalty / config['pen']['DAYOFF_PENALTY']
 
     def print_flight_simulation_times(self):
         for flight in self.flights:

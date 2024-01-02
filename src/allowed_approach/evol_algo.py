@@ -32,7 +32,7 @@ class EvolutionaryAlgorithm:
         print(f"---ITER: {iter} ---Printing fitness scores---")
         for sol_list in self.population:
             sol = sol_list[0]
-            print(f"Sol ID: {sol.id} Fit: {sol.fitness_score} Status: {sol.initialized} Canc: {sol.get_cancelled_flights_num()}, training_pen: {sol.get_training_penal_num()}")
+            print(f"Sol ID: {sol.id} Fit: {sol.fitness_score} Status: {sol.initialized} Canc: {sol.get_cancelled_flights_num()}, training_pen: {sol.get_training_penal_num()}, days_off_pen: {sol.get_dayoff_penal_num()}")
 
     def print_schedules(self):
         print(f"---Printing the schedules---")
@@ -110,11 +110,11 @@ class EvolutionaryAlgorithm:
         '''
         This function calculates operational costs and penalties of a single solution
         If the flight is cancelled it applies a penalty
-        It returns a list of [op_costs, penalties]
+        It returns a list of penalties
         '''
-        operational_costs = 0
         penalties = 0
         training_penalties = 0
+        days_off_penalties = 0
 
         # Penalties 
         for flight in sol.flights:
@@ -122,19 +122,25 @@ class EvolutionaryAlgorithm:
                 penalties += config['pen']['CANCEL_PENALTY']
                 continue
 
-            try:
-                for pilot in flight.pilots:
-                    if flight.simulation_time <= pilot.training_hours[1] and flight.simulation_time + flight.duration >= pilot.training_hours[0]:
-                        training_penalties += config['pen']['TRAINING_OVERLAP_PENALTY']
+            # try:
+            for pilot in flight.pilots:
+                if flight.simulation_time <= pilot.training_hours[1] and flight.simulation_time + flight.duration >= pilot.training_hours[0]:
+                    training_penalties += config['pen']['TRAINING_OVERLAP_PENALTY']
 
-                for attendant in flight.attendants:
-                    if flight.simulation_time <= attendant.training_hours[1] and flight.simulation_time + flight.duration >= attendant.training_hours[0]:
-                        training_penalties += config['pen']['TRAINING_OVERLAP_PENALTY']
+                if flight.simulation_time // 24 in pilot.days_off:
+                    days_off_penalties += config['pen']['DAYOFF_PENALTY']
 
-            except TypeError as te:
-                print(f"Status of the flight is: {flight.status}, but crew has None: pil: {flight.pilots} att: {flight.attendants}", te)
+            for attendant in flight.attendants:
+                if flight.simulation_time <= attendant.training_hours[1] and flight.simulation_time + flight.duration >= attendant.training_hours[0]:
+                    training_penalties += config['pen']['TRAINING_OVERLAP_PENALTY']
 
-        return [int(operational_costs), int(penalties), int(training_penalties)]
+                if flight.simulation_time // 24 in attendant.days_off:
+                    days_off_penalties += config['pen']['DAYOFF_PENALTY']
+
+            # except TypeError as te:
+            #     print(f"Status of the flight is: {flight.status}, but crew has None: pil: {flight.pilots} att: {flight.attendants}", te)
+
+        return [int(penalties), int(training_penalties), int(days_off_penalties)]
 
     def roulette_selection(self):
         '''This function selects a solution using roulette wheel selection'''
@@ -204,12 +210,13 @@ class EvolutionaryAlgorithm:
         of all solutions in the population
         '''
         for sol_id, sol in enumerate(self.population):
-            operation_costs, penalties, training_penalties = self.fitness_function(
+            penalties, training_penalties, dayoff_penalties = self.fitness_function(
                 sol[0])
             self.population[sol_id][1] = [
-                operation_costs, penalties, training_penalties]
-            self.population[sol_id][0].fitness_score = operation_costs + penalties + training_penalties
+                penalties, training_penalties, dayoff_penalties]
+            self.population[sol_id][0].fitness_score = penalties + training_penalties + dayoff_penalties
             self.population[sol_id][0].training_penalty = training_penalties
+            self.population[sol_id][0].dayoff_penalty = dayoff_penalties
 
     def mutation_attendants(self, sol):
         '''Make a random flight change the attendants'''
