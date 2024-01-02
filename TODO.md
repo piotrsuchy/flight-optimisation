@@ -3,7 +3,6 @@
 ## Both approaches
 
 - penalty tracking - initial vs final to add to the fitness scores
-- maybe add days off in the same way as training overlap (?)
 
 ## Unallowed approach
 
@@ -12,6 +11,7 @@
 ## Allowed approach
 
 - getting the solutions form from the simulation
+- maybe add days off in the same way as training overlap (?)
 
 ## How to create common structures - DONE
 
