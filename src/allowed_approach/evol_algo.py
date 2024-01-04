@@ -163,9 +163,10 @@ class EvolutionaryAlgorithm:
         return best_in_tournament
 
     def rank_selection(self):
-        '''This function selects a solution using rank selection'''
+        '''This function selects a solution using rank selection for minimization problems'''
         sorted_population = sorted(
-            self.population, key=lambda sol: sol[0].fitness_score, reverse=True)
+            self.population, key=lambda sol: sol[0].fitness_score)
+        
         rank_sum = len(sorted_population) * (len(sorted_population) + 1) / 2
         rank_probabilities = [
             (i + 1) / rank_sum for i in range(len(sorted_population))]
