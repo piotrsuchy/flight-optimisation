@@ -20,6 +20,7 @@ class EvolutionaryAlgorithm:
         self.population = []
         self.initial_structures = initial_structures
         self.iteration_scores = []
+        self.iteration_penalties = []
 
     def print_population(self):
         print(f"---Printing the population---")
@@ -339,6 +340,20 @@ class EvolutionaryAlgorithm:
             'bottom_half_median': bottom_half_median
         })
 
+    def store_iteration_penalties(self, iteration):
+        best_sol = self.population[0][0]
+        cancelled_pen_num = best_sol.get_cancelled_flights_num()
+        training_pen_num = best_sol.get_training_penal_num()
+        dayoff_pen_num = best_sol.get_dayoff_penal_num()
+
+        self.iteration_penalties.append({
+            'iteration': iteration,
+            'cancelled_num': cancelled_pen_num,
+            'training_num': training_pen_num,
+            'dayoff_num': dayoff_pen_num,
+        })
+
+
     def evol_algo_loop_with_init(self, iterations_n):
         '''
         This evolutionary algorithm loop takes the 50% best solutions from the
@@ -376,6 +391,7 @@ class EvolutionaryAlgorithm:
             self.population = self.population[:len(elite_population) * 4]
             self.print_fitness_scores(i)
             self.store_iteration_scores(i)
+            self.store_iteration_penalties(i)
 
     def evol_algo_loop_two_pop(self, iterations_n):
         '''
@@ -423,6 +439,7 @@ class EvolutionaryAlgorithm:
 
             self.print_fitness_scores(i)
             self.store_iteration_scores(i)
+            self.store_iteration_penalties(i)
 
     def select_diverse_population(self, population):
         unique_ids = set(sol[0].id for sol in population)
