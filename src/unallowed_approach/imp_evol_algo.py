@@ -40,6 +40,7 @@ class ImpossibleEvolutionaryAlgorithm:
         self.pilots_work_time_by_id = [0 for _ in range(self.pilots_per_sol)]
         self.attend_work_time_by_id = [0 for _ in range(self.attend_per_sol)]
         self.iteration_scores = []
+        self.iteration_penalties = []
 
         self.loc_penalty_count = 0
         self.canc_penalty_count = 0
@@ -529,6 +530,27 @@ class ImpossibleEvolutionaryAlgorithm:
             'bottom_half_median': bottom_half_median
         })
 
+    def store_iteration_penalties(self, iteration):
+        best_sol_id = 0
+        location_pen_num = self.all_sols_penalty_count[best_sol_id][0]
+        rest_pen_num = self.all_sols_penalty_count[best_sol_id][1]
+        cancelled_pen_num = self.all_sols_penalty_count[best_sol_id][2]
+        training_pen_num = self.all_sols_penalty_count[best_sol_id][3]
+        overwork_pen_num = self.all_sols_penalty_count[best_sol_id][5]
+        dayoff_pen_num = self.all_sols_penalty_count[best_sol_id][6]
+
+        self.iteration_penalties.append({
+            'iteration': iteration,
+            'cancelled_num': cancelled_pen_num,
+            'training_num': training_pen_num,
+            'dayoff_num': day_off_penalty,
+            'location_num': location_pen_num,
+            'rest_num': rest_pen_num,
+            'overwork_pen_num': overwork_pen_num,
+            'dayoff_pen_num': dayoff_pen_num
+        })
+
+        
     def save_iteration_data_to_file(self, file_name):
         with open(f'{file_name}.json', 'a') as results_file, open('parameters.json') as params_file:
             results = {'fitness_scores': self.iteration_scores, 'parameters': json.load(params_file)}
@@ -566,6 +588,7 @@ class ImpossibleEvolutionaryAlgorithm:
                 print(f"Initial sols: {initial}")
             
             self.store_iteration_scores(i)
+            self.store_iteration_penalties(i)
             # for j in range(len(self.population)):
             #     self.print_penalties_for_sols(i, j)
             self.reset_state_of_status_pops()

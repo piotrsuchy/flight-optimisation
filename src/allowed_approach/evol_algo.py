@@ -351,6 +351,10 @@ class EvolutionaryAlgorithm:
             'cancelled_num': cancelled_pen_num,
             'training_num': training_pen_num,
             'dayoff_num': dayoff_pen_num,
+            'location_num': 0,
+            'rest_num': 0,
+            'overwork_pen_num': 0,
+            'dayoff_pen_num': 0 
         })
 
 
