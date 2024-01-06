@@ -1,6 +1,6 @@
 import json
 from src.unallowed_approach.imp_evol_algo import ImpossibleEvolutionaryAlgorithm
-from src.allowed_approach.visualisation import plot_fitness_scores
+from src.allowed_approach.visualisation import plot_fitness_scores, plot_penalties
 from config.logs_and_args import get_args
 
 def main():
@@ -41,6 +41,7 @@ def main():
         raise ValueError(f"In parameters file the initial_heuristic parameters has incorrect value. Choose one of 'with_update', 'random' or 'no_update'")
 
     imp_evol_algo.update_fitness_for_all_sols()
+    imp_evol_algo.save_initial_scores_and_penalties()
     initial_penalties = imp_evol_algo.get_penalties_for_sols()
     for i in range(len(imp_evol_algo.population)):
         print(f"START of first gen----")
@@ -53,7 +54,8 @@ def main():
     imp_evol_algo.evolutionary_algorithm_loop(config['algo']['N_ITERATIONS'], print_flag=1, initial=fit_scores)
     print(f"Initial fitness values: {fit_scores}")
 
-    imp_evol_algo.save_iteration_data_to_file(args.file_name)
+    imp_evol_algo.save_iteration_scores_to_file(args.file_name)
+    imp_evol_algo.save_iteration_penalties_to_file(args.file_name)
 
     print(f"---Final penalties applied---")
     for i in range(len(imp_evol_algo.population)):
@@ -65,6 +67,7 @@ def main():
 
     if args.file_name:
         plot_fitness_scores(args.file_name)
+        plot_penalties(args.file_name)
 
 if __name__ == "__main__":
     main()

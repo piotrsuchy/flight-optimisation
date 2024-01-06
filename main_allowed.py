@@ -4,7 +4,7 @@ from src.allowed_approach.structures import Structures
 from src.allowed_approach.classes.airport import Airport
 from src.allowed_approach.solution import Solution
 from src.allowed_approach.evol_algo import EvolutionaryAlgorithm
-from src.allowed_approach.visualisation import plot_fitness_scores
+from src.allowed_approach.visualisation import plot_fitness_scores, plot_penalties
 from config.logs_and_args import get_args, setup_logging, load_from_file
 
 def main():
@@ -19,7 +19,7 @@ def main():
     if args.pickle == "json":
         print(f"Initializing random structures and schedules based on a seed")
         structs_filename = input("What is the name of the json file you want to load?")
-        initial_structures = Structures(filename='test_1.json')
+        initial_structures = Structures(filename=f'{structs_filename}')
         evol_algo = EvolutionaryAlgorithm(
             initial_structures=initial_structures,
             population_size=config['algo']['POPULATION_SIZE'])
@@ -43,6 +43,7 @@ def main():
 
     evol_algo.run_events()
     evol_algo.update_all_fitness_scores()
+    evol_algo.save_initial_scores_and_penalties()
     evol_algo.sort_population()
     evol_algo.print_fitness_scores(0)
 
@@ -59,10 +60,12 @@ def main():
     print(f"----------------------------------------------------------------")
     evol_algo.print_all_info()
 
-    evol_algo.save_iteration_data_to_file(args.file_name)
+    evol_algo.save_iteration_scores_to_file(args.file_name)
+    evol_algo.save_iteration_penalties_to_file(args.file_name)
 
     if args.file_name:
         plot_fitness_scores(args.file_name)
+        plot_penalties(args.file_name)
     
 
 if __name__ == "__main__":
