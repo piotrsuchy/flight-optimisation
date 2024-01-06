@@ -101,6 +101,10 @@ class EvolutionaryAlgorithm:
         print(f"sol_list {sol_list}")
         sol_list[0].get_scheduler_events()
 
+    def save_initial_scores_and_penalties(self):
+        self.store_iteration_penalties(0)
+        self.store_iteration_scores(0)
+
     # @timing_decorator
     def run_events(self):
         for sol_list in self.population:
@@ -353,10 +357,8 @@ class EvolutionaryAlgorithm:
             'dayoff_num': dayoff_pen_num,
             'location_num': 0,
             'rest_num': 0,
-            'overwork_pen_num': 0,
-            'dayoff_pen_num': 0 
+            'overwork_num': 0,
         })
-
 
     def evol_algo_loop_with_init(self, iterations_n):
         '''
@@ -394,8 +396,8 @@ class EvolutionaryAlgorithm:
             self.sort_population()
             self.population = self.population[:len(elite_population) * 4]
             self.print_fitness_scores(i)
-            self.store_iteration_scores(i)
-            self.store_iteration_penalties(i)
+            self.store_iteration_scores(i+1)
+            self.store_iteration_penalties(i+1)
 
     def evol_algo_loop_two_pop(self, iterations_n):
         '''
@@ -504,7 +506,12 @@ class EvolutionaryAlgorithm:
         self.run_schedules()
         self.run_events()
 
-    def save_iteration_data_to_file(self, file_name):
-        with open(f'{file_name}.json', 'a') as results_file, open('parameters.json') as params_file:
+    def save_iteration_scores_to_file(self, file_name):
+        with open(f'{file_name}_scores.json', 'a') as results_file, open('parameters.json') as params_file:
             results = {'fitness_scores': self.iteration_scores, 'parameters': json.load(params_file)}
+            json.dump(results, results_file)
+
+    def save_iteration_penalties_to_file(self, file_name):
+        with open(f'{file_name}_penalties.json', 'a') as results_file, open('parameters.json') as params_file:
+            results = {'penalties': self.iteration_penalties, 'parameters': json.load(params_file)}
             json.dump(results, results_file)
