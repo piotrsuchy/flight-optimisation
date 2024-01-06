@@ -543,17 +543,24 @@ class ImpossibleEvolutionaryAlgorithm:
             'iteration': iteration,
             'cancelled_num': cancelled_pen_num,
             'training_num': training_pen_num,
-            'dayoff_num': day_off_penalty,
             'location_num': location_pen_num,
             'rest_num': rest_pen_num,
-            'overwork_pen_num': overwork_pen_num,
-            'dayoff_pen_num': dayoff_pen_num
+            'overwork_num': overwork_pen_num,
+            'dayoff_num': dayoff_pen_num
         })
-
+    
+    def save_initial_scores_and_penalties(self):
+        self.store_iteration_penalties(0)
+        self.store_iteration_scores(0)
         
-    def save_iteration_data_to_file(self, file_name):
-        with open(f'{file_name}.json', 'a') as results_file, open('parameters.json') as params_file:
+    def save_iteration_scores_to_file(self, file_name):
+        with open(f'{file_name}_scores.json', 'a') as results_file, open('parameters.json') as params_file:
             results = {'fitness_scores': self.iteration_scores, 'parameters': json.load(params_file)}
+            json.dump(results, results_file)
+        
+    def save_iteration_penalties_to_file(self, file_name):
+        with open(f'{file_name}_penalties.json', 'a') as results_file, open('parameters.json') as params_file:
+            results = {'penalties': self.iteration_penalties, 'parameters': json.load(params_file)}
             json.dump(results, results_file)
         
     def evolutionary_algorithm_loop(self, n_iterations, print_flag, initial=None):
@@ -581,15 +588,12 @@ class ImpossibleEvolutionaryAlgorithm:
 
             # Update fitness scores for the entire population
             self.update_fitness_for_all_sols()
-            # self.print_average_fit_score(i)
             if print_flag:
                 self.print_fitness_scores(i)
                 self.print_best_score()
                 print(f"Initial sols: {initial}")
             
-            self.store_iteration_scores(i)
-            self.store_iteration_penalties(i)
-            # for j in range(len(self.population)):
-            #     self.print_penalties_for_sols(i, j)
+            self.store_iteration_scores(i+1)
+            self.store_iteration_penalties(i+1)
             self.reset_state_of_status_pops()
             

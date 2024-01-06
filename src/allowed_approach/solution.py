@@ -40,8 +40,6 @@ class Solution:
 
     def get_cancelled_flights_num(self):
         cancelled_num = len([f for f in self.flights if f.status[-1] == "cancelled"])
-        # if cancelled_num == 0:
-            # print("WOAH")
         return cancelled_num
 
     def get_training_penal_num(self):
