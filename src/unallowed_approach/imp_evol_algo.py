@@ -154,7 +154,7 @@ class ImpossibleEvolutionaryAlgorithm:
         '''Creation of a triangular matrix of distances to save space'''
         for i in range(config['structs']['N_AIRPORTS']):
             for j in range(0, i):
-                distance = random.randint(1000, 20000)
+                distance = int(random.randint(config['structs']['MIN_DIST'], config['structs']['MAX_DIST']))
                 self.distance_matrix[i][j] = distance
                 self.distance_matrix[j][i] = distance
 
