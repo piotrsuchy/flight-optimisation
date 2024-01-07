@@ -36,7 +36,7 @@ class Structures:
         distance_matrix = [[None for _ in range(config['structs']['N_AIRPORTS'])] for _ in range(config['structs']['N_AIRPORTS'])]
         for i in range(config['structs']['N_AIRPORTS']):
             for j in range(0, i):
-                distance = random.randint(1000, 20000)
+                distance = int(random.randint(config['structs']['MIN_DIST'], config['structs']['MAX_DIST']))
                 distance_matrix[i][j] = distance
                 distance_matrix[j][i] = distance
         Airport.distance_matrix = distance_matrix
