@@ -1,7 +1,5 @@
 import json
-import random
 from src.allowed_approach.structures import Structures
-from src.allowed_approach.classes.airport import Airport
 from src.allowed_approach.solution import Solution
 from src.allowed_approach.evol_algo import EvolutionaryAlgorithm
 from src.allowed_approach.visualisation import plot_fitness_scores, plot_penalties
