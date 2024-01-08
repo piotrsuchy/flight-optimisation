@@ -26,7 +26,7 @@ class ImpossibleEvolutionaryAlgorithm:
         self.mutation_rate = config['algo']['MUTATION_RATE']
         self.crossover_rate = config['algo']['CROSSOVER_RATE']
         self.selection_rate = config['algo']['SELECTION_RATE']
-        self.n_iterations = config['algo']['N_ITERATIONS']
+        self.n_iterations = config['algo']['N_ITERATIONS_UN']
 
         self.distance_matrix = [[None for _ in range(self.n_airports)] for _ in range(self.n_airports)]
         self.population = [None for _ in range(self.pop_size)]
