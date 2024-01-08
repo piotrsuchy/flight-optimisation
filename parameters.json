@@ -1,7 +1,8 @@
 {
     "algo": {
         "POPULATION_SIZE": 20,
-        "N_ITERATIONS": 30,
+        "N_ITERATIONS_UN": 2000,
+        "N_ITERATIONS_AL": 30,
         "CROSSOVER_RATE": 0,
         "MUTATION_RATE": 1,
         "SELECTION_RATE": 0.5,

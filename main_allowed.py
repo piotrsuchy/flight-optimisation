@@ -15,14 +15,13 @@ def main():
     setup_logging(args.log)
 
     if args.pickle == "json":
-        print(f"Initializing random structures and schedules based on a seed")
         structs_filename = input("What is the name of the json file you want to load?")
         initial_structures = Structures(filename=f'{structs_filename}')
         evol_algo = EvolutionaryAlgorithm(
             initial_structures=initial_structures,
             population_size=config['algo']['POPULATION_SIZE'])
         evol_algo.initialize_population()
-        evol_algo.assign_schedules_for_initialized_sols_from_json('test_1.json')
+        evol_algo.assign_schedules_for_initialized_sols_from_json(f'{structs_filename}')
         evol_algo.run_schedules()
     elif args.pickle:
         print(f"Loading the structures and schedules from file: {args.pickle}")
@@ -49,9 +48,9 @@ def main():
     at each loop and keeping best 50% of solutions, mutating whole pop
     and keeping a copy of elite pop - best 25% to save best'''
     if config['algo']['ALLOWED_GEN_CREATION'] == 'with_init':
-        evol_algo.evol_algo_loop_with_init(config['algo']['N_ITERATIONS'])
+        evol_algo.evol_algo_loop_with_init(config['algo']['N_ITERATIONS_AL'])
     elif config['algo']['ALLOWED_GEN_CREATION'] == 'two_pop':
-        evol_algo.evol_algo_loop_two_pop(config['algo']['N_ITERATIONS'])
+        evol_algo.evol_algo_loop_two_pop(config['algo']['N_ITERATIONS_AL'])
     else:
         raise ValueError(f"ALLOWED_GEN_CREATION in parameters.json has to be either 'with_init' or 'two_pop'")
 

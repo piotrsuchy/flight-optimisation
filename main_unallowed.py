@@ -51,7 +51,7 @@ def main():
     imp_evol_algo.print_fitness_scores(0)
     fit_scores = imp_evol_algo.get_fitness_scores()
 
-    imp_evol_algo.evolutionary_algorithm_loop(config['algo']['N_ITERATIONS'], print_flag=1, initial=fit_scores)
+    imp_evol_algo.evolutionary_algorithm_loop(config['algo']['N_ITERATIONS_UN'], print_flag=1, initial=fit_scores)
     print(f"Initial fitness values: {fit_scores}")
 
     imp_evol_algo.save_iteration_scores_to_file(args.file_name)
@@ -59,7 +59,7 @@ def main():
 
     print(f"---Final penalties applied---")
     for i in range(len(imp_evol_algo.population)):
-        imp_evol_algo.print_penalties_for_sols(config['algo']['N_ITERATIONS']+1, i)
+        imp_evol_algo.print_penalties_for_sols(config['algo']['N_ITERATIONS_UN']+1, i)
 
     print(f"---Initial penalties applied---")
     for i in range(len(initial_penalties)):
