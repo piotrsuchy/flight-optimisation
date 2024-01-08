@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 import json
 
 def plot_compare_two_fitness_scores(file_path_1, file_path_2):
@@ -38,7 +39,8 @@ def plot_compare_two_fitness_scores(file_path_1, file_path_2):
     plt.legend()
     plt.show()
 
-def plot_compare_multiple_fitness_scores(**kwargs):
+
+def plot_compare_multiple_fitness_scores(moving_avg_period=5, **kwargs):
     plt.figure(figsize=(10, 6))
 
     for file_path, label in kwargs.items():
@@ -49,14 +51,17 @@ def plot_compare_multiple_fitness_scores(**kwargs):
         best_scores = [item['best_score'] for item in data['fitness_scores']]
         median_scores = [item['median_score'] for item in data['fitness_scores']]
 
-        plt.plot(iterations, best_scores, label=f'best score - ({label})')
-        plt.plot(iterations, median_scores, label=f'median score - ({label})')
+        median_scores_smoothed = pd.Series(median_scores).rolling(window=moving_avg_period).mean()
+
+        plt.plot(iterations, best_scores, label=f'Best Score - {label}')
+        plt.plot(iterations, median_scores_smoothed, label=f'Median Score (MA) - {label}', linestyle='--')
 
     plt.xlabel('Iteration')
     plt.ylabel('Fitness Score')
-    plt.title('Comparison of Fitness Scores for different operators')
+    plt.title('Comparison of Fitness Scores with Moving Average for Median Scores')
     plt.legend()
     plt.show()
+
 
 def plot_fitness_scores(file_path):
     with open(f'{file_path}_scores.json', 'r') as file:
