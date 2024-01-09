@@ -8,6 +8,7 @@
         "SELECTION_RATE": 0.5,
         "N_FLIGHTS_TO_MUT": 30,
         "UNALL_FIX_LOCATION_PERCENT": 0.45,
+        "ONE_MUTATE_RATIO": 0.5,
         "UNALL_INITIAL_HEURISTIC": "with_update",
         "ALLOWED_HEURISTIC": "work_time",
         "ALLOWED_GEN_CREATION": "with_init"

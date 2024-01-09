@@ -576,7 +576,7 @@ class ImpossibleEvolutionaryAlgorithm:
             # Perform crossover and mutation on copies of these top solutions
             new_solutions = self.crossover_solutions(to_crossover)
             # 50 / 50 mutation rate for two types of mutation operators
-            if random.random() < 0.5:
+            if random.random() < config['algo']['ONE_MUTATE_RATIO']:
                 mutated_new_solutions = self.mutate_solutions(new_solutions)
             else:
                 mutated_new_solutions = self.mutate_solutions_from_all(new_solutions, config['algo']['N_FLIGHTS_TO_MUT'])
