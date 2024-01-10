@@ -360,7 +360,7 @@ class EvolutionaryAlgorithm:
             'overwork_num': 0,
         })
 
-    def evol_algo_loop_with_init(self, iterations_n):
+    def evol_algo_loop_with_init(self, iterations_n, filename=None):
         '''
         This evolutionary algorithm loop takes the 50% best solutions from the
         population and mutates them in-place. Afterwards to fill the rest of the 
@@ -371,7 +371,7 @@ class EvolutionaryAlgorithm:
             elite_population = copy.deepcopy(self.population[:len(self.population)//4])
             self.population = self.population[:len(self.population)//2]
             # add new solutions and run them
-            self.add_new_solutions()
+            self.add_new_solutions(filename)
             for sol_list in self.population:
                 sol = sol_list[0]
                 sol.scheduler.set_time(0)
@@ -499,10 +499,13 @@ class EvolutionaryAlgorithm:
             sol[0].fitness_score = operation_costs + penalties + training_penalties
             sol[0].training_penalty = training_penalties
 
-    def add_new_solutions(self):
+    def add_new_solutions(self, filename):
         '''This function '''
         self.initialize_population()
-        self.assign_schedules_for_initialized_sols()
+        if filename is not None:
+            self.assign_schedules_for_initialized_sols_from_json(filename)
+        else:
+            self.assign_schedules_for_initialized_sols()
         self.run_schedules()
         self.run_events()
 

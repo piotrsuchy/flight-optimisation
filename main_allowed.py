@@ -13,6 +13,7 @@ def main():
     if args.file_name is None:
         args.file_name = input("Enter the file name in which to save the plot: ")
     setup_logging(args.log)
+    structs_filename = None
 
     if args.pickle == "json":
         structs_filename = input("What is the name of the json file you want to load?")
@@ -48,7 +49,7 @@ def main():
     at each loop and keeping best 50% of solutions, mutating whole pop
     and keeping a copy of elite pop - best 25% to save best'''
     if config['algo']['ALLOWED_GEN_CREATION'] == 'with_init':
-        evol_algo.evol_algo_loop_with_init(config['algo']['N_ITERATIONS_AL'])
+        evol_algo.evol_algo_loop_with_init(config['algo']['N_ITERATIONS_AL'], structs_filename)
     elif config['algo']['ALLOWED_GEN_CREATION'] == 'two_pop':
         evol_algo.evol_algo_loop_two_pop(config['algo']['N_ITERATIONS_AL'])
     else:
