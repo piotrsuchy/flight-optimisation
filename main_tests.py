@@ -5,13 +5,62 @@ import subprocess
 test_cases = [
     {
         "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_AL": 40,
             "ALLOWED_HEURISTIC": "work_time",
+            "ALLOWED_GEN_CREATION": "two_pop",
+            "MUTATION_RATE": 1
         },
         "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_AL": 40,
             "ALLOWED_HEURISTIC": "random",
+            "ALLOWED_GEN_CREATION": "two_pop"
         },
         "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_AL": 40,
             "ALLOWED_HEURISTIC": "smallest_id",
+            "ALLOWED_GEN_CREATION": "two_pop"
+        },
+        "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_AL": 40,
+            "ALLOWED_HEURISTIC": "work_time",
+            "ALLOWED_GEN_CREATION": "with_init"
+        },
+        "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_AL": 40,
+            "ALLOWED_HEURISTIC": "random",
+            "ALLOWED_GEN_CREATION": "with_init"
+        },
+        "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_AL": 40,
+            "ALLOWED_HEURISTIC": "smallest_id",
+            "ALLOWED_GEN_CREATION": "with_init"
+        },
+        "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_AL": 40,
+            "ALLOWED_HEURISTIC": "work_time",
+            "ALLOWED_GEN_CREATION": "with_init",
+            "MUTATION_RATE": 0.25
+        },
+        "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_AL": 40,
+            "ALLOWED_HEURISTIC": "work_time",
+            "ALLOWED_GEN_CREATION": "with_init",
+            "MUTATION_RATE": 0.5
+        },
+        "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_AL": 40,
+            "ALLOWED_HEURISTIC": "work_time",
+            "ALLOWED_GEN_CREATION": "with_init",
+            "MUTATION_RATE": 0.75
         }
     }
 ]

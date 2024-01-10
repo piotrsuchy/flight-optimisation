@@ -85,7 +85,7 @@ def plot_fitness_scores(file_path):
     plt.title('evolution of fitness scores over iterations')
     plt.legend()
     plt.savefig(f"{file_path}.png")
-    plt.show()
+    # plt.show()
 
 def plot_penalties(file_path):
     with open(f'{file_path}_penalties.json', 'r') as file:
@@ -113,4 +113,4 @@ def plot_penalties(file_path):
     plt.title('evolution of number of different penalties applied on the best solution')
     plt.legend()
     plt.savefig(f"{file_path}.png")
-    plt.show()
+    # plt.show()

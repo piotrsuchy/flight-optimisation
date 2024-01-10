@@ -2,9 +2,9 @@
     "algo": {
         "POPULATION_SIZE": 20,
         "N_ITERATIONS_UN": 2000,
-        "N_ITERATIONS_AL": 30,
+        "N_ITERATIONS_AL": 40,
         "CROSSOVER_RATE": 0,
-        "MUTATION_RATE": 1,
+        "MUTATION_RATE": 0.75,
         "SELECTION_RATE": 0.5,
         "N_FLIGHTS_TO_MUT": 30,
         "UNALL_FIX_LOCATION_PERCENT": 0.45,
