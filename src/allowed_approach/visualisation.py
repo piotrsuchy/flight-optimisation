@@ -84,7 +84,7 @@ def plot_fitness_scores(file_path):
     plt.ylabel('fitness score')
     plt.title('evolution of fitness scores over iterations')
     plt.legend()
-    plt.savefig(f"{file_path}.png")
+    plt.savefig(f"{file_path}_scores.png")
     # plt.show()
 
 def plot_penalties(file_path):
@@ -112,5 +112,5 @@ def plot_penalties(file_path):
     plt.ylabel('number of penalties applied in the best solution')
     plt.title('evolution of number of different penalties applied on the best solution')
     plt.legend()
-    plt.savefig(f"{file_path}.png")
+    plt.savefig(f"{file_path}_penalties.png")
     # plt.show()

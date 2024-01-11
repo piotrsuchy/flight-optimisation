@@ -19,7 +19,6 @@ class Solution:
         self.simulation_hs = simulation_hs
         self.flights = []
         self.fitness_score = None
-        self.events = None
         self.schedule = None
         self.pilot_cancel = 0
         self.atten_cancel = 0

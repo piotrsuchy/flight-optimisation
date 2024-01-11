@@ -4,6 +4,8 @@ import numpy as np
 import json
 import logging
 import statistics
+import time
+from pympler import asizeof
 
 from src.allowed_approach.schedule import Schedule
 from src.allowed_approach.solution import Solution
@@ -368,6 +370,8 @@ class EvolutionaryAlgorithm:
         solutions adding them to self.population
         '''
         for i in range(iterations_n):
+            self.reset_crew()
+            start_time = time.time()
             elite_population = copy.deepcopy(self.population[:len(self.population)//4])
             self.population = self.population[:len(self.population)//2]
             # add new solutions and run them
@@ -378,7 +382,7 @@ class EvolutionaryAlgorithm:
                 mutation_successful = False
                 while not mutation_successful:
                     try:
-                        time = self.mutation_whole_crew(sol)
+                        mut_time = self.mutation_whole_crew(sol)
                         mutation_successful = True
                     except ValueError:
                         logging.error(f"Error during mutation. Retrying with a different flight.")
@@ -388,7 +392,7 @@ class EvolutionaryAlgorithm:
                 for airport in sol.structures.airports:
                     airport.check_consistency()
 
-                self.reschedule_flights(sol, time, i, config['algo']['ALLOWED_HEURISTIC'])
+                self.reschedule_flights(sol, mut_time, i, config['algo']['ALLOWED_HEURISTIC'])
 
             self.run_events()
             self.update_all_fitness_scores()
@@ -398,6 +402,20 @@ class EvolutionaryAlgorithm:
             self.print_fitness_scores(i)
             self.store_iteration_scores(i+1)
             self.store_iteration_penalties(i+1)
+            end_time = time.time()
+            print(f"-----------ITERATION {i} DURATION: {end_time - start_time:.2f}")
+
+    def reset_crew(self):
+        for sol_list in self.population:
+            # sol_list[0].flights = []
+            for airport in sol_list[0].structures.airports:
+                # airport.clear_logs()
+                for pilot in airport.pilots:
+                    pilot.status = []
+                    pilot.flights_taken = 0
+                for attendant in airport.attendants:
+                    attendant.status = []
+                    attendant.flights_taken = 0
 
     def evol_algo_loop_two_pop(self, iterations_n):
         '''
@@ -407,14 +425,30 @@ class EvolutionaryAlgorithm:
         new population.
         '''
         for i in range(iterations_n):
+            size = asizeof.asizeof(self.population)
+            print(f"Size of self.population: {size}")
+            sum_flights = 0
+            sum_scheduler = 0
+            sum_structures = 0
+            for sol_list in self.population:
+                sum_flights += asizeof.asizeof(sol_list[0].flights)
+                sum_scheduler += asizeof.asizeof(sol_list[0].scheduler)
+                sum_structures += asizeof.asizeof(sol_list[0].structures)
+            print(f"Size of flights {sum_flights}")
+            print(f"Size of scheduler {sum_scheduler}")
+            print(f"Size of structures {sum_structures}")
+            self.reset_crew()
+            start_time = time.time()
             parent_pop = copy.deepcopy(self.population)
+            end_time = time.time()
+            print(f"-----------ITERATION {i} DURATION: {end_time - start_time:.2f}")
             for sol_list in parent_pop:
                 sol = sol_list[0]
                 sol.scheduler.set_time(0)
                 mutation_successful = False
                 while not mutation_successful:
                     try:
-                        time = self.mutation_whole_crew(sol)
+                        mut_time = self.mutation_whole_crew(sol)
                         mutation_successful = True
                     except ValueError:
                         # logging.erorr
@@ -424,7 +458,7 @@ class EvolutionaryAlgorithm:
                 for airport in sol.structures.airports:
                     airport.check_consistency()
 
-                self.reschedule_flights_in_pop(sol, time, parent_pop, config['algo']['ALLOWED_HEURISTIC'])
+                self.reschedule_flights_in_pop(sol, mut_time, parent_pop, config['algo']['ALLOWED_HEURISTIC'])
 
             for sol_list in parent_pop:
                 sol_list[0].run_events()
@@ -492,12 +526,13 @@ class EvolutionaryAlgorithm:
         of all solutions in the population
         '''
         for sol in population:
-            operation_costs, penalties, training_penalties = self.fitness_function(
+            penalties, training_penalties, day_off_penalties = self.fitness_function(
                 sol[0])
             sol[1] = [
-                operation_costs, penalties, training_penalties]
-            sol[0].fitness_score = operation_costs + penalties + training_penalties
+                penalties, training_penalties, day_off_penalties]
+            sol[0].fitness_score = penalties + training_penalties + day_off_penalties
             sol[0].training_penalty = training_penalties
+            sol[0].day_off_penalties = day_off_penalties
 
     def add_new_solutions(self, filename):
         '''This function '''

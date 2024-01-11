@@ -18,7 +18,6 @@ class Airport:
         self.free = True
         self.pilots = []
         self.attendants = []
-        self.lanes = []
         self.sol_id = None
         self.occupied = False
 
