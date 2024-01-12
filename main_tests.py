@@ -2,7 +2,52 @@ import json
 import subprocess
 import datetime
 
-test_cases = [
+test_cases_unallowed = [
+    {
+        "algo": {
+            "POPULATION_SIZE": 20,
+            "CROSSOVER_RATE": 0,
+            "N_ITERATIONS_UN": 2500,
+            "MUTATION_RATE": 1,
+            "UNALL_FIX_LOCATION_PERCENT": 0,
+            "ONE_MUTATE_RATIO": 0.5,
+            "UNALL_INITIAL_HEURISTIC": "with_update"
+        }
+    },
+    {
+        "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_UN": 2500,
+            "MUTATION_RATE": 1,
+            "UNALL_FIX_LOCATION_PERCENT": 0,
+            "ONE_MUTATE_RATIO": 0.5,
+            "UNALL_INITIAL_HEURISTIC": "no_update"
+        }
+    },
+    {
+        "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_UN": 2500,
+            "MUTATION_RATE": 1,
+            "UNALL_FIX_LOCATION_PERCENT": 0,
+            "ONE_MUTATE_RATIO": 0.5,
+            "UNALL_INITIAL_HEURISTIC": "random"
+        }
+    },
+    {
+        "algo": {
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_UN": 2500,
+            "MUTATION_RATE": 1,
+            "UNALL_FIX_LOCATION_PERCENT": 0,
+            "CROSSOVER_RATE": 0.2,
+            "ONE_MUTATE_RATIO": 0.5,
+            "UNALL_INITIAL_HEURISTIC": "with_update"
+        }
+    }
+]
+
+test_cases_allowed = [
     # {
     #     "algo": {
     #         "POPULATION_SIZE": 20,
@@ -111,8 +156,34 @@ def run_main_allowed(structs_file, plot_filename):
     process.communicate(input=inputs.encode())
     return process.returncode == 0
 
+def run_main_unallowed(structs_file, plot_filename):
+    current_timestamp = get_current_timestamp()
+    command = f'python main_unallowed.py'
+    inputs = f'{plot_filename}_{current_timestamp}\nyes\n{structs_file}\nno\n'
+    process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE)
+    process.communicate(input=inputs.encode())
+    return process.returncode == 0
+
 def main():
-    for test_case_index, test_case in enumerate(test_cases):
+    # for test_case_index, test_case in enumerate(test_cases_allowed):
+
+    #     print(f"Test case being run: {test_case}")
+    #     update_parameters_file(test_case)
+
+    #     for structs_file in structs_files:
+    #         plot_filename = f"plot_test_case_{test_case_index}_{structs_file.split('.')[0]}"
+
+    #         print(f"Running test case {test_case_index} with {structs_file}")
+    #         success = run_main_allowed(structs_file, plot_filename)
+
+    #         if not success:
+    #             print(f"Error occurred while running test case {test_case_index} with {structs_file}")
+    #         else:
+    #             print(f"Completed test case {test_case_index} with {structs_file}")
+
+    # print("All test cases completed.")
+
+    for test_case_index, test_case in enumerate(test_cases_unallowed):
 
         print(f"Test case being run: {test_case}")
         update_parameters_file(test_case)
@@ -121,7 +192,7 @@ def main():
             plot_filename = f"plot_test_case_{test_case_index}_{structs_file.split('.')[0]}"
 
             print(f"Running test case {test_case_index} with {structs_file}")
-            success = run_main_allowed(structs_file, plot_filename)
+            success = run_main_unallowed(structs_file, plot_filename)
 
             if not success:
                 print(f"Error occurred while running test case {test_case_index} with {structs_file}")

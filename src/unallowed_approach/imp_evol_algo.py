@@ -102,8 +102,11 @@ class ImpossibleEvolutionaryAlgorithm:
             data = json.load(file)
         self.distance_matrix = data['distance_matrix']
         self.pilots_status_pop = data['pilots_status_pop']
+        self.pilots_per_sol = len(self.pilots_status_pop[0])
         self.attend_status_pop = data['attend_status_pop']
+        self.attend_per_sol = len(self.attend_status_pop[0])
         self.population = data['population']
+        self.pop_size = len(self.population)
 
     def save_structures(self, filename):
         data = {
