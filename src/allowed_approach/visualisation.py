@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import json
 
-def plot_compare_two_fitness_scores(file_path_1, file_path_2):
+def plot_compare_two_fitness_scores(plotname, file_path_1, file_path_2):
     with open(f'{file_path_1}_scores.json', 'r') as file:
         data_1 = json.load(file)
 
@@ -17,10 +17,10 @@ def plot_compare_two_fitness_scores(file_path_1, file_path_2):
     bottom_half_medians = [item['bottom_half_median'] for item in data_1['fitness_scores']]
     
     plt.figure(figsize=(10, 6))
-    plt.plot(iterations, best_scores, label='best score')
-    plt.plot(iterations, median_scores, label='median score')
-    plt.plot(iterations, top_half_medians, label='top half median')
-    plt.plot(iterations, bottom_half_medians, label='bottom half median')
+    plt.plot(iterations, best_scores, label='najlepszy wynik')
+    plt.plot(iterations, median_scores, label='mediana wyników')
+    plt.plot(iterations, top_half_medians, label='mediana 50% lepszych wyników')
+    plt.plot(iterations, bottom_half_medians, label='mediana 50% gorszych wynikó∑')
 
     iterations = [item['iteration'] for item in data_2['fitness_scores']]
     best_scores = [item['best_score'] for item in data_2['fitness_scores']]
@@ -28,19 +28,19 @@ def plot_compare_two_fitness_scores(file_path_1, file_path_2):
     top_half_medians = [item['top_half_median'] for item in data_2['fitness_scores']]
     bottom_half_medians = [item['bottom_half_median'] for item in data_2['fitness_scores']]
 
-    plt.plot(iterations, best_scores, label='best score')
-    plt.plot(iterations, median_scores, label='median score')
-    plt.plot(iterations, top_half_medians, label='top half median')
-    plt.plot(iterations, bottom_half_medians, label='bottom half median')
+    plt.plot(iterations, best_scores, label='najlepszy wynik')
+    plt.plot(iterations, median_scores, label='mediana wyników')
+    plt.plot(iterations, top_half_medians, label='mediana 50% lepszych wyników')
+    plt.plot(iterations, bottom_half_medians, label='mediana 50% gorszych wynikó∑')
 
-    plt.xlabel('iteration')
-    plt.ylabel('fitness score')
-    plt.title('Comparison of two fitness scores')
+    plt.xlabel('Liczba iteracji')
+    plt.ylabel('Funkcja celu')
+    # plt.title('Comparison of two fitness scores')
     plt.legend()
-    plt.show()
+    plt.savefig(plotname)
 
 
-def plot_compare_multiple_fitness_scores(moving_avg_period=5, **kwargs):
+def plot_compare_multiple_fitness_scores(plotname, moving_avg_period=5, **kwargs):
     plt.figure(figsize=(10, 6))
 
     for file_path, label in kwargs.items():
@@ -53,14 +53,14 @@ def plot_compare_multiple_fitness_scores(moving_avg_period=5, **kwargs):
 
         median_scores_smoothed = pd.Series(median_scores).rolling(window=moving_avg_period).mean()
 
-        plt.plot(iterations, best_scores, label=f'Best Score - {label}')
-        plt.plot(iterations, median_scores_smoothed, label=f'Median Score (MA) - {label}', linestyle='--')
+        plt.plot(iterations, best_scores, label=f'Najlepszy wynik - {label}')
+        plt.plot(iterations, median_scores_smoothed, label=f'Mediana wyników (MA) - {label}', linestyle='--')
 
-    plt.xlabel('Iteration')
-    plt.ylabel('Fitness Score')
-    plt.title('Comparison of Fitness Scores with Moving Average for Median Scores')
+    plt.xlabel('Liczba iteracji')
+    plt.ylabel('Funkcja celu')
+    # plt.title('Comparison of Fitness Scores with Moving Average for Median Scores')
     plt.legend()
-    plt.show()
+    plt.savefig(plotname)
 
 
 def plot_fitness_scores(file_path):
@@ -76,16 +76,15 @@ def plot_fitness_scores(file_path):
 
     # plotting
     plt.figure(figsize=(10, 6))
-    plt.plot(iterations, best_scores, label='best score')
-    plt.plot(iterations, median_scores, label='median score')
-    plt.plot(iterations, top_half_medians, label='top half median')
-    plt.plot(iterations, bottom_half_medians, label='bottom half median')
-    plt.xlabel('iteration')
-    plt.ylabel('fitness score')
-    plt.title('evolution of fitness scores over iterations')
+    plt.plot(iterations, best_scores, label='najlepszy wynik')
+    plt.plot(iterations, median_scores, label='mediana wyników')
+    plt.plot(iterations, top_half_medians, label='mediana 50% lepszych wyników')
+    plt.plot(iterations, bottom_half_medians, label='mediana 50% gorszych wynikó∑')
+    plt.xlabel('Liczba iteracji')
+    plt.ylabel('Funkcja celu')
+    # plt.title('evolution of fitness scores over iterations')
     plt.legend()
     plt.savefig(f"{file_path}_scores.png")
-    # plt.show()
 
 def plot_penalties(file_path):
     with open(f'{file_path}_penalties.json', 'r') as file:
@@ -101,16 +100,15 @@ def plot_penalties(file_path):
 
     #plot penalties
     plt.figure(figsize=(10, 6))
-    plt.plot(iterations, cancelled_nums, label='number of cancelled flights')
-    plt.plot(iterations, training_nums, label='number of training overlaps')
-    plt.plot(iterations, dayoff_nums, label='number of dayoff overlaps')
-    plt.plot(iterations, location_nums, label='number of location penalties applied')
-    plt.plot(iterations, rest_nums, label='number of rest penalties applied')
-    plt.plot(iterations, overwork_nums, label='number of overwork hours')
+    plt.plot(iterations, cancelled_nums, label='liczba anulowanych lotów')
+    plt.plot(iterations, training_nums, label='liczba kar za szkolenie')
+    plt.plot(iterations, dayoff_nums, label='liczba kar za dzień wolny')
+    plt.plot(iterations, location_nums, label='liczba kar za złą lokalizację')
+    plt.plot(iterations, rest_nums, label='liczba kar za odpoczynek')
+    plt.plot(iterations, overwork_nums, label='liczba nadgodzin')
     plt.yscale('log')
-    plt.xlabel('iteration')
-    plt.ylabel('number of penalties applied in the best solution')
-    plt.title('evolution of number of different penalties applied on the best solution')
+    plt.xlabel('Liczba iteracji')
+    plt.ylabel('Kary nałożone na najlepsze rozwiązanie')
+    # plt.title('evolution of number of different penalties applied on the best solution')
     plt.legend()
     plt.savefig(f"{file_path}_penalties.png")
-    # plt.show()
