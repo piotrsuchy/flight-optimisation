@@ -59,8 +59,11 @@ def plot_compare_multiple_fitness_scores(plotname, moving_avg_period=5, **kwargs
     plt.xlabel('Liczba iteracji')
     plt.ylabel('Funkcja celu')
     # plt.title('Comparison of Fitness Scores with Moving Average for Median Scores')
-    plt.legend()
+    # plt.legend()
+    plt.legend(bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=2)
+    plt.tight_layout()
     plt.savefig(plotname)
+
 
 
 def plot_fitness_scores(file_path):

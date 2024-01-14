@@ -388,10 +388,6 @@ class EvolutionaryAlgorithm:
                         logging.error(f"Error during mutation. Retrying with a different flight.")
                         print(f"Error during mutation. Retrying with a different flight.")
                 sol.initialized = "Mutated    "
-
-                for airport in sol.structures.airports:
-                    airport.check_consistency()
-
                 self.reschedule_flights(sol, mut_time, i, config['algo']['ALLOWED_HEURISTIC'])
 
             self.run_events()
@@ -405,44 +401,15 @@ class EvolutionaryAlgorithm:
             end_time = time.time()
             print(f"-----------ITERATION {i} DURATION: {end_time - start_time:.2f}")
 
-    def reset_crew(self):
-        for sol_list in self.population:
-            # sol_list[0].flights = []
-            for airport in sol_list[0].structures.airports:
-                # airport.clear_logs()
-                for pilot in airport.pilots:
-                    pilot.status = []
-                    pilot.flights_taken = 0
-                for attendant in airport.attendants:
-                    attendant.status = []
-                    attendant.flights_taken = 0
-
-    def evol_algo_loop_two_pop(self, iterations_n):
-        '''
-        This evolutionary algorithm loop copies the current population
-        and mutates the copy - so we hold two populations at the same time.
-        From the two populations we choose the best solutions to create
-        new population.
-        '''
+    def evol_algo_loop_two_pop(self, iterations_n, filename):
         for i in range(iterations_n):
-            size = asizeof.asizeof(self.population)
-            print(f"Size of self.population: {size}")
-            sum_flights = 0
-            sum_scheduler = 0
-            sum_structures = 0
-            for sol_list in self.population:
-                sum_flights += asizeof.asizeof(sol_list[0].flights)
-                sum_scheduler += asizeof.asizeof(sol_list[0].scheduler)
-                sum_structures += asizeof.asizeof(sol_list[0].structures)
-            print(f"Size of flights {sum_flights}")
-            print(f"Size of scheduler {sum_scheduler}")
-            print(f"Size of structures {sum_structures}")
-            self.reset_crew()
             start_time = time.time()
-            parent_pop = copy.deepcopy(self.population)
+            elite_population = copy.deepcopy(self.population[:self.population_size//8])
+            self.population = self.population[:self.population_size//2]
             end_time = time.time()
+            self.add_new_solutions(filename)
             print(f"-----------ITERATION {i} DURATION: {end_time - start_time:.2f}")
-            for sol_list in parent_pop:
+            for sol_list in self.population:
                 sol = sol_list[0]
                 sol.scheduler.set_time(0)
                 mutation_successful = False
@@ -454,32 +421,40 @@ class EvolutionaryAlgorithm:
                         # logging.erorr
                         print("Error during mutation. Retrying with a different flight.")
                 sol.initialized = "Mutated    "
+                self.reschedule_flights(sol, mut_time, i, config['algo']['ALLOWED_HEURISTIC'])
 
-                for airport in sol.structures.airports:
-                    airport.check_consistency()
-
-                self.reschedule_flights_in_pop(sol, mut_time, parent_pop, config['algo']['ALLOWED_HEURISTIC'])
-
-            for sol_list in parent_pop:
+            for sol_list in self.population:
                 sol_list[0].run_events()
 
-            final_population = self.population + parent_pop
-
+            self.population = self.population + elite_population 
             # Update fitness scores of the combined population
-            self.update_all_fitness_scores_in_pop(final_population)
+            self.update_all_fitness_scores()
 
-            # Different selection mechanism before and after halfway point
+            # # Different selection mechanism before and after halfway point
             if i < iterations_n // 2:
                 # Ensure at least one solution for each ID is selected
-                self.population = self.select_diverse_population(final_population)
+                self.population = self.select_diverse_population(self.population)
             else:
                 # Select based on fitness score
-                final_population.sort(key=lambda sol: sol[0].fitness_score)
-                self.population = final_population[:self.population_size]
+                self.population.sort(key=lambda sol: sol[0].fitness_score)
+                self.population = self.population[:self.population_size]
 
+            self.sort_population()
             self.print_fitness_scores(i)
             self.store_iteration_scores(i)
             self.store_iteration_penalties(i)
+
+    def reset_crew(self):
+        for sol_list in self.population:
+            # sol_list[0].flights = []
+            for airport in sol_list[0].structures.airports:
+                # airport.clear_logs()
+                for pilot in airport.pilots:
+                    pilot.status = []
+                    pilot.flights_taken = 0
+                for attendant in airport.attendants:
+                    attendant.status = []
+                    attendant.flights_taken = 0
 
     def select_diverse_population(self, population):
         unique_ids = set(sol[0].id for sol in population)
