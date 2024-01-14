@@ -2,6 +2,53 @@ import json
 import subprocess
 import datetime
 
+test_cases_unallowed_crossover = [
+    {
+        "algo": { # crossover_1 DONE
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_UN": 2500,
+            "MUTATION_RATE": 1,
+            "UNALL_FIX_LOCATION_PERCENT": 0,
+            "CROSSOVER_RATE": 0.25,
+            "ONE_MUTATE_RATIO": 0.5,
+            "UNALL_INITIAL_HEURISTIC": "with_update"
+        }
+    },
+    {
+        "algo": { # crossover_2 DONE
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_UN": 2500,
+            "MUTATION_RATE": 1,
+            "UNALL_FIX_LOCATION_PERCENT": 0,
+            "CROSSOVER_RATE": 0.5,
+            "ONE_MUTATE_RATIO": 0.5,
+            "UNALL_INITIAL_HEURISTIC": "with_update"
+        }
+    },
+    {
+        "algo": { # crossover_3 DONE
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_UN": 2500,
+            "MUTATION_RATE": 1,
+            "UNALL_FIX_LOCATION_PERCENT": 0,
+            "CROSSOVER_RATE": 0.75,
+            "ONE_MUTATE_RATIO": 0.5,
+            "UNALL_INITIAL_HEURISTIC": "with_update"
+        }
+    },
+    {
+        "algo": { # crossover_4 DONE
+            "POPULATION_SIZE": 20,
+            "N_ITERATIONS_UN": 2500,
+            "MUTATION_RATE": 1,
+            "UNALL_FIX_LOCATION_PERCENT": 0,
+            "CROSSOVER_RATE": 1,
+            "ONE_MUTATE_RATIO": 0.5,
+            "UNALL_INITIAL_HEURISTIC": "with_update"
+        }
+    },
+]
+
 test_cases_unallowed = [
     {
         "algo": { # test_case_0_with_update
@@ -220,23 +267,23 @@ def run_main_unallowed(structs_file, plot_filename):
     return process.returncode == 0
 
 def main():
-    # for test_case_index, test_case in enumerate(test_cases_allowed):
+    for test_case_index, test_case in enumerate(test_cases_allowed):
 
-    #     print(f"Test case being run: {test_case}")
-    #     update_parameters_file(test_case)
+        print(f"Test case being run: {test_case}")
+        update_parameters_file(test_case)
 
-    #     for structs_file in structs_files:
-    #         plot_filename = f"plot_test_case_with_init{test_case_index}_{structs_file.split('.')[0]}"
+        for structs_file in structs_files:
+            plot_filename = f"plot_test_case_with_init{test_case_index}_{structs_file.split('.')[0]}"
 
-    #         print(f"Running test case {test_case_index} with {structs_file}")
-    #         success = run_main_allowed(structs_file, plot_filename)
+            print(f"Running test case {test_case_index} with {structs_file}")
+            success = run_main_allowed(structs_file, plot_filename)
 
-    #         if not success:
-    #             print(f"Error occurred while running test case {test_case_index} with {structs_file}")
-    #         else:
-    #             print(f"Completed test case {test_case_index} with {structs_file}")
+            if not success:
+                print(f"Error occurred while running test case {test_case_index} with {structs_file}")
+            else:
+                print(f"Completed test case {test_case_index} with {structs_file}")
 
-    # print("All test cases for allowed approach completed.")
+    print("All test cases for allowed approach completed.")
 
     for test_case_index, test_case in enumerate(test_cases_unallowed):
 
@@ -256,23 +303,41 @@ def main():
 
     print("All test cases for unallowed approach completed.")
 
-    # for test_case_index, test_case in enumerate(test_cases_allowed_two_pop):
+    for test_case_index, test_case in enumerate(test_cases_allowed_two_pop):
 
-    #     print(f"Test case being run: {test_case}")
-    #     update_parameters_file(test_case)
+        print(f"Test case being run: {test_case}")
+        update_parameters_file(test_case)
 
-    #     for structs_file in structs_files:
-    #         plot_filename = f"plot_test_case_two_pop{test_case_index}_{structs_file.split('.')[0]}"
+        for structs_file in structs_files:
+            plot_filename = f"plot_test_case_two_pop{test_case_index}_{structs_file.split('.')[0]}"
 
-    #         print(f"Running test case {test_case_index} with {structs_file}")
-    #         success = run_main_allowed(structs_file, plot_filename)
+            print(f"Running test case {test_case_index} with {structs_file}")
+            success = run_main_allowed(structs_file, plot_filename)
 
-    #         if not success:
-    #             print(f"Error occurred while running test case {test_case_index} with {structs_file}")
-    #         else:
-    #             print(f"Completed test case {test_case_index} with {structs_file}")
+            if not success:
+                print(f"Error occurred while running test case {test_case_index} with {structs_file}")
+            else:
+                print(f"Completed test case {test_case_index} with {structs_file}")
 
-    # print("All test cases for unallowed approach completed.")
+    print("All test cases for unallowed approach completed.")
+
+    for test_case_index, test_case in enumerate(test_cases_unallowed_crossover):
+
+        print(f"Test case being run: {test_case}")
+        update_parameters_file(test_case)
+
+        for structs_file in structs_files:
+            plot_filename = f"plot_test_case_crossover_{test_case_index}_{structs_file.split('.')[0]}"
+
+            print(f"Running test case {test_case_index} with {structs_file}")
+            success = run_main_unallowed(structs_file, plot_filename)
+
+            if not success:
+                print(f"Error occurred while running test case {test_case_index} with {structs_file}")
+            else:
+                print(f"Completed test case {test_case_index} with {structs_file}")
+
+    print("All test cases for unallowed approach completed.")
 
 if __name__ == "__main__":
     main()
