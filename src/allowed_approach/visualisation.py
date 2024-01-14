@@ -35,15 +35,18 @@ def plot_compare_two_fitness_scores(plotname, file_path_1, file_path_2):
 
     plt.xlabel('Liczba iteracji')
     plt.ylabel('Funkcja celu')
+    plt.grid()
     # plt.title('Comparison of two fitness scores')
-    plt.legend()
+    plt.legend(bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=2)
+    plt.tight_layout()
     plt.savefig(plotname)
 
-
-def plot_compare_multiple_fitness_scores(plotname, moving_avg_period=5, **kwargs):
+def plot_compare_multiple_fitness_scores(plotname, moving_avg_period=20, **kwargs):
     plt.figure(figsize=(10, 6))
+    colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k']  # Example color list
 
-    for file_path, label in kwargs.items():
+    for i, (file_path, label) in enumerate(kwargs.items()):
+        color = colors[i % len(colors)]  # Cycle through colors
         with open(f'{file_path}_scores.json', 'r') as file:
             data = json.load(file)
 
@@ -51,19 +54,19 @@ def plot_compare_multiple_fitness_scores(plotname, moving_avg_period=5, **kwargs
         best_scores = [item['best_score'] for item in data['fitness_scores']]
         median_scores = [item['median_score'] for item in data['fitness_scores']]
 
-        median_scores_smoothed = pd.Series(median_scores).rolling(window=moving_avg_period).mean()
+        if moving_avg_period == 0:
+            plt.plot(iterations, best_scores, label=f'Best Score - {label}', color=color)
+        else:
+            median_scores_smoothed = pd.Series(median_scores).rolling(window=moving_avg_period).mean()
+            plt.plot(iterations, best_scores, label=f'Best Score - {label}', color=color)
+            plt.plot(iterations, median_scores_smoothed, label=f'Median Score (MA) - {label}', linestyle='--', color=color, linewidth=0.15)
 
-        plt.plot(iterations, best_scores, label=f'Najlepszy wynik - {label}')
-        plt.plot(iterations, median_scores_smoothed, label=f'Mediana wyników (MA) - {label}', linestyle='--')
-
-    plt.xlabel('Liczba iteracji')
-    plt.ylabel('Funkcja celu')
-    # plt.title('Comparison of Fitness Scores with Moving Average for Median Scores')
-    # plt.legend()
+    plt.xlabel('Number of Iterations')
+    plt.ylabel('Objective Function')
+    plt.grid()
     plt.legend(bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=2)
     plt.tight_layout()
     plt.savefig(plotname)
-
 
 
 def plot_fitness_scores(file_path):
@@ -82,14 +85,16 @@ def plot_fitness_scores(file_path):
     plt.plot(iterations, best_scores, label='najlepszy wynik')
     plt.plot(iterations, median_scores, label='mediana wyników')
     plt.plot(iterations, top_half_medians, label='mediana 50% lepszych wyników')
-    plt.plot(iterations, bottom_half_medians, label='mediana 50% gorszych wynikó∑')
+    plt.plot(iterations, bottom_half_medians, label='mediana 50% gorszych wyników')
     plt.xlabel('Liczba iteracji')
     plt.ylabel('Funkcja celu')
+    plt.grid()
     # plt.title('evolution of fitness scores over iterations')
-    plt.legend()
+    plt.legend(bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=2)
+    plt.tight_layout()
     plt.savefig(f"{file_path}_scores.png")
 
-def plot_penalties(file_path):
+def plot_penalties(file_path, plotname=None):
     with open(f'{file_path}_penalties.json', 'r') as file:
         data = json.load(file)
 
@@ -112,6 +117,11 @@ def plot_penalties(file_path):
     plt.yscale('log')
     plt.xlabel('Liczba iteracji')
     plt.ylabel('Kary nałożone na najlepsze rozwiązanie')
+    plt.grid()
     # plt.title('evolution of number of different penalties applied on the best solution')
-    plt.legend()
-    plt.savefig(f"{file_path}_penalties.png")
+    plt.legend(bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=2)
+    plt.tight_layout()
+    if plotname:
+        plt.savefig(f"results/final_results/{plotname}.png")
+    else:
+        plt.savefig(f"{file_path}_penalties.png")
