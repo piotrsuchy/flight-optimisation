@@ -34,14 +34,14 @@ def plot_compare_two_fitness_scores(plotname, file_path_1, file_path_2):
     plt.plot(iterations, bottom_half_medians, label='mediana 50% gorszych wynikó∑')
 
     plt.xlabel('Liczba iteracji')
-    plt.ylabel('Funkcja celu')
+    plt.ylabel('Wartość funkcji celu')
     plt.grid()
     # plt.title('Comparison of two fitness scores')
     plt.legend(bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=2)
     plt.tight_layout()
     plt.savefig(plotname)
 
-def plot_compare_multiple_fitness_scores(plotname, moving_avg_period=20, **kwargs):
+def plot_compare_multiple_fitness_scores(plotname, moving_avg_period=20, line_width=1, **kwargs):
     plt.figure(figsize=(10, 6))
     colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k']  # Example color list
 
@@ -55,14 +55,15 @@ def plot_compare_multiple_fitness_scores(plotname, moving_avg_period=20, **kwarg
         median_scores = [item['median_score'] for item in data['fitness_scores']]
 
         if moving_avg_period == 0:
-            plt.plot(iterations, best_scores, label=f'Best Score - {label}', color=color)
+            plt.plot(iterations, best_scores, label=f'Najlepszy wynik - {label}', color=color)
+            plt.plot(iterations, median_scores, label=f'Mediana wyników populacji - {label}', linestyle='--', color=color, linewidth=1)
         else:
             median_scores_smoothed = pd.Series(median_scores).rolling(window=moving_avg_period).mean()
-            plt.plot(iterations, best_scores, label=f'Best Score - {label}', color=color)
-            plt.plot(iterations, median_scores_smoothed, label=f'Median Score (MA) - {label}', linestyle='--', color=color, linewidth=0.15)
+            plt.plot(iterations, best_scores, label=f'Najlepszy wynik - {label}', color=color)
+            plt.plot(iterations, median_scores_smoothed, label=f'Mediana wyników populacji (MA) - {label}', linestyle='--', color=color, linewidth=line_width)
 
-    plt.xlabel('Number of Iterations')
-    plt.ylabel('Objective Function')
+    plt.xlabel('Liczba iteracji')
+    plt.ylabel('Wartość funkcji celu')
     plt.grid()
     plt.legend(bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=2)
     plt.tight_layout()
@@ -87,7 +88,7 @@ def plot_fitness_scores(file_path):
     plt.plot(iterations, top_half_medians, label='mediana 50% lepszych wyników')
     plt.plot(iterations, bottom_half_medians, label='mediana 50% gorszych wyników')
     plt.xlabel('Liczba iteracji')
-    plt.ylabel('Funkcja celu')
+    plt.ylabel('Wartość funkcji celu')
     plt.grid()
     # plt.title('evolution of fitness scores over iterations')
     plt.legend(bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=2)
