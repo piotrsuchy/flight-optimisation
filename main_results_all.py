@@ -20,14 +20,13 @@ def process_combination(directory_path, test_case_type, test_case_index, struct_
         print(f"No matching files found for {test_case_type}{test_case_index} with {struct_type} and {file_suffix}.")
         return
 
-    all_data = []
+    combined_data = pd.DataFrame()
     for file in files:
         data = load_and_process_json(file, data_key)
-        all_data.append(data)
+        df = pd.DataFrame(data, index=[os.path.basename(file).split('.')[0]])
+        combined_data = pd.concat([combined_data, df], axis=0)
 
-    df = pd.DataFrame(all_data)
-    average_values = df.mean()
-    return average_values
+    return combined_data
 
 def main(directory_path):
     test_case_types = [('plot_test_case', range(10)), 
@@ -40,18 +39,17 @@ def main(directory_path):
         for test_case_index in indices:
             for struct_type in struct_types:
                 # Processing penalties
-                penalties_avg = process_combination(directory_path, test_case_type, test_case_index, struct_type, 'penalties', 'penalties')
+                penalties_data = process_combination(directory_path, test_case_type, test_case_index, struct_type, 'penalties', 'penalties')
                 # Processing scores
-                scores_avg = process_combination(directory_path, test_case_type, test_case_index, struct_type, 'fitness_scores', 'scores')
+                scores_data = process_combination(directory_path, test_case_type, test_case_index, struct_type, 'fitness_scores', 'scores')
                 
-                if penalties_avg is not None and scores_avg is not None:
-                    combined_avg = pd.concat([penalties_avg, scores_avg[['best_score', 'median_score']]])
-                    file_name = f'results_{test_case_type}{test_case_index}_{struct_type}_average_values.csv'
-                    print(f"\nCombined average values for {file_name}:")
-                    print(combined_avg)
-                    combined_avg.to_csv(file_name, header=False)
-                    print(f"Saved combined average values to {file_name}.")
-
+                if penalties_data is not None and scores_data is not None:
+                    combined_data = pd.concat([penalties_data, scores_data])
+                    file_name = f'combined_results_{test_case_type}{test_case_index}_{struct_type}.csv'
+                    print(f"Combined data for {file_name}:")
+                    print(combined_data)
+                    combined_data.to_csv(file_name)
+                    print(f"Saved combined data to {file_name}.")
 
 if __name__ == "__main__":
     directory_path = './'
