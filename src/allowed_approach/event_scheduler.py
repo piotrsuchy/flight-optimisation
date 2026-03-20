@@ -55,5 +55,9 @@ class EventScheduler():
         while self.has_events():
             self.process_next_event()
 
+    def clear_events(self):
+        """Clear all pending events to free memory."""
+        self.events = []
+
     def set_time(self, time):
         self.current_simulation_time = time

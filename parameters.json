@@ -3,31 +3,31 @@
         "POPULATION_SIZE": 20,
         "N_ITERATIONS_UN": 2500,
         "N_ITERATIONS_AL": 40,
-        "CROSSOVER_RATE": 0,
+        "CROSSOVER_RATE": 1,
         "MUTATION_RATE": 1,
         "SELECTION_RATE": 0.5,
         "N_FLIGHTS_TO_MUT": 30,
-        "UNALL_FIX_LOCATION_PERCENT": 1,
+        "UNALL_FIX_LOCATION_PERCENT": 0,
         "ONE_MUTATE_RATIO": 0.5,
-        "UNALL_INITIAL_HEURISTIC": "random",
-        "ALLOWED_HEURISTIC": "work_time",
-        "ALLOWED_GEN_CREATION": "with_init"
+        "UNALL_INITIAL_HEURISTIC": "with_update",
+        "ALLOWED_HEURISTIC": "smallest_id",
+        "ALLOWED_GEN_CREATION": "two_pop"
     },
     "sim": {
         "SIM_LEN": 720,
         "N_FLIGHTS": 300
     },
     "pen": {
-        "LOCATION_PENALTY": 100000,
+        "LOCATION_PENALTY": 3000,
         "CANCEL_PENALTY_PER_HOUR": 2000,
         "TRAINING_OVERLAP_PENALTY": 5000,
         "DAYOFF_PENALTY": 3000,
-        "REST_PENALTY": 5000,
-        "OVERWORK_PENALTY": 0.3
+        "REST_PENALTY": 50000,
+        "OVERWORK_PENALTY": 30
     },
     "structs": {
-        "SEED_1": 32,
-        "SEED_2": 38,
+        "SEED_1": 60,
+        "SEED_2": 12,
         "PILOTS_PER_PLANE": 2,
         "ATTEND_PER_PLANE": 4,
         "N_AIRPORTS": 10,

@@ -115,6 +115,10 @@ class AvailabilityLog:
         # if all snapshots in the future - return the first one
         return self.log[0]
 
+    def clear_log(self):
+        '''Clears all availability snapshots to free memory.'''
+        self.log = []
+
     def clear_logs_after_timestamp(self, timestamp):
         try:
             self.log = [snapshot for snapshot in self.log if snapshot.simulation_time <= timestamp]

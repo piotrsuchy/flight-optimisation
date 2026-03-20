@@ -398,6 +398,7 @@ class EvolutionaryAlgorithm:
             self.print_fitness_scores(i)
             self.store_iteration_scores(i+1)
             self.store_iteration_penalties(i+1)
+            self.cleanup_population_memory()
             end_time = time.time()
             print(f"-----------ITERATION {i} DURATION: {end_time - start_time:.2f}")
 
@@ -443,12 +444,17 @@ class EvolutionaryAlgorithm:
             self.print_fitness_scores(i)
             self.store_iteration_scores(i)
             self.store_iteration_penalties(i)
+            self.cleanup_population_memory()
+
+    def cleanup_population_memory(self):
+        '''Remove stale scheduler entries and clear availability logs for active solutions.'''
+        active_ids = set(sol_list[0].id for sol_list in self.population)
+        Solution.cleanup_schedulers(active_ids)
 
     def reset_crew(self):
         for sol_list in self.population:
-            # sol_list[0].flights = []
             for airport in sol_list[0].structures.airports:
-                # airport.clear_logs()
+                airport.availability_log.clear_log()
                 for pilot in airport.pilots:
                     pilot.status = []
                     pilot.flights_taken = 0

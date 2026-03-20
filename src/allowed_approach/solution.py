@@ -25,12 +25,22 @@ class Solution:
         self.training_penalty = 0
         self.dayoff_penalty = 0
 
+    def __del__(self):
+        Solution.schedulers.pop(self.id, None)
+
     def __str__(self):
         return f"Sol ID: {self.id}, fitness score: {self.fitness_score}, status: {self.initialized}, Total Flights: {len(self.flights)}, Cancelled: {self.get_cancelled_flights_num()}"
 
     @staticmethod
     def get_scheduler_by_id(sol_id):
         return Solution.schedulers.get(sol_id)
+
+    @classmethod
+    def cleanup_schedulers(cls, active_ids):
+        '''Remove scheduler entries for solutions no longer in the population.'''
+        stale_ids = [sid for sid in cls.schedulers if sid not in active_ids]
+        for sid in stale_ids:
+            del cls.schedulers[sid]
 
     def get_scheduler_events(self):
         self.all_events = self.scheduler.get_events()

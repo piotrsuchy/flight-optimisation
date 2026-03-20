@@ -354,8 +354,8 @@ class ImpossibleEvolutionaryAlgorithm:
         assigns pilots and attendants to flights in a random but allowed fashion
         '''
         for sol_idx, sol in enumerate(self.population):
-            initial_pilots_status_pop = copy.deepcopy(self.pilots_status_pop)
-            initial_attend_status_pop = copy.deepcopy(self.attend_status_pop)
+            initial_pilots_status = copy.deepcopy(self.pilots_status_pop[sol_idx])
+            initial_attend_status = copy.deepcopy(self.attend_status_pop[sol_idx])
             for flight in sol:
                 src_id = flight[0]
                 dest_id = flight[1]
@@ -371,7 +371,7 @@ class ImpossibleEvolutionaryAlgorithm:
                 for slot in range(config['structs']['PILOTS_PER_PLANE']):
                     if available_pilots:
                         chosen_idx = random.choice(available_pilots)
-                        flight[2 + slot] = chosen_idx + 1  
+                        flight[2 + slot] = chosen_idx + 1
                         available_pilots.remove(chosen_idx)
                         if not cancelled:
                             self.pilots_status_pop[sol_idx][chosen_idx]['location'] = dest_id
@@ -379,12 +379,12 @@ class ImpossibleEvolutionaryAlgorithm:
                 for slot in range(config['structs']['PILOTS_PER_PLANE'], config['structs']['PILOTS_PER_PLANE'] + config['structs']['ATTEND_PER_PLANE']):
                     if available_attendants:
                         chosen_idx = random.choice(available_attendants)
-                        flight[2 + slot] = chosen_idx + 1  
+                        flight[2 + slot] = chosen_idx + 1
                         available_attendants.remove(chosen_idx)
                         if not cancelled:
                             self.attend_status_pop[sol_idx][chosen_idx]['location'] = dest_id
-            self.pilots_status_pop = initial_pilots_status_pop
-            self.attend_status_pop = initial_attend_status_pop
+            self.pilots_status_pop[sol_idx] = initial_pilots_status
+            self.attend_status_pop[sol_idx] = initial_attend_status
 
     def assign_airports_to_crew_members(self):
         '''
